@@ -1,12 +1,13 @@
 // Module included in the following assemblies:
 //
 // * configuring-an-openshift-cluster-with-argo-cd.adoc
-// * depoying-an-application-with-argo-cd.adoc
+// * deploying-a-spring-boot-application-with-argo-cd.adoc
+// * creating-an-application-by-using-the-oc-tool.adoc
 
 ifeval::["{context}" == "configuring-an-openshift-cluster-by-deploying-an-application-with-cluster-configurations"]
 :cluster:
 endif::[]
-ifeval::["{context}" == "deploying-a-spring-boot-application-with-argo-cd"]
+ifeval::["{context}" == "creating-an-application-by-using-the-oc-tool"]
 :app:
 endif::[]
 
