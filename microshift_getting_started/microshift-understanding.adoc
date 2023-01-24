@@ -6,6 +6,6 @@ include::_attributes/attributes-microshift.adoc[]
 
 toc::[]
 
-Get an overview of what you can do with {product-title}, based on {OCP}, but designed for optimizing small form factor devices and edge computing.
+Get an overview of what you can do with {product-title}, a kubernetes distribution derived from {OCP}, but designed for optimizing small form factor devices and edge computing.
 
 include::modules/microshift-about.adoc[leveloffset=+1]

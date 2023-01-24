@@ -5,7 +5,7 @@
 [id="preparing-install-microshift-from-rpm-package_{context}"]
 = Preparing to install {product-title} from an RPM package
 
-Before installing {product-title} from an RPM package, you must configure your {op-system} machine to have a logical volume manager (LVM) volume group (VG) with sufficient capacity for the persistent volumes (PVs) of your workload.
+Before installing {product-title} from an RPM package, you must configure your {op-system} machine to have a logical volume manager (LVM) volume group (VG) with sufficient capacity for the persistent volumes (PVs) of your workload. The default name of the VG is `rhel`. If you choose a different name, you must adjust the configuration.
 
 {product-title} uses the logical volume manager storage (LVMS) Container Storage Interface (CSI) provider for storing PVs. LVMS relies on Linux's LVM to dynamically manage the backing storage for PVs. For this reason, your machine must have an LVM VG with unused space in which LVMS can create the LVM logical volumes (LVs) for your workload's PVs.
 
@@ -22,7 +22,7 @@ To configure a volume group (VG) that allows LVMS to create the LVs for your wor
 
 . Under *New Red Hat Enterprise Linux 8.x Installation*, select *Click here to create them automatically*.
 
-. Select the root partition, */*, reduce *Desired Capacity* so that the VG has sufficient capacity for your PVs, and then click *Update Settings*.
+. Select the root partition, `*/*`, reduce *Desired Capacity* so that the VG has sufficient capacity for your PVs, and then click *Update Settings*.
 
 . Complete your installation.
 +
