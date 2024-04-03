@@ -41,19 +41,6 @@ spec:
 The default pod security admission definition for `openshift-marketplace` is `baseline`, therefore a catalog source custom resource (CR) created in that namespace does not require a `spec.grpcPodConfig.securityContextConfig` value to be set. You can set a `legacy` or `restricted` value if required for the namespace and Operators you want to use.
 ====
 
-. Get the SHA of the catalog index image by running the following command:
-+
-[source,terminal]
-----
-$ skopeo inspect docker://registry.example.com/redhat/redhat-operator-index:v4.15 | jq `.Digest` <1>
-----
-<1> Pass the value from the `spec.image` field in the Catalog Source CR.
-+
-.Example output
-[source,terminal]
-----
-"sha256:7a76c0880a839035eb6e896d54ebd63668bb37b82040692141ba39ab4c539bc6"
-----
 +
 [IMPORTANT]
 ====
@@ -79,7 +66,7 @@ spec:
     registryPoll:
       interval: 60m
 ----
-<1> The SHA of the image commit.
+<1> The SHA of the image commit. - Obtained in previous step
 
 . Apply the YAML file from the results directory to the cluster by running the following command:
 +
