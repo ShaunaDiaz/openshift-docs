@@ -1,0 +1,59 @@
+// Module included in the following assemblies:
+//
+// * microshift_configuring/using-config-tools.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="microshift-config-snippets_{context}"]
+= Using a configuration snippet
+
+In addition to the existing `/etc/microshift/config.yaml` configuration file there is a `/etc/microshift/config.d` configuration directory where you can place snippets of configuration.
+
+At runtime, `/etc/microshift/config.yaml` and YAML files inside `/etc/microshift/config.d` are merged together to create one configuration file which overrides the defaults.
+
+Files in `/etc/microshift/config.d` are sorted in lexicographical order and run sequentially. Therefore, it is recommended to use a numerical prefixes for snippets so that each is read in the order you want.
+
+For example, given following files:
+
+/etc/microshift/config.yaml
+/etc/microshift/config.d/10-subjectAltNames.yaml
+/etc/microshift/config.d/20-kubelet.yaml
+The final user config will be created by using config.yaml as a base, and then overwriting it with 10-subjectAltNames.yaml, and then overwriting it with 20-kubelet.yaml:
+
+20-kubelet.yaml
+     ||
+     \/
+10-subjectAltNames.yaml
+     ||
+     \/
+config.yaml
+Some additional rules:
+
+Lists are not merged together, they are overwritten. For example:
+# 10-san.yaml
+apiServer:
+  subjectAltNames:
+    - host1
+    - host2
+
+# 20-san.yaml
+apiServer:
+  subjectAltNames:
+    - hostZ
+
+# end result
+apiServer:
+  subjectAltNames:
+    - hostZ
+Contents of kubelet: configuration are merged together (unless specific field is a list). For example:
+# 10-kubelet.yaml
+kubelet:
+  some_setting: True
+
+# 20-kubelet.yaml
+kubelet:
+  another_setting: True
+
+# end result
+kubelet:
+  some_setting: True
+  another_setting: True
