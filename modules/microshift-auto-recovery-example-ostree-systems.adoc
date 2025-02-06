@@ -4,14 +4,14 @@
 
 :_mod-docs-content-type: PROCEDURE
 [id="microshift-automation-example-ostree-systems_{context}"]
-= Automating the integration process with systemd for OSTree systems
+= Using auto recovery with {op-system-ostree}
+
+As a use case, consider the following example situation in which you want to automate the `auto-recovery` process for {op-system-ostree-first} systems that use systemd in the blueprint file.
 
 [IMPORTANT]
 ====
-You must include the entire `auto-recovery` process for OSTree systems that use `systemd` in the blueprint file.
+You must include the entire `auto-recovery` process for {op-system-ostree} systems that use `systemd` in the blueprint file.
 ====
-
-As a use case, consider the following example situation in which you want to automate the `auto-recovery` process for OSTree systems that use systemd.
 
 .Procedure
 

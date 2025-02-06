@@ -1,0 +1,48 @@
+// Module included in the following assemblies:
+//
+// * microshift/microshift_backup_and_restore/microshift-auto-recover-manual-backup.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="microshift-auto-recovery-example-bootc-systems_{context}"]
+= Using auto-recovery in image mode for RHEL systems
+
+:FeatureName: Image mode for {op-system-base}
+
+include::snippets/technology-preview.adoc[]
+
+As a use case, consider the following example situation in which you want to automate the `auto-recovery` process for image mode for {op-system-base-full} systems that use the systemd service.
+
+[IMPORTANT]
+====
+You must include the entire `auto-recovery` process for {op-system-image} systems that use `systemd` in the container file.
+====
+
+.Prerequisites
+
+* You created the `10-auto-recovery.conf` and `microshift-auto-recovery.service` files as explained in the "Using auto-recovery in RPM systems" section.
+
+* You created the `microshift-auto-recovery` script as explained in the "Using auto-recovery in RPM systems" section.
+
+[IMPORTANT]
+====
+The location of the the `10-auto-recovery.conf` and `microshift-auto-recovery.service` must be relative to the Containerfile.
+
+For example, if the path to the Containerfile is `/home/microshift/my-build/Containerfile`, the systemd files need to be adjacent for proper embedding. The following paths are correct for this example:
+
+* `/home/microshift/my-build/auto-rec/10-auto-recovery.conf`
+* `/home/microshift/my-build/auto-rec/microshift-auto-recovery.service`
+* `/home/microshift/my-build/auto-rec/microshift-auto-recovery`
+====
+
+.Procedure
+
+* Use the following example to update the container file that you use to prepare the {op-system-image} image.
++
+[source,text]
+----
+RUN mkdir -p /usr/lib/systemd/system/microshift.service.d
+COPY ./auto-rec/10-auto-recovery.conf /usr/lib/systemd/system/microshift.service.d/10-auto-recovery.conf
+COPY ./auto-rec/microshift-auto-recovery.service /usr/lib/systemd/system/
+COPY ./auto-rec/microshift-auto-recovery /usr/bin/
+RUN chmod +x /usr/bin/microshift-auto-recovery && systemctl daemon-reload
+----
