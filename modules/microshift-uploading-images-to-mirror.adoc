@@ -44,7 +44,7 @@ $ IMAGE_LOCAL_DIR=~/microshift-containers
 $ TARGET_REGISTRY=<registry_host>:<port> <1>
 ----
 <1> Replace `<registry_host>:<port>` with the host name and port of your mirror registry server.
-
+//and update this script
 . Run the following script to upload the container images to the `${TARGET_REGISTRY}` mirror registry:
 +
 [source,terminal]

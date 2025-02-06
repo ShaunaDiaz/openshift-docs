@@ -11,7 +11,7 @@ After you have located the container list and completed the mirroring prerequisi
 .Prerequisites
 
 * You are logged into a host with access to the internet.
-* You have ensured that the `.pull-secret-mirror.json` file and `microshift-containers` directory contents are available locally.
+* The `.pull-secret-mirror.json` file and `microshift-containers` directory contents are available locally.
 
 .Procedure
 
@@ -43,23 +43,31 @@ $ IMAGE_LIST_FILE=~/microshift-container-refs.txt
 $ IMAGE_LOCAL_DIR=~/microshift-containers
 ----
 
-. Run the following script to download the container images to the `${IMAGE_LOCAL_DIR}` directory:
+. Run the following script to pull the images from the original registry and mirror to your custom registry:
 +
 [source,terminal]
 ----
-while read -r src_img ; do
-   # Remove the source registry prefix
-   dst_img=$(echo "${src_img}" | cut -d '/' -f 2-)
+while read -r src_img; do
+    # Remove the source registry prefix and SHA
+    local dst_img
+    dst_img=$(echo "${src_img}" | cut -d '/' -f 2-)
+    local dst_img_no_tag
+    dst_img_no_tag="${dst_img%%[@:]*}"
+    # Add the target registry prefix
+    dst_img="${TARGET_REGISTRY}/${dst_img}"
+    dst_img_no_tag="${TARGET_REGISTRY}/${dst_img_no_tag}"
 
-   # Run the image download command
-   echo "Downloading '${src_img}' to '${IMAGE_LOCAL_DIR}'"
-   mkdir -p "${IMAGE_LOCAL_DIR}/${dst_img}"
-   skopeo copy --all --quiet \
-      --preserve-digests \
-      --authfile "${PULL_SECRET_FILE}" \
-      docker://"${src_img}" dir://"${IMAGE_LOCAL_DIR}/${dst_img}"
+    # Mirror the image and tag it in the target registry
+    echo "Mirroring '${src_img}' to '${dst_img}'"
+    skopeo_retry copy --all --quiet \
+        --preserve-digests \
+        --authfile "${PULL_SECRET_FILE}" \
+        docker://"${src_img}" docker://"${dst_img}"
 
+    echo "Tagging '${dst_img_no_tag}' as 'latest'"
+    skopeo_retry copy --all --quiet \
+        --preserve-digests \
+        --authfile "${PULL_SECRET_FILE}" \
+        docker://"${dst_img}" docker://"${dst_img_no_tag}:latest"
 done < "${IMAGE_LIST_FILE}"
 ----
-
-. Transfer the image set to the target environment, such as air-gapped site. Then you can upload the image set into the mirror registry.
