@@ -1,0 +1,12 @@
+// Module included in the following assemblies:
+//
+// * microshift_ai/microshift-rhoai.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="microshift-rhoai-con_{context}"]
+= How {rhoai-full} works in {microshift-short}
+
+You can train an artificial intelligence (AI) model in the cloud or datacenter on {OCP}, then run your model in your edge deployments on {microshift-short}.
+
+{rhoai-full} ({rhoia}) is a platform for data scientists and developers of AI and machine learning (AI/ML) applications. {rhoia} provides an environment to develop, train, serve, test, and monitor AI/ML models and applications on-premise or in the cloud.
+

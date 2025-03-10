@@ -1,0 +1,18 @@
+:_mod-docs-content-type: ASSEMBLY
+[id="microshift-rh-openshift-ai"]
+include::_attributes/attributes-microshift.adoc[]
+= Using Red Hat OpenShift AI with {microshift-short}
+:context: microshift-rh-openshift-ai
+
+toc::[]
+
+Learn how to serve artificial intelligence (AI) models on your {microshift-short} edge deployments in a lightweight manner.
+
+include::modules/microshift-rhoai-con.adoc[leveloffset=+1]
+
+include::modules/microshift-rhoai-install.adoc[leveloffset=+1]
+//hmm, do we want to include again in the install books?
+
+include::modules/microshift-rhoai-supported-crds.adoc[leveloffset=+1]
+
+

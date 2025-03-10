@@ -6,6 +6,8 @@
 :OCP: OpenShift Container Platform
 :ocp-version: 4.18
 :oc-first: pass:quotes[OpenShift CLI (`oc`)]
+:rhoai-full: Red{nbsp}Hat OpenShift AI
+:rhoai: RHOAI
 //OpenShift Kubernetes Engine
 :oke: OpenShift Kubernetes Engine
 :product-title-first: Red Hat build of MicroShift (MicroShift)

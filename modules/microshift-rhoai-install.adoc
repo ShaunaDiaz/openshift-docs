@@ -1,0 +1,55 @@
+// Module included in the following assemblies:
+//
+// * microshift_ai/microshift-rhoai.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="microshift-rhoai-install_{context}"]
+= Installing the {rhoai-full} RPM
+
+To use AI models in {microshift-short} deployments, use this procedure to install the {rhoai-full} {{rhoai}} RPM a new {microshift-short} installation. You can install the RPM on an existing {microshift} instance as long as you restart the system.
+
+.Prerequisites
+
+* The system requirements for installing {microshift-short} have been met.
+* You have root user access to your machine.
+* You configured your LVM VG with the capacity needed for the PVs of your workload.
+//Do we need to config the CSI?
+* You added memory as required for your AI model.
+//I assume there is some kind of memory requirement for using an AI model?
+
+.Procedure
+
+. Install the {microshift-short} AI-model-serving RPM package by running the following command:
++
+[source,terminal]
+----
+$ sudo dnf install microshift-microshift-ai-model-serving
+----
++
+[TIP]
+====
+If you create your manifests and custom resources (CRs) while you are completing your installation of {microshift-short}, you can avoid restarting the service a second time to apply them.
+====
+
+. As a root user, restart the {microshift-short} service by entering the following command:
++
+[source,terminal]
+----
+$ sudo systemctl restart microshift
+----
+
+//Q: Can we check the namespace to verify?
+//Kserve manifest and ServingRuntimes CRs are deployed in a `redhat-ods-applications` namespace.
+
+.Next steps
+
+. Configure your hardware, the operating system, and additional components to make use of their accelerators.
+
+. Create manifests that include
+* `ServingRuntime` in your namespace
+* `InferenceService` referencing `ServingRuntime` and a model
+* `Route` CR
+
+// Kserve creates Deployment and other resources.
+
+. Resources from previous step become ready and user can make HTTP/GRPC calls to the model server.
