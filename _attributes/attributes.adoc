@@ -21,7 +21,7 @@
 :ocp-latest-version: 4.21
 
 :service-mesh: OpenShift Service Mesh
-:service-mesh-version: 3.1
+:service-mesh-version: 3.2
 :api-controller: API controller
 :api-controller-version: 1.0 Developer Preview
 :apicurio-studio: API Designer
