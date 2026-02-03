@@ -1,0 +1,16 @@
+// Module used in the following assemblies
+//
+// *release_notes/release-notes.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="rhcl-relnotes-bug-fixes_{context}"]
+= Fixed issues
+
+[role="_abstract"]
+See the included list for bugs that are fixed in {prodname} {version}.
+
+
+* Previously, the TokenRateLimitPolicy status switched indefinitely between Accepted/Enforced and MissingDependency. When in the MissingDependency state, the condition message was as follows:
+`[token rate limit policy validation has not finished] is not installed, please restart Kuadrant Operator pod once dependency has been installed`. Now, the TokenRateLimitPolicy status transitions to Accepted/Enforced and remains in that state, and rate limiting rules are consistently enforced by the Limitador component. link:https://issues.redhat.com/browse/CONNLINK-595[CONNLINK-595]
+
+* Previously, for token exchange flows where the auth header value must be replaced, the added auth headers were appended instead. Now, the added auth headers replace existing values, instead of appending. link:https://issues.redhat.com/browse/CONNLINK-604[CONNLINK-604]
