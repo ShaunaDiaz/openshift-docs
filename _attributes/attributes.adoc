@@ -1,9 +1,16 @@
 // Standard attributes shared by all documents
-:toc:
-:companyname: Red Hat
+:_mod-docs-content-type: ATTRIBUTES
 
+:toc:
+//:toc: macro
+//right nav disappears when macro attribute is set
+:toc-title:
+:experimental:
+:imagesdir: images
+
+:rh: Red Hat
 :prodname: Connectivity Link
-:prodnamefull: {companyname} {prodname}
+:prodnamefull: {rh} {prodname}
 :productpkg: red_hat_connectivity_link
 
 :reldate: May 2025
@@ -12,6 +19,7 @@
 
 :ocp: OpenShift Container Platform
 :ocp-latest-version: 4.20
+:ocp-2: 4.18
 
 :service-mesh: OpenShift Service Mesh
 :service-mesh-version: 3.0
@@ -19,7 +27,7 @@
 :api-controller-version: 1.0 Developer Preview
 :apicurio-studio: API Designer
 :apicurio-studio-version: 1.0
-:apicurio-registry: {companyname} build of Apicurio Registry
+:apicurio-registry: {rh} build of Apicurio Registry
 :apicurio-registry-version: 3.0
 
 :cert-manager: cert-manager Operator for Red Hat OpenShift
@@ -37,7 +45,7 @@
 :productpkg: red_hat_connectivity_link
 :RHCLProductURL: connectivity_link
 :RHCLURLVersion: 1.1
-
+//TODO FIXME
 :LinkRHCLIntro: https://access.redhat.com/documentation/en-us/{productpkg}/{RHCLURLVersion}/html-single/introduction_to_{RHCLProductURL}/index
 :NameRHCLIntro: Introduction to {prodname}
 
@@ -49,12 +57,3 @@
 
 :LinkRHCLDeploy: https://access.redhat.com/documentation/en-us/{productpkg}/{RHCLURLVersion}/html-single/configuring_and_deploying_gateway_policies_with_{RHCLProductURL}/index
 :NameRHCLDeploy: Configuring and deploying Gateway policies with {prodname}
-
-:LinkRHCLAPIController: https://access.redhat.com/documentation/en-us/{productpkg}/1.0/html-single/getting_started_with_api_controller/index
-:NameRHCLAPIController: Getting Started with {api-controller} {api-controller-version}
-
-:LinkOpenShiftAddOperator: https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html
-:NameOpenShiftAddOperator: Adding Operators to an OpenShift cluster
-
-:LinkOpenShiftIntroOperator: https://docs.openshift.com/container-platform/latest/operators/understanding/olm-understanding-operatorhub.html
-:NameOpenShiftIntroOperator: Understanding OperatorHub

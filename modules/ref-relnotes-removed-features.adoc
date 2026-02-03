@@ -1,0 +1,19 @@
+// Module included in the following assemblies:
+//
+// *release-notes/release-notes.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="rhcl-relnotes-removed-features_{context}"]
+= Removed features
+
+[role="_abstract"]
+The following features have been removed from {prodname} {version}:
+
+{api-controller} {api-controller-version}::
+
+{api-controller} {api-controller-version} was based on the https://github.com/Apicurio[Apicurio community project] and included the following components:
+
+* API designer based on Apicurio Studio
+* API catalog based on Apicurio Registry
+
+For more information, see {LinkRHCLAPIController}[{NameRHCLAPIController}].
