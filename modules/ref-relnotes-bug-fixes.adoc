@@ -1,0 +1,24 @@
+// Module used in the following assemblies
+//
+// *release_notes/release-notes.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="rhcl-relnotes-bug-fixes_{context}"]
+= Fixed issues
+
+[role="_abstract"]
+See the included list for bugs that are fixed in {prodname} {version}.
+
+[id="rhcl-relnotes-bug-fixes-1-1-1_{context}"]
+== Fixed issues in {prodname} 1.1.1
+
+* Previously, for `RateLimitPolicy` or `AuthPolicy` only, you were required to authenticate to `registry.redhat.io` to access the WASM plugin image used with {service-mesh} as the Gateway API provider. Authenticating to `registry.redhat.io` to access the WASM plugin image is no longer required. (link:https://issues.redhat.com/browse/CONNLINK-529[CONNLINK-529])
+
+
+* Previously, on {ocp} 4.19, {prodname} used an incorrect Gateway API controller name. The Gateway API controller name is required to enable the Gateway API Custom Resource Definitions (CRDs). Now, {prodname} uses the correct Gateway API controller name for {ocp} 4.19. (link:https://issues.redhat.com/browse/CONNLINK-433[CONNLINK-433])
+
+[id="rhcl-relnotes-bug-fixes-1-1-0_{context}"]
+== Fixed issues in {prodname} 1.1.0
+
+* Previously, in the *Policies* view, in a specific policy list such as DNS policies, when you switched namespace, you returned to the *All Policies* view. Now, when you switch namespace, you stay in the original specific policy list. (link:https://issues.redhat.com/browse/CONNLINK-289[CONNLINK-289])
+

@@ -1,0 +1,20 @@
+// Module included in the following assemblies:
+//
+// *release-notes/release-notes.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="rhcl-relnotes-features-enhancements_{context}"]
+= New features and enhancements
+
+[role="_abstract"]
+You can use the new features and enhancements that are available with {product-title} {version}.
+
+* Support for the following new platform and component versions:
+** {ocp} {ocp-latest-version}, 4.18
+** Red Hat OpenShift Dedicated {ocp-latest-version}, 4.18
+** Red Hat OpenShift Service on AWS {ocp-latest-version}, 4.18
+** Microsoft Azure Red Hat OpenShift 4.17
+** cert-manager for Red Hat OpenShift 1.15
+** Red Hat build of Keycloak 26.2
+* Improved configuration for enabling {prodname} observability. For more information, see the {LinkRHCLObserve}[{NameRHCLObserve}].
+* Observability metrics displayed in OpenShift console dynamic plug-in. For details on enabling the dynamic plug-in, see {LinkRHCLInstall}[{NameRHCLInstall}].
