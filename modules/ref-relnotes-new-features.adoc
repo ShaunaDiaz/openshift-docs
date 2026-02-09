@@ -9,11 +9,11 @@
 [role="_abstract"]
 You can use the new features and enhancements that are available with {product-title} {version}.
 
-//[id="rhcl-relnotes-coredns_{context}"]
-//== CoreDNS integration for on-premise DNS is Generally Available
+[id="rhcl-relnotes-coredns_{context}"]
+== CoreDNS integration for on-premise DNS is Generally Available
 
-//{prodname} {version} provides integration with https://coredns.io/[CoreDNS] for on-premise DNS as a Generally Available feature. For more information, see the https://github.com/Kuadrant/kuadrant-operator/blob/main/doc/user-guides/dns/core-dns.md[Kuadrant documentation on using CoreDNS].
-//TODO must link to prod docs
+/{prodname} {version} provides integration with https://coredns.io/[CoreDNS] for on-premise DNS as a Generally Available feature. For more information, see xref:../deployment/deployment.adpc#proc-configure-onprem-dns-coredns_rhcl-config-deploy-gateway-policies[Configure on-premise DNS with CoreDNS].
+
 
 
 //TODO is this just 1.2? anything for 1.3?

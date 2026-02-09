@@ -9,7 +9,10 @@
 [role="_abstract"]
 Your DNS provider supplies credentials to access the DNS zones that {prodname} can use to set up your DNS configuration. You must ensure that these credentials have access to only the DNS zones that you want {prodname} to manage with your DNSPolicy.
 
-NOTE: You must apply the following `Secret` resource to each cluster. If you are adding an additional cluster, add it to the new cluster.
+[NOTE]
+====
+You must apply the following `Secret` resource to each cluster. If you are adding an additional cluster, add it to the new cluster.
+====
 
 .Prerequisites
 

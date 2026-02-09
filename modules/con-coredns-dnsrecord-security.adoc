@@ -1,0 +1,48 @@
+// Module included in the following assemblies:
+//
+// *deployment/deployment.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="con-coredns-dnsrecord-security_{context}"]
+= CoreDNS DNS records security considerations
+
+[role="_abstract"]
+Zone configuration `DNSRecord` custom resources (CRs) have full control over a Zone's name server (NS) records. Anyone who can create or change a `DNSRecord` that targets the root of the main domain name with NS records can decide where the all Zone traffic goes. As an infrastructure engineer or business lead, you can implement several security best-practices when using CoreDNS with {prodname}.
+
+For example, use the following access-control best practices:
+
+* Separate namespaces: Keep zone configuration `DNSRecord` CRs in a dedicated, restricted namespace
+* Use least-privilege policies:
+** Strict RBAC: Only grant `DNSRecord` creation permissions to trusted infrastructure engineers and cluster administrators.
+** Namespace isolation: Grant application developers `DNSRecord` permissions only in their own namespaces.
+* Audit logging: Enable Kubernetes audit logging to track all `DNSRecord` changes. CoreDNS audit logging is enabled by default for network troubleshooting and traffic pattern observability.
+* Version control: Use a DNS-as-code approach. Store zone configuration `DNSRecord` CRs in Git and use standardized review processes.
+
+You can use the following RBAC configuration example to get you started with defining access:
+
+[source,yaml]
+----
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: dns-zone-config-admin
+  namespace: kuadrant-coredns
+rules:
+- apiGroups: ["kuadrant.io"]
+  resources: ["dnsrecords"]
+  verbs: ["create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dns-zone-config-admin-binding
+  namespace: kuadrant-coredns
+subjects:
+- kind: User
+  name: dns-admin@example.com  # Only trusted administrators
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: dns-zone-config-admin
+  apiGroup: rbac.authorization.k8s.io
+----

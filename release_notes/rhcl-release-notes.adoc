@@ -13,10 +13,10 @@ include::modules/ref-relnotes-intro.adoc[leveloffset=+1]
 
 include::modules/ref-relnotes-new-features.adoc[leveloffset=+1]
 
-include::modules/ref-relnotes-tech-preview.adoc[leveloffset=+1]
+//include::modules/ref-relnotes-tech-preview.adoc[leveloffset=+1]
 
-include::modules/ref-relnotes-dev-preview.adoc[leveloffset=+1]
+//include::modules/ref-relnotes-dev-preview.adoc[leveloffset=+1]
 
 include::modules/ref-relnotes-bug-fixes.adoc[leveloffset=+1]
 
-include::modules/ref-relnotes-known-issues.adoc[leveloffset=+1]
+//include::modules/ref-relnotes-known-issues.adoc[leveloffset=+1]
