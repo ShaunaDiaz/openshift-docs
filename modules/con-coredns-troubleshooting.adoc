@@ -1,0 +1,29 @@
+// Module included in the following assemblies:
+//
+// *deployment/deployment.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="proc-use-coredns-troubleshooting_{context}"]
+= Troubleshooting CoreDNS with the `kuadrant` plugin
+
+[role="_abstract"]
+You can troubleshoot your CoreDNS deployment by ensuring that you restarted CoreDNS and by checking the logs. Use the following commands as needed to investigate your specific errors:
+
+Restart CoreDNS by using the following command:
+[source,terminal]
+----
+$ oc -n kuadrant-coredns rollout restart deployment kuadrant-coredns
+----
+
+You can view CoreDNS logs by running the following command:
+[source, bash]
+----
+$ kubectl logs -f deployments/kuadrant-coredns -n kuadrant-coredns
+----
+
+You can get recent logs by running the following command:
+[source, bash]
+----
+$ kubectl logs --tail=100 deployments/kuadrant-coredns -n kuadrant-coredns
+----
+

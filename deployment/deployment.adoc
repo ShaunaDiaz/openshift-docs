@@ -23,8 +23,6 @@ include::modules/proc-create-gateway.adoc[leveloffset=+1]
 
 include::modules/proc-platform-eng-flow.adoc[leveloffset=+1]
 
-include::modules/proc-configure-onprem-dns.adoc[leveloffset=+1]
-
 include::modules/con-about-token-based-rate-limiting.adoc[leveloffset=+1]
 
 include::modules/proc-configure-token-based-rate-limiting.adoc[leveloffset=+1]
@@ -33,10 +31,8 @@ include::modules/proc-app-dev-flow.adoc[leveloffset=+1]
 
 include::modules/proc-app-dev-override-rlp.adoc[leveloffset=+1]
 
-[id="addtional-resources_rhcl-config-deploy-gateway-policies"]
+[id="additional-resources_rhcl-config-deploy-gateway-policies"]
 [role="_additional-resources"]
 == Additional resources
 
-* For more details on {prodname} user persona roles and workflows, see {LinkRHCLIntro}[{NameRHCLIntro}].
-
-* For details on how all {prodname} user roles can observe and monitor Gateways when the OpenShift observability stack and user workload monitoring are deployed, see {LinkRHCLObserve}[{NameRHCLObserve}].
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/ingress_and_load_balancing/load-balancing-with-metallb[Load balancing with MetalLB]

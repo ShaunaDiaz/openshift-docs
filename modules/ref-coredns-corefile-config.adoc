@@ -1,0 +1,56 @@
+// Module included in the following assemblies:
+//
+// *deployment/deployment.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="ref-coredns-corefile-config_{context}"]
+= CoreDNS Corefile configuration reference
+
+[role="_abstract"]
+A Corefile is organized into server blocks that define how DNS queries are handled based on the port and zone. Plugin execution order is determined at build time, not by Corefile order, so you can list plugins in any order. When making configurations by using the DNS Operator, you can check the ConfigMap for the resulting server block.
+
+.Example Corefile
+[source,text]
+----
+k.example.com {
+    debug
+    errors
+    log
+    health {
+        lameduck 5s
+    }
+    ready
+    geoip GeoLite2-City-demo.mmdb {
+        edns-subnet
+    }
+    metadata
+    transfer {
+        to *
+    }
+    kuadrant
+    prometheus 0.0.0.0:9153
+}
+----
+
+Zone Coordination::
+Each zone in the Corefile must match a zone listed in your CoreDNS provider secret's `ZONES` field.
+
+Required Plugins::
+The `geoip` and `metadata` plugins are included by default with the {prodname} implementation of the CoreDNS Corefile.
+
+
+Corefile updates::
+
+After you update your Corefile, you must always restart your pods rollout for the CoreDNS deployment. You can use the following command:
++
+[source,terminal]
+----
+$ kubectl rollout restart deployment/coredns -n kuadrant-system
+----
++
+You can check the status of the rollout by running the following command:
++
+[source,terminal]
+----
+$ kubectl rollout status deployment/coredns -n kuadrant-system --watch
+----

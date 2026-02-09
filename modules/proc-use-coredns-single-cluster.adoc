@@ -1,0 +1,199 @@
+// Module included in the following assemblies:
+//
+// *deployment/deployment.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-use-coredns-single-cluster_{context}"]
+= Using CoreDNS with a single cluster
+
+[role="_abstract"]
+You can use CoreDNS as a DNS provider for {prodname} in a single-cluster, on-premise environment. This integration allows {prodname} to manage DNS entries within your internal network infrastructure.
+
+[IMPORTANT]
+====
+In a single-cluster setup, ensure that the `endpoints` IP address value you use is reachable from the `kuadrant-system` namespace. The default IP address, `10.96.0.10`, is the internal cluster-wide DNS address.
+====
+
+.Prerequisites
+
+* {prodname} is installed on the {ocp} cluster.
+* The `kubectl` or {oc-firs} is installed.
+* You have administrator privileges on the {ocp} cluster.
+* You are logged in to the cluster you want to configure.
+* Your {ocp} clusters have support for the `loadbalanced` service type that allows UDP and TCP traffic on port 53, such as MetalLB.
+* You have access to configure your authoritative on-premise DNS server.
+* Podman is installed.
+
+.Procedure
+
+. Set up cluster. Set the following environment variables for your cluster context:
++
+[source,bash]
+----
+$ export CTX_PRIMARY=$(kubectl config current-context) \
+  export KUBECONFIG=~/.kube/config \
+  export PRIMARY_CLUSTER_NAME=local-cluster \
+  export ONPREM_DOMAIN=<example.com> \
+  export KUADRANT_SUBDOMAIN=""
+----
++
+where::
+For the `ONPREM_DOMAIN` variable value, use your actual root domain.
+For the `KUADRANT_SUBDOMAIN` variable value, valid values are empty or `kuadrant`.
+
+. Extract the CoreDNS manifests from `dns-operator` bundle by running the following commands:
++
+[source,terminal]
+----
+$ podman create --name bundle registry.redhat.io/rhcl-1/dns-operator-bundle:rhcl-1.3.0
+----
++
+[source,terminal]
+----
+$ podman cp bundle:/coredns/manifests.yaml ./coredns-manifests.yaml
+----
++
+[source,terminal]
+----
+$ podman rm bundle
+----
+
+. Apply the manifests to the cluster by running the following command:
++
+[source,terminal]
+----
+$ kubectl apply -f ./coredns-manifests.yaml
+----
+
+. Create a `ConfigMap` to define the authoritative zone for CoreDNS. This minimal configuration enables the `kuadrant` plugin and GeoIP features.
++
+[source,yaml]
+----
+cat | kubectl --context $CTX_PRIMARY apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-kuadrant-config
+  namespace: kuadrant-coredns
+data:
+  Corefile: |
+    example.local:53 {
+        errors
+        health {
+            lameduck 5s
+    }
+        ready
+        log
+    geoip <GeoIP-database-name>.mmdb {
+            edns-subnet
+    }
+    .:53 {
+        kubernetes
+        forward . 8.8.8.8 8.8.4.4
+        log
+        errors
+        cache 30
+    }
+        metadata
+        kuadrant
+    }
+ example.db: |
+    example.local.      IN SOA sns.dns.icann.org. noc.dns.icann.org. 2017042745 7200 3600 1209600 3600
+    example.local.      IN A     10.0.0.10
+    web.example.local.  IN A     10.0.0.11
+    api.example.local.  IN A     10.0.0.12
+----
++
+Mount your licensed MaxMind GeoIP database into the CoreDNS pod and update the filename in the `Corefile.geoip` parameter.
+
+. Update the CoreDNS deployment to use the new configuration by running the following command:
++
+[source,bash]
+----
+$ kubectl --context $CTX_PRIMARY -n kuadrant-system patch deployment _<coredns-deployment-name>_ --patch '{"spec":{"template":{"spec":{"volumes":[{"name":"config-volume","configMap":{"name":"coredns-kuadrant-config","items":[{"key":"Corefile","path":"Corefile"}]}}]}}}}'
+----
++
+Replace _<coredns-deployment-name>_ with the name of your coreDNS service.
+
+. Set a watch-and-wait command for the deployment rollout to complete:
++
+[source,bash]
+----
+$ kubectl --context $CTX_PRIMARY -n kuadrant-system rollout status deployment/<coredns-deployment-name>
+----
++
+Replace _<coredns-deployment-name>_ with the name of your coreDNS service.
++
+.Example output
+[source,text]
+----
+<coredns-deployment-name> successfully rolled out
+----
+
+. Create the Kubernetes `Secret` that {prodname} uses to interact with CoreDNS. This secret specifies the zones this provider instance is authoritative for.
++
+[source,bash]
+----
+$ kubectl --context $CTX_PRIMARY -n kuadrant-system create secret generic coredns-credentials \
+  --from-literal=params='{"ZONES":["'"$NAMESERVERS"'.'"$ONPREM_DOMAIN"'"]}' \
+  --from-literal=endpoints='["10.96.0.10:53"]'
+----
+
+. Restart CoreDNS by running the following command:
++
+[source,terminal]
+----
+$ oc -n kuadrant-coredns rollout restart deployment kuadrant-coredns
+----
+
+.Verification
+
+* Check the logs of the controller pod to ensure that the Secret is visible to the pod by running the following command:
++
+[source,terminal]
+----
+$ kubectl --context $CTX_PRIMARY -n kuadrant-system logs deployment/kuadrant-operator
+----
++
+Expect to see `Registered DNS provider: coredns`.
+
+.Troubleshooting
+
+* If you are having undetermined trouble, view the logs for all CoreDNS pods by running the following command:
++
+[source,terminal]
+----
+$ oc logs -n openshift-dns -l dns.operator.openshift.io/daemonset-dns=default -c dns
+----
+
+* If the `DNSRecord` is not appearing in the zone, verify that the record has the zone label by running the following command:
++
+[source,terminal]
+----
+$ kubectl get dnsrecords.kuadrant.io -n dnstest -o jsonpath='{.items[*].metadata.labels}' | grep kuadrant.io/coredns-zone-name
+----
++
+The output should include the zone name, for example `kuadrant.io/coredns-zone-name: k.example.com`.
+
+** If the output does not show the zone name, check that the DNS Operator is running by using the following command:
++
+[source,terminal]
+----
+$ kubectl get pods -n dns-operator-system
+----
+
+** You can also check the DNS Operator logs by running the following command:
++
+[source,terminal]
+----
+$ kubectl logs -n dns-operator-system deployment/dns-operator-controller-manager
+----
+
+* A couple of common issues can be missing RBAC and GeoIP database.
+
+** RBAC permissions missing. Check your `ClusterRole` and `ClusterRoleBinding` configurations.
+** GeoIP database file not found. Ensure that your database is accessible.
+
+.Next steps
+
+* Create `dnsPolicy` custom resources in your {ocp} pods, referencing the `coredns-credentials` secret as the provider. {prodname} manages DNS records within the delegated `${KUADRANT_SUBDOMAIN}.${ONPREM_DOMAIN}` zone through CoreDNS.

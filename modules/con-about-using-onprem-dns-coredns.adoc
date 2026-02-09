@@ -1,0 +1,27 @@
+// Module included in the following assemblies:
+//
+// *deployment/deployment.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="con-about-using-onprem-dns-coredns_{context}"]
+= About using on-premise DNS with CoreDNS
+
+[role="_abstract"]
+You can self-manage your on-premise DNS by integrating CoreDNS with your DNS infrastructure through a access control and zone delegation. {prodname} combines the DNS Operator with CoreDNS to simplify your management and security for on-premise DNS servers. You can use CoreDNS in both single-cluster and multi-cluster scenarios.
+
+CoreDNS is best used in environments that change often, where using a DNS-as-code approach make sense. The following situations are example use cases for integrating with CoreDNS:
+
+* You need to avoid dependency on external cloud DNS services.
+* You have regulatory or compliance requirements mandating self-hosted infrastructure.
+* You need to keep full control over DNS records.
+* You want to delegate specific DNS zones from existing DNS servers to Kubernetes-managed CoreDNS.
+* You require consistent DNS management across hybrid or multicloud environments.
+* You need to reduce DNS operational costs by eliminating per-query charges.
+* You do not want to directly manage DNS records on the on-premise DNS server.
+* You need to keep authoritative control on edge DNS servers.
+
+For example:
+
+* Configure your authoritative on-premise DNS server to delegate a specific subdomain, for example, `deployment.example.local`, to CoreDNS instances managed by {prodname}.
+* Any pod-level `dnsPolicy` CR can then interact with the CoreDNS provider within the {ocp} cluster. You can specify the DNS provider that handles the records for the targeted gateways in the `delegate` field of the DNS policy.
+* The CoreDNS instance becomes authoritative for the delegated subdomain and manages the necessary DNS records for gateways within that subdomain.

@@ -1,0 +1,108 @@
+// Module included in the following assemblies:
+//
+// *deployment/deployment.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="rhcl-enabled-plugins-coredns_{context}"]
+= Default enabled plugins in CoreDNS
+
+[role="_abstract"]
+The following plugins are enabled by default in the {prodname} CoreDNS plugin. You must ensure CoreDNS compatibility and enable any other plugins that you want to add.
+
+[cols="25h,~"]
+|===
+|Plugin |Function
+
+|acl
+|Enforces access control policies on source IP addresses and prevents unauthorized access to DNS servers.
+
+|cache
+|Enables a front-end cache.
+
+|cancel
+|Cancels a request's context after 5001 milliseconds.
+
+|debug
+|Disables the automatic recovery when a crash happens so that a stack trace is generated.
+
+|errors
+|Enables error logging.
+
+|file
+|Enables serving zone data from an RFC 1035-style `master` file.
+
+|forward
+|Enables IP forwarding. Facilitates proxying DNS messages to upstream resolvers.
+
+|geoip
+|Lookup `.mmdb` (MaxMind db file format) databases using the client IP, then adds associated `geoip` data to the context request.
+
+|header
+|Modifies the header for queries and responses.
+
+|health
+|Enables a health check endpoint.
+
+|hosts
+|Enables serving zone data from an `/etc/hosts style` file.
+
+|kuadrant
+|Enables serving zone data from kuadrant `DNSRecord` custom resources. Uses logic from the CoreDNS _file_ plugin to create a functioning DNS server.
+
+|local
+|Responds with a basic reply to a local names in the following zones, `localhost`, `0.in-addr.arpa`, `127.in-addr.arpa`, `255.in-addr.arpa` and any query asking for `localhost.<domain>`.
+
+|log
+|Enables query logging to standard output. Logs are structured for aggregation by cluster logging solutions.
+
+|loop
+|Detects simple forwarding loops and halts the server.
+
+|metadata
+|Enables a metadata collector.
+
+|minimal
+|Minimizes size of the DNS response message whenever possible.
+
+|nsid
+|Adds an identifier of this server to each reply.
+
+|prometheus
+|Enables Prometheus metrics. The default listens on `localhost:9153`. The metrics path is to `/metrics`.
+
+|ready
+|Enables a readiness check HTTP endpoint.
+
+|reload
+|Allows automatic reload of a changed Corefile.
+
+|rewrite
+|Rewrites queries for automatic port forwarding.
+
+|root
+|Simply specifies the root of where to find files.
+
+|secondary
+|Enables serving a zone retrieved from a primary server.
+
+|timeouts
+|Means that you can configure the server read, write and idle timeouts for the TCP, TLS, DoH and DoQ (idle only) servers.
+
+|tls
+|Means that you can configure the server certificates for the TLS, gRPC, and DoH servers.
+
+|transfer
+|Perform (outgoing) zone transfers for other plugins.
+
+|view
+|Defines the conditions that must be met for a DNS request to be routed to the server block.
+
+|whoami
+|Returns your resolver's local IP address, port and transport.
+
+|===
++
+[TIP]
+====
+When using CoreDNS, if you do not need to keep all logs, you can set up the `logs` directive to only report errors and use the `prometheus` plugin to gather primary metrics instead. Prometheus metrics give you trends, for example, how many queries failed, without storing every single piece of traffic.
+====

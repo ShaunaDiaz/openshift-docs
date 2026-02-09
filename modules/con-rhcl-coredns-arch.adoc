@@ -1,0 +1,60 @@
+// Module included in the following assemblies:
+//
+// *deployment/deployment.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="rhcl-coredns-architecture_{context}"]
+= CoreDNS integration architecture
+
+[role="_abstract"]
+CoreDNS is a DNS server that consists of default plugins that do several tasks, for example:
+
+* Automatically detects when you add new services to your cluster and adds them to directories.
+* Caches recent addresses to avoid the latency of repeated lookups.
+* Can run health checks and skip over services that are down.
+* Provides dynamic redirects by rewriting queries as they come in.
+
+You can add plugins for observability and other services that you required by updating the CoreDNS with the DNS Operator.
+
+With the DNS Operator, DNS is the first layer of traffic management. You can deploy the DNS Operator to multiple clusters and coordinate them all on a given zone. This means that you can use a shared domain name across clusters to balance traffic based on your requirements.
+
+[id="rhcl-coredns-technical-workflow_{context}"]
+== Technical workflow
+
+To give you integration with CoreDNS, {prodname} extends the DNS Operator with the `kuadrant` CoreDNS plugin that sources records from the `kuadrant.io/v1alpha1/DNSRecord` custom resource (CR) and applies location-based and weighted response capabilities.
+
+You can create DNS records that point to the CoreDNS secret in one of the three following ways:
+
+* Create it manually.
+* Use a non-delegating DNS policy at a gateway with routes attached. The `kuadrant-operator` CR creates `DNSRecord` CRs with the secret.
+* Use a delegating DNS policy at a gateway. The delegating policy results in the creation of a delegating `DNSRecord` CR without a secret reference. All delegating DNS Records are combined into a single authoritative DNS Record. The authoritative `DNSRecord` uses a default provider secret.
+
+The DNS Operator reconciles authoritative records that have the CoreDNS secret referenced and applies labels only to those CRs. CoreDNS watches those records and matches the labels with zones configured in the Corefile. If there is a match, the authoritative `DNSRecord` CR is used to serve a DNS response.
+
+There are no changes to the `dnsPolicy` API and no required changes to the policy controllers. This integration is isolated to the DNS Operator and the CoreDNS plugin.
+
+The CoreDNS integration supports both single-cluster and multi-cluster deployments.
+
+Single cluster::
+Organizations that want to self-host their DNS infrastructure without the complexity of multi-cluster coordination can use single-cluster CoreDNS integration. Using delegation is not required.
++
+A single cluster runs both DNS Operator and CoreDNS with the plugin. CoreDNS only serves `DNSRecord` CRs that point to a CoreDNS provider secret. The CoreDNS plugin watches for DNS records labeled with the appropriate zone name and serves them directly. Any authoritative `DNSRecord` CR has endpoints from the single cluster.
+
+Multi-cluster delegation::
+Multiple clusters can participate in serving a single DNS zone through Kubernetes role-based delegation that enables geographic distribution of DNS services and high availability. This implementation enables workloads across multiple clusters to contribute DNS endpoints to a unified zone, with primary clusters maintaining the authoritative view. The role of a cluster is determined by the DNS Operator.
++
+Multi-cluster delegation uses `kubeconfig`-based interconnection secrets that grant read access to `DNSRecord` resources across clusters. This approach reuses Kubernetes role-based access (RBAC).
+
+* Primary clusters: Run both the DNS Operator and CoreDNS and serve the DNS records that are local. The DNS Operator running on primary clusters that delegate reconciles `DNSRecord` CRs by reading and merging them. Primary clusters then serve these authoritative `DNSRecord` CRs. Each CoreDNS instance serves the relevant authoritative `DNSRecord` for the configured zone. Each primary cluster can independently serve the complete record set.
+
+* Secondary clusters: Only run the DNS Operator. These clusters create delegating `DNSRecord` CRs but do not interact with DNS providers directly. If the secret and subdomain are properly configured, these DNS records are automatically reconciled in the primary cluster.
+
+Zone labeling::
+CoreDNS integration uses a label-based filtering mechanism. The DNS Operator applies a zone-specific label to `DNSRecord` CRs when the CRs are reconciled. The CoreDNS plugin only watches for `DNSRecord` CRs with labels that match configured zones. This method reduces resource use and provides clear zone boundaries.
+
+GEO and weighted routing::
+GEO and weighted routing use the same algorithmic approach as cloud providers. By using CoreDNS, you can have parity with cloud DNS provider capabilities and maintain full control over your DNS infrastructure.
+
+* GEO routing: The CoreDNS `geoip` plugin uses geographical-database integration to return region-specific endpoints.
+* Weighted routing: Applies probabilistic selection based on endpoint weights.
+* Combined routing: First applies GEO filtering, then weighted selection within the matched region.
