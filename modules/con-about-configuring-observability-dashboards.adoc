@@ -1,0 +1,60 @@
+// Module included in the following assemblies:
+//
+// *observability/observability.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="rhcl-about-configuring-observability-dashboards_{context}"]
+= About configuring observability dashboards and alerts
+
+[role="_abstract"]
+{prodname} gives you starting points for monitoring your {prodname} deployment with ready-to-use example dashboards and alerts. You can customize these dashboards and alerts to fit your environment.
+
+Dasboards are organized with different metrics for different use cases.
+
+[id="rhcl-observe-pe-grafana-dashboard_{context}"]
+== Platform engineer Grafana dashboard
+
+The platform engineer dashboard displays the following details:
+
+* Policy compliance and governance.
+* Resource consumption.
+* Error rates.
+* Request latency and throughput.
+* Multi-window, multi-burn alert templates for API error rates and latency.
+* Multicluster split.
+
+[id="rhcl-observe-appdev-grafana-dashboard_{context}"]
+== Application developer Grafana dashboard
+
+The application developer dashboard is less focused on policies than the platform engineer dashboard and is more focused on APIs and applications. For example:
+
+* Request latency and throughput per API.
+* Total requests and error rates by API path.
+
+[id="rhcl-observe-business-user-grafana-dashboard_{context}"]
+== Business user Grafana dashboard
+
+The business user dashboard includes the following details:
+
+* Requests per second per API.
+* Increase or decrease in rates of API usage over specified times.
+
+[id="rhcl-import-grafana-dashboards-import_{context}"]
+== Grafana dashboards available to import
+
+The {prodname} example dashboards are uploaded to the https://grafana.com/grafana/dashboards/[Grafana dashboards website]. You can import the following dashboards into your Grafana deployment on {ocp}:
+
+.{prodname} example dashboards in Grafana
+[%header,cols=2*]
+|===
+|Name
+|Dashboard ID
+|https://grafana.com/grafana/dashboards/21538-app-developer-dashboard/[App Developer dashboard]
+|21538
+|https://grafana.com/grafana/dashboards/20982-platform-engineer-dashboard/[Platform Engineer dashboard]
+|20982
+|https://grafana.com/grafana/dashboards/20981-business-user-dashboard/[Business User dashboard]
+|20981
+|https://grafana.com/grafana/dashboards/22695-dns-operator-overview/[DNS Operator dashboard]
+|22695
+|===

@@ -1,0 +1,70 @@
+// Module included in the following assemblies:
+//
+// *observability/observability.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="ref-obs-filter-access-logs_{context}"]
+= Filtering access logs
+
+[role="_abstract"]
+You can filter your access logs to reduce extra messages and focus on the issues and errors that you need to see.
+
+.Prerequisites
+
+* You installed {prodname}.
+* You have a running {ocp} cluster.
+* You have administrator access to the {ocp} cluster.
+* You enabled access logs.
+
+.Procedure
+
+. Configure your `Telemetry` custom resource (CR) to only log errors by using the following example:
++
+[source,yaml]
+----
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: access-logs-errors-only
+  namespace: istio-system
+spec:
+  accessLogging:
+    - providers:
+      - name: envoy
+      filter:
+        expression: "response.code >= 400"
+----
+
+. Configure your `Telemetry` custom resource (CR) to only log specific routes by using the following example:
++
+[source,yaml]
+----
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: access-logs-api-only
+  namespace: istio-system
+spec:
+  accessLogging:
+    - providers:
+      - name: envoy
+      filter:
+        expression: 'request.url_path.startsWith("/api/")'
+----
+
+. Configure your `Telemetry` custom resource (CR) to exclude health checks by using the following example:
++
+[source,yaml]
+----
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: access-logs-no-healthz
+  namespace: istio-system
+spec:
+  accessLogging:
+    - providers:
+      - name: envoy
+      filter:
+        expression: '!request.url_path.startsWith("/healthz")'
+----

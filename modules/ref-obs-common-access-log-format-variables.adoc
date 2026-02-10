@@ -1,0 +1,62 @@
+// Module included in the following assemblies:
+//
+// *observability/observability.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="ref-obs-common-access-log-format-variables_{context}"]
+= Common access log format variables
+
+[role="_abstract"]
+You can quickly set up Envoy logs by using the most common format variables so that you get exactly the data you want.
+
+.Example configuration snippet
+[source,yaml]
+----
+envoyFileAccessLog:
+  path: /dev/stdout
+  logFormat:
+    text: "[%START_TIME%] %REQ(X-REQUEST-ID)% %RESP(HEADER)% %RESPONSE_FLAGS%\n"
+----
+
+.Common Envoy access log format variables
+[cols="25h,~"]
+|===
+|Variable
+|Description
+
+|`%START_TIME%`
+|Request start time
+
+|`%REQ(HEADER)%`
+|Request header value, such as `%REQ(X-REQUEST-ID)%`
+
+|`%RESP(HEADER)%`
+|Response header value
+
+|`%PROTOCOL%`
+|Protocol, such as HTTP/1.1, HTTP/2
+
+|`%RESPONSE_CODE%`
+|HTTP response code
+
+|`%RESPONSE_FLAGS%`
+|Response flags indicating issues, such as UH, UF
+
+|`%BYTES_RECEIVED%`
+|Bytes received from client
+
+|`%BYTES_SENT%`
+|Bytes sent to client
+
+|`%DURATION%`
+|Total request duration in milliseconds
+
+|`%UPSTREAM_HOST%`
+|Upstream host address
+
+|`%UPSTREAM_CLUSTER%`
+|Upstream cluster name
+
+|`%ROUTE_NAME%`
+|Route name that matched
+|===

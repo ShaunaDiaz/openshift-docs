@@ -1,0 +1,85 @@
+// Module included in the following assemblies:
+//
+// *observability/observability.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="configure-obs-data-plane-tracing_{context}"]
+= Configuring data plane tracing in {prodname}
+
+[role="_abstract"]
+You can enable data plane tracing in {service-mesh} and the {prodname} components of Authorino, Limitador, and WASM by configuring tracing centrally with the `kuadrant` CR. The `kuadrant` CR automatically propagates the configuration to all of the components, directing traces to a central collector for improved observability and troubleshooting.
+
+After you apply the configured `kuadrant` CR, the tracing configuration applies to the following {prodname} components:
+
+* Authorino authentication service. Automatically redeployed with tracing enabled.
+* Limitador rate-limiting service. Automatically redeployed with tracing enabled.
+* WASM modules: Envoy WebAssembly filters that provide gateway-level tracing.
+
+You must perform these steps on each {ocp} cluster that you want to use {prodname} on.
+
+[IMPORTANT]
+====
+If tracing is already configured with Authorino or Limitador CRs, those settings take precedence over a `kuadrant` CR configuration. Remove any existing individually configured tracing sections from your Authorino or Limitador CRs to use the `kuadrant` CR.
+====
+
+.Prerequisites
+
+* You installed {prodname}.
+* You have administrator access to a running {ocp} cluster.
+* You configured Grafana dashboards.
+* You have {TempoName} installed and configured to support OpenTelemetry.
+
+.Procedure
+
+. Configure tracing in the `kuadrant` CR by providing the collector endpoint as shown in the following example:
++
+.Example `kuadrant` CR
+[source,yaml]
+----
+apiVersion: kuadrant.io/v1beta1
+kind: Kuadrant
+metadata:
+  name: kuadrant
+  namespace: kuadrant-system
+spec:
+  observability:
+    tracing:
+      defaultEndpoint: rpc://tempo.tempo.svc.cluster.local:4317
+      insecure: true
+----
++
+where:
++
+`defaultEndpoint`:: The URL of the tracing collector backend (OTLP endpoint). The following are supported protocols:
+** `rpc://` for gRPC OTLP (port 4317)
+** `http://` for HTTP OTLP (port 4318)
+`insecure`:: Set to `true` to skip TLS certificate verification in development environments. Set to `false` for production environments.
++
+[IMPORTANT]
+====
+Point to the collector, not the query service. The collector receives traces from your applications. The query service is only for viewing traces in the UI.
+====
+
+. Apply the configuration by running the following command:
++
+[source,terminal]
+----
+$ kubectl apply -f kuadrant.yaml
+----
++
+[IMPORTANT]
+====
+Trace IDs do not propagate to WASM modules in {service-mesh}. This means that requests passed to Limitador do not have the relevant parent trace ID. However, if the trace initiation point is outside {service-mesh}, the parent trace ID is available to Limitador and included in traces. This impacts correlating traces from Limitador with traces from Authorino, the gateway, and any other components in the request path.
+====
+
+.Verification
+
+* Verify that the CR applied successfully by listing the objects of that `Kind` by running the following command:
++
+[source,bash]
+----
+$ kubectl get kuadrant
+----
+
+//* Verify that {prodname} components redeployed with tracing configured by....
+//how do we verify?

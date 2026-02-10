@@ -1,0 +1,129 @@
+// Module included in the following assemblies:
+//
+// *observability/observability.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="ref-obs-configure-access-logs_{context}"]
+= Configuring access logs
+
+[role="_abstract"]
+You can configure Envoy access logs in {service-mesh} with Envoy so that you can to track a single request across multiple services and components by using a unique identifier.
+
+.Prerequisites
+
+* You installed {prodname}.
+* You have a running {ocp} cluster.
+* You have administrator access to the {ocp} cluster.
+
+.Procedure
+
+. Enable mesh-wide, default-format access logs by using the Istio Telemetry API. Use the following example as a starting point:
++
+.Example Telemetry API config
+[source,yaml]
+----
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: access-logs
+  namespace: istio-system  # Or gateway-system, depending on your setup
+spec:
+  accessLogging:
+    - providers:
+      - name: envoy
+----
+//Q: would we more likely have a gateway or istio namespace in production?
+
+. For better parsing and integration with log aggregation systems, enable JSON-formatted access logs. Only log errors as shown in the following example:
++
+.Example JSON config
+[source,json]
+----
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: access-logs-json
+  namespace: istio-system
+spec:
+  accessLogging:
+    - providers:
+      - name: envoy
+    filter:
+      expression: "response.code >= 400"
+----
+
+. To enable logging for a specific workload and add filtering, use the following example:
++
+.Example JSON workload config
+[source,json]
+----
+apiVersion: telemetry.istio.io/v1
+kind: Telemetry
+metadata:
+  name: selective-logging
+  namespace: my-app-ns
+spec:
+  selector:
+    matchLabels:
+      app: productpage
+  accessLogging:
+    - providers:
+        - name: access-logs-json
+      filter:
+        expression: "response.code >= 400"
+----
++
+[TIP]
+====
+The `expression` field uses Common Expression Language (CEL). You can use CEL-based filters to avoid excessive and meaningless logs.
+====
+
+. Check which `Istio` Operator is active in your cluster by running the following command:
++
+[source,bash]
+----
+$ kubectl get istio -A
+----
++
+The expected output is a list of your mesh deployments, such as `default`, `prod-mesh` and their current status. This step assumes you are using the Sail Operator.
+
+. Configure the Istio mesh with a custom access log provider to enable JSON encoding:
++
+[source,yaml]
+----
+apiVersion: sailoperator.io/v1
+kind: Istio
+metadata:
+  name: default
+spec:
+  namespace: istio-system
+  values:
+    meshConfig:
+      accessLogFile: /dev/stdout
+      accessLogEncoding: JSON
+      accessLogFormat: |
+        {
+          "start_time": "%START_TIME%",
+          "method": "%REQ(:METHOD)%",
+          "path": "%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%",
+          "protocol": "%PROTOCOL%",
+          "response_code": "%RESPONSE_CODE%",
+          "response_flags": "%RESPONSE_FLAGS%",
+          "bytes_received": "%BYTES_RECEIVED%",
+          "bytes_sent": "%BYTES_SENT%",
+          "duration": "%DURATION%",
+          "upstream_service_time": "%RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)%",
+          "x_forwarded_for": "%REQ(X-FORWARDED-FOR)%",
+          "user_agent": "%REQ(USER-AGENT)%",
+          "request_id": "%REQ(X-REQUEST-ID)%",
+          "authority": "%REQ(:AUTHORITY)%",
+          "upstream_host": "%UPSTREAM_HOST%",
+          "upstream_cluster": "%UPSTREAM_CLUSTER%",
+          "route_name": "%ROUTE_NAME%"
+        }
+----
+
+.Next steps
+
+* Filter your access logs to focus on the errors you need to see.
+* Enable request, log, and tracing correlation.

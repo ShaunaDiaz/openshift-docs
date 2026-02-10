@@ -1,0 +1,31 @@
+// Module included in the following assemblies:
+//
+// *observability/observability.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="rhcl-obs-about-tracing_{context}"]
+= Tracing in {prodname}
+
+[role="_abstract"]
+{prodname} supports tracing at both the control plane and data-plane levels. {prodname} exports control-plane traces to your OpenTelemetry Collector so that you can observe reconciliation loops and internal operations. This is useful for debugging controller behavior, understanding operator performance, and tracking policy lifecycle events.
+
+Data-plane tracing traces actual user requests through the gateway and policy enforcement components. You can see request flows through the `istio` Envoy filter, Authorino, Limitador, and WASM filters. Data-plane tracing is useful for debugging request-level issues and policy enforcement.
+
+To use tracing, you can configure both types of tracing in one procedure by configuring the `kuadrant` custom resource (CR). This configuration sends traces to the same collector, providing a complete view of your {prodname} system from policy reconciliation to request processing.
+
+[id="rhcl-correlating-traces_{context}"]
+== Correlating control plane and data plane traces
+
+Even though control plane and data plane traces are separate, you can correlate them. For example, create a `RateLimitPolicy` to understand how traces work together to show all events.
+
+* Create a RateLimitPolicy at `15:30:00`, then view the control plane trace to see the following events:
+** Policy reconciliation completed at `15:30:05`.
+** Limitador configuration updated.
+** WASM plugin deployed.
+
+* Next, send a test request at `15:30:10`, then view data plane trace to see the following events:
+** Request processed through WASM filter.
+** Rate limit check sent to Limitador.
+** Response returned.
+
+You can use a similar pattern of action for any events that you want to correlate manually. This type of correlation is useful in development environments.

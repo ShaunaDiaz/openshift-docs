@@ -1,0 +1,78 @@
+// Module included in the following assemblies:
+//
+// *observability/observability.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-obs-access-logs-correlation_{context}"]
+= Setting up access log and tracing correlation
+
+[role="_abstract"]
+You can use access logs and tracing together to correlate requests. When you correlate request IDs, you can search for an ID once and see the entire journey from the initial access through to an event that you are investigating.
+
+You can see the exact timing of a request as it entered and left each service. If you have configured user or organization-based IDs, you can also determine who a problem is effecting so that you can prioritize your response.
+
+The following configuration example tells WASM filters to log the `x-request-id` header value and enables request correlation across Envoy, Authorino, Limitador, and WASM logs.
+
+.Prerequisites
+
+* You installed {prodname}.
+* You have a running {ocp} cluster.
+* You have administrator access to the {ocp} cluster.
+* You enabled access logs and tracing.
+
+.Procedure
+
+. To enable request correlation across {prodname }components, configure the `httpHeaderIdentifier` in the Kuadrant CR:
++
+[source,yaml]
+----
+apiVersion: kuadrant.io/v1beta1
+kind: Kuadrant
+metadata:
+  name: kuadrant
+  namespace: kuadrant-system
+spec:
+  observability:
+    dataPlane:
+      httpHeaderIdentifier: x-request-id
+    tracing:
+      defaultEndpoint: rpc://tempo.tempo.svc.cluster.local:4317
+      insecure: true
+----
+
+. You can correlate logs across all components using the `x-request-id`, by using the following examples:
+
+.. View the following Envoy access log entry:
+[source,json]
+----
+{
+  "start_time": "2026-01-23T15:45:12.345Z",
+  "method": "GET",
+  "path": "/api/users",
+  "response_code": 200,
+  "request_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "route_name": "toystore-route"
+}
+----
+
+.. Correlate the following Authorino log entry with the Envoy access log:
+[source,text]
+----
+{"level":"info","ts":"2026-01-23T15:45:12.350Z","request_id":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","msg":"auth check succeeded","identity":"alice"}
+----
+
+.. Correlate the following Limitador log entry with the Envoy and Authorino logs:
++
+[source,text]
+----
+Request received: ... "x-request-id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890" ...
+----
+
+. When you combine the three logs, the story of this `request_id` is:
++
+* At `15:45:12`, a user named `alice` requested the users' API, `/api/users`. You can also see the `request_id` of `a1b2c3d4-e5f6-7890-abcd-ef1234567890`.
+* The request hit the `toystore-route` in Envoy.
+* Envoy paused the request and checked authentication with Authorino, see `level` and `info`.
+* Authorino verified Alice's identity: `auth check succeeded`, `identity`, `alice`.
+* Simultaneously, Limitador noted the request to ensure that Alice did not exceed her allowed limit.
+* Finally, Envoy allowed the traffic through, resulting in a `200` response code.

@@ -1,0 +1,61 @@
+
+// Module included in the following assemblies:
+//
+// *observability/observability.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="rhcl-enable-observability-monitor_{context}"]
+= Enabling observability monitoring in {prodname}
+
+[role="_abstract"]
+Enabling observability monitoring uses the metrics you configured to show you context, historical trends, and alerts. After you have configured your monitoring stack, use this step to expose metrics endpoints, deploy monitoring resources, and configure the Envoy gateway.
+
+When you enable observability monitoring, the following events occur:
+
+* {prodname} creates `ServiceMonitor` and `PodMonitor` custom resource definitions (CRDs) for its components in the namespace where {prodname} is.
+* A single set of monitors is created in each gateway namespace to scrape metrics from any gateways.
+* Monitors also scrape metrics from the corresponding gateway system namespace, generally the `istio-system` namespace.
+
+You can delete and re-create monitors as required. Monitors are only ever created or deleted, and not updated or reverted. The following procedure is optional. You can create your own `ServiceMonitor` or `PodMonitor` definitions, or configure `prometheus` metrics directly.
+
+[IMPORTANT]
+====
+To use {prodname} observability dashboards, you must enable observability on each {ocp} cluster that {prodname} runs on.
+====
+
+.Prerequisites
+
+* You installed {prodname}.
+* You have administrator access to your {ocp} cluster.
+* You configured observability metrics.
+//Q: too broad; what must I have done? created the Kuadrant CR, configured prometheus, etc? do I need admin access to the clusters I want to do this on? must the cluster be running or stopped? etc
+//Q: in the previous module, we said "You set up monitoring for {ocp} user-defined projects." isn't that what we are doing here?
+
+.Procedure
+
+. To enable default observability for {prodname} and any gateways, set `spec.observability.enable` parameter value to `true` in your `Kuadrant` custom resource (CR):
++
+.Example `Kuadrant` CR
+[source,bash]
+----
+apiVersion: kuadrant.io/v1beta1
+kind: Kuadrant
+metadata:
+  name: kuadrant-sample
+spec:
+  observability:
+    enable: true
+# ...
+----
++
+You can also set the `spec.observability.enable` to `false` and create your own `ServiceMonitor` or `PodMonitor` definitions, or configure Prometheus directly.
+
+.Verification
+
+. Check the created monitors by running the following command:
++
+[source,bash]
+----
+$ kubectl get servicemonitor,podmonitor -A -l kuadrant.io/observability=true
+----
+//Q: example output?

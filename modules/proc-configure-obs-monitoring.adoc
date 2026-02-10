@@ -3,27 +3,28 @@
 // *observability/observability.adoc
 
 :_mod-docs-content-type: PROCEDURE
-[id="configure-observability-metrics_{context}"]
-= Configuring observability metrics
+[id="configure-obs-monitoring_{context}"]
+= Configure your observability monitoring stack
 
 [role="_abstract"]
-The {prodname} example dashboards and alerts use metrics exported by {prodname}, Gateway API, and {ocp} components to provide insight into your  gateways, applications, and APIs. This section explains how to configure these metrics and set up these dashboards and alerts on your {ocp} cluster.
+You can prepare your monitoring stack to give you insight into your gateways, applications, and APIs by setting up dashboards and alerts on your {ocp} cluster.
 
-The example dashboards and alerts for observing {prodname} functionality use low-level CPU and network metrics from the user monitoring stack in {ocp} and resource state metrics from Gateway API and {prodname} resources. The user monitoring stack in {ocp} is based on the https://prometheus.io/[Prometheus] open source project.
+The example dashboards and alerts for observing {prodname} functionality use low-level CPU and network metrics from the user monitoring stack in {ocp} and resource-state metrics from Gateway API and {prodname} resources. The user monitoring stack in {ocp} is based on the https://prometheus.io/[Prometheus] open source project.
+//we should probably really be shipping downstream templates with RHCL
 
-[NOTE]
+[IMPORTANT]
 ====
-You must perform these steps on each {ocp} cluster that you want to use {prodname} on.
+You must perform this procedure on each {ocp} cluster that you want to use {prodname} on.
 ====
 
 .Prerequisites
 
 * You installed {prodname}.
-* You set up monitoring for {ocp} user-defined projects.
+* You set up metrics, such as `prometheus`.
 * You installed and configured Grafana on your {ocp} cluster.
-//Q:does the cluster need to be runnning?
-* You have cloned the https://github.com/Kuadrant/kuadrant-operator[Kuadrant Operator GitHub repository].
-//Q:still correct, or should we be using RHCL directly here?
+// The upstream site says last tested on OCP 4.17. Do we have a current test?
+//* You have cloned the https://github.com/Kuadrant/kuadrant-operator[Kuadrant Operator GitHub repository].
+//Q: not allowed in OCP prod docs; can we use the image as we did for the dashboard at https://catalog.redhat.com/en/software/containers/rhcl-1/rhcl-rhel9-operator/672a14ffb6ba8300a48c3799#get-this-image?
 
 .Procedure
 
@@ -42,6 +43,7 @@ The expected output is `enableUserWorkload: true`.
 ----
 $ kubectl apply -k https://github.com/Kuadrant/kuadrant-operator/config/install/configure/observability?ref=v1.2.0
 ----
+//Q: downstream version? we don't really permit this in production docs on the OCP side
 
 . From the root directory of your Kuadrant Operator repository, configure the {ocp} `thanos-query` instance as a data source in Grafana as follows:
 +
@@ -60,3 +62,4 @@ kubectl apply -k config/observability/openshift/grafana
 ----
 $ kubectl apply -k https://github.com/Kuadrant/kuadrant-operator/examples/dashboards?ref=v{operator-version}
 ----
+//Q: no github allowed

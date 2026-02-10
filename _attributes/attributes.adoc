@@ -1,11 +1,9 @@
 // Standard attributes shared by all documents
 :_mod-docs-content-type: ATTRIBUTES
 
-:toc:
-//:toc: macro
-//right nav disappears when macro attribute is set
-:toc-title:
 :experimental:
+:toc: macro
+:toc-title:
 :imagesdir: images
 
 :rh: Red Hat
@@ -33,6 +31,11 @@
 :cert-manager-version: 1.15
 :keycloak: Red Hat build of Keycloak
 :keycloak-version: 26.2
+
+:TempoName: Red{nbsp}Hat OpenShift Distributed Tracing Platform
+:TempoShortName: Distributed Tracing Platform
+:TempoOperator: Tempo Operator
+:TempoVersion: 2.3.1
 
 :download-url-rhcl-container-catalog: https://catalog.redhat.com/software/containers/search
 :download-url-rhcl-distribution: https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions

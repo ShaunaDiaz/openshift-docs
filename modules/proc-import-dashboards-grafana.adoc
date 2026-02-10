@@ -1,0 +1,33 @@
+// Module included in the following assemblies:
+//
+// *observability/observability.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="rhcl-import-dashboards-grafana_{context}"]
+= Importing dashboards in Grafana
+
+//is this documenting the grafana interface?
+[role="_abstract"]
+As an infrastructure engineer, you can manually select and important dashboards to Grafana to conduct rapid prototyping or emergency troubleshooting, test community dashboards, or perfect a dashboard that you intend to automate for another team.
+
+[IMPORTANT]
+====
+You must perform these steps on each {ocp} cluster that you want to use {prodname} on.
+====
+
+.Prerequisites
+
+* You configured your monitoring stack and other Observability resources as needed.
+* You installed {prodname}.
+* You have administrator access to a running {ocp} cluster.
+
+.Procedure
+
+. Click *Dashboards* > *New* > *Import*, and use one of the following options:
+
+* Upload a dashboard JSON file.
+* Enter a dashboard ID obtained from the https://grafana.com/grafana/dashboards/[Grafana dashboards website].
+* Enter JSON content directly.
++
+For more information, see the https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/import-dashboards/[Grafana documentation on how to import dashboards].
+//Q: what more info do we need?
