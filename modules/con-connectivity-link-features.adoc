@@ -2,20 +2,19 @@
 //
 // *introduction/introduction.adoc
 
-:_mod-docs-content-type: CONCEPT
+:_mod-docs-content-type: REFERENCE
 [id="connectivity-link-features_{context}"]
 = {prodname} features
 
 [role="_abstract"]
-{prodname} includes the following main features to secure, protect, connect, and observe your cloud applications and APIs:
+{prodname} includes multicloud connectivity, Kubernetes ingress policy management, and composable API management.
 
 Multicloud application connectivity::
 
 * DNS provider integrations:
 ** Amazon Route 53
 ** Google Cloud DNS
-** MicroSoft Azure DNS
-** CoreDNS (Developer Preview only)
+** Microsoft Azure DNS
 * High availability and disaster recovery
 * Global load balancing
 * Application portability
@@ -29,12 +28,12 @@ Kubernetes ingress policy management::
 * Global DNS policy
 * TLS policy
 * Auth policy
-* Rate limiting policy
+* Rate-limiting policy
 * Traffic weighting and distribution
-* User role-based design
+* User-role-based design
 * Multicluster administration
 * Observability dashboards and alerts
-* {ocp} web console dynamic plug-in
+* {ocp} web console dynamic plugin
 
 Composable API management::
 

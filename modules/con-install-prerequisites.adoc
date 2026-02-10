@@ -38,9 +38,12 @@ On {ocp} 4.18 or earlier, ensure the following:
 
 {cert-manager}::
 
-* {cert-manager} {cert-manager-version} is installed to manage the TLS certificates for your Gateways. See the https://docs.redhat.com/en/documentation/openshift_container_platform/{ocp-latest-version}/html/security_and_compliance/cert-manager-operator-for-red-hat-openshift[cert-manager Operator for Red Hat OpenShift documentation].
+* {cert-manager} {cert-manager-version} is installed to manage the TLS certificates for your gateways. See the https://docs.redhat.com/en/documentation/openshift_container_platform/{ocp-latest-version}/html/security_and_compliance/cert-manager-operator-for-red-hat-openshift[cert-manager Operator for Red Hat OpenShift documentation].
 +
-NOTE: Before using a {prodname} TLSPolicy, you must set up a certificate issuer for your cloud provider platform. See the https://docs.redhat.com/en/documentation/openshift_container_platform/{ocp-latest-version}/html-single/security_and_compliance/index#cert-manager-operator-issuer-acme[OpenShift documentation on configuring an ACME issuer].
+[NOTE]
+====
+Before using a {prodname} TLSPolicy, you must set up a certificate issuer for your cloud provider platform. See the https://docs.redhat.com/en/documentation/openshift_container_platform/{ocp-latest-version}/html-single/security_and_compliance/index#cert-manager-operator-issuer-acme[OpenShift documentation on configuring an ACME issuer].
+====
 
 [id="rhcl-optional-platforms-components_{context}"]
 == Optional platforms and components
@@ -48,21 +51,23 @@ NOTE: Before using a {prodname} TLSPolicy, you must set up a certificate issuer 
 DNSPolicy::
 
 For DNSPolicy, you have an account for one of the supported cloud DNS providers and have set up a hosted zone for {prodname}. For more details, see your cloud DNS provider documentation:
-* https://docs.aws.amazon.com/route53/?icmpid=docs_homepage_networking[Amazon Route 53 documentation].
-* https://cloud.google.com/dns/docs[Google Cloud DNS documentation].
-* https://learn.microsoft.com/en-us/azure/dns/[Microsoft Azure DNS documentation].
+
+* https://docs.aws.amazon.com/route53/?icmpid=docs_homepage_networking[Amazon Route 53 documentation]
+* https://cloud.google.com/dns/docs[Google Cloud DNS documentation]
+* https://learn.microsoft.com/en-us/azure/dns/[Microsoft Azure DNS documentation]
 
 RateLimitPolicy::
 
-For rate limiting policies, you have a shared accessible Redis-based datastore for rate limit counters in a multicluster environment. For details on how to install and configure a secure and highly available datastore, see the documentation for your Redis-compatible datastore:
+For rate-limiting policies, you have a shared accessible Redis-based datastore for rate-limit counters in a multicluster environment. For details on how to install and configure a secure and highly available datastore, see the documentation for your Redis-compatible datastore:
+
 * https://redis.io/docs/latest/[Redis documentation]
 * https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/WhatIs.html[AWS ElastiCache (Redis OSS) User Guide]
 * https://www.dragonflydb.io/docs[Dragonfly documentation]
 
 AuthPolicy::
 
-For AuthPolicy, you can install {keycloak} if this is required in your environment. For more details, see the https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak[{keycloak} documentation].
+For AuthPolicy, you can install {keycloak} if required in your environment. For more details, see the https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak[{keycloak} documentation].
 
 Observability::
 
-For Observability, {ocp} user workload monitoring must be configured to remote write to a central storage system such as Thanos. For more details, see the {LinkRHCLObserve}[{NameRHCLObserve}].
+For Observability, you must configure {ocp} user workload monitoring to remote-write to a central storage system such as Thanos. For more details, see the {LinkRHCLObserve}[{NameRHCLObserve}].
