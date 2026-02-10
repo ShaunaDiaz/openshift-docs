@@ -34,5 +34,5 @@ include::modules/con-connectivity-link-supported-configs.adoc[leveloffset=+1]
 
 * link:https://developers.redhat.com/products/red-hat-connectivity-link[Red Hat Connectivity Link]
 * link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html-single/ingress_and_load_balancing/index#ingress-gateway-api[Gateway API with OpenShift Container Platform networking]
-* link:https://docs.redhat.com/en/documentation/red_hat_openshift_service_mesh/[Red Hat OpenShift Service Mesh 3.2 documentation]
+* link:https://docs.redhat.com/en/documentation/red_hat_openshift_service_mesh/3.1[Red Hat OpenShift Service Mesh 3.1 documentation]
 
