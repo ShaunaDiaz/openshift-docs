@@ -4,27 +4,40 @@
 // *observability/observability.adoc
 
 :_mod-docs-content-type: PROCEDURE
-[id="enable-observability-monitor_{context}"]
+[id="rhcl-enable-observability-monitor_{context}"]
 = Enabling observability in {prodname}
 
 [role="_abstract"]
-Enabling observability for {prodname} components configures integration between {prodname} components, including any gateways, and the Prometheus Operator installed in your {ocp} cluster when user monitoring is enabled.
+Enabling observability configures integration between {prodname} components, such as gateways, and the Prometheus Operator installed in your {ocp} cluster.
+//no such thing as the prometheus operator in the openshift docs; it talks about OTEL when creating prometheus resources
 
-This feature works by creating a set of ServiceMonitors and PodMonitors, which instruct Prometheus to scrape metrics from {prodname} and Gateway components. These scraped metrics are then used in the {prodname} example dashboards and alerts.
+When you enable observability, the following events occur:
+
+* {prodname} creates `ServiceMonitor` and `PodMonitor` custom resource definitions (CRDs) for its components in the {prodname} Operator namespace.
+//we have an RHCL operator namespace?
+* A single set of monitors is also created in each gateway namespace to scrape metrics from any gateways.
+* Monitors also scrape metrics from the corresponding gateway system namespace, in this case, the `istio-system` namespace.
+//Q: what other case is there besides istio-system that RH supports?
+
+You can delete and re-create monitors as required. Monitors are only ever created or deleted, and not updated or reverted. The following procedure is optional. You can create your own `ServiceMonitor` or `PodMonitor` definitions, or configure Prometheus directly.
+//we need a downstream configuration; use OTEL?
 
 [IMPORTANT]
 ====
-You must perform these steps on each {ocp} cluster that you want to use {prodname} on.
+To use {prodname} observability dashboards, you must enable observability on each {ocp} cluster that {prodname} runs on.
 ====
 
 .Prerequisites
 
 * You configured observability metrics.
+//too broad; what must I have done? created the Kuadrant CR, configured prometheus, etc? do I need admin access to the clusters I want to do this on? must the cluster be running or stopped? etc
 
 .Procedure
 
-. To enable observability for Kuadrant and any gateways, set `enable: true` in the `observability` section in your `Kuadrant` Custom Resource:
+. To enable default observability for {prodname} and any gateways, set `spec.observability.enable` parameter value to `true` in your `Kuadrant` custom resource (CR):
+//downstream? ok, it isn't really default per se, but "vanilla"; is there a better term?
 +
+.Example `Kuadrant` CR
 [source,bash]
 ----
 apiVersion: kuadrant.io/v1beta1
@@ -34,9 +47,10 @@ metadata:
 spec:
   observability:
     enable: true
+# ...
 ----
 +
-When enabled, {prodname} creates ServiceMonitors and PodMonitors for its components in the {prodname} Operator namespace. A single set of monitors is also created in each Gateway namespace to scrape metrics from any gateways, and in the corresponding Gateway system namespace, in this case, the `istio-system` namespace.
+You can also set the `spec.observability.enable` to `false` and create your own `ServiceMonitor` or `PodMonitor` definitions, or configure Prometheus directly.
 
 .Verification
 
@@ -46,8 +60,4 @@ When enabled, {prodname} creates ServiceMonitors and PodMonitors for its compone
 ----
 $ kubectl get servicemonitor,podmonitor -A -l kuadrant.io/observability=true
 ----
-+
-[NOTE]
-====
-You can delete and re-create monitors as required. Monitors are only ever created or deleted, and not updated or reverted. If you decide the default monitors are not suitable, you can set `enable: false` and create your own `ServiceMonitor` or `PodMonitor` definitions, or configure Prometheus directly.
-====
+//example output?
