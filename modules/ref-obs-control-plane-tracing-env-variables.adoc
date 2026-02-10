@@ -1,0 +1,44 @@
+// Module included in the following assemblies:
+//
+// *observability/observability.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="obs-control-plane-tracing-environment-variables_{context}"]
+= Control-plane tracing environment variables
+
+[role="_abstract"]
+You can enable control tracing in {prodname} by setting OpenTelemetry environment variables in the deployment. The method for setting the variables depends on your deployment approach, for example, whether you used the Operator Lifecycle Manager (OLM) or YAML manifests.
+
+Control plane traces appear under the service name `kuadrant-operator` in the Grafana dashboard.
+
+.Available OpenTelemetry environment variables
+[%header,cols="1,4a,2"]
+|===
+|Variable |Description |Default
+
+|`OTEL_EXPORTER_OTLP_ENDPOINT`
+|OTLP collector endpoint URL, for example, `rpc://tempo.tempo.svc.cluster.local:4317`. The following supported endpoint URL schemes are:
+
+- `rpc://host:port` → gRPC OTLP
+- Insecure: `http://host:port` → HTTP OTLP
+- Secure: `https://host:port` → HTTP OTLP
+|Tracing disabled
+
+|`OTEL_EXPORTER_OTLP_TRACES_ENDPOINT`
+|Override endpoint specifically for traces
+|Uses `OTEL_EXPORTER_OTLP_ENDPOINT`
+
+|`OTEL_EXPORTER_OTLP_INSECURE`
+|Use insecure connection to collector; set to `false` when used in production with TLS
+|`true`
+
+|`OTEL_SERVICE_NAME`
+|Service name for traces
+|`kuadrant-operator`
+
+|`OTEL_SERVICE_VERSION`
+|Service version for telemetry data
+|Empty
+|===
+
+

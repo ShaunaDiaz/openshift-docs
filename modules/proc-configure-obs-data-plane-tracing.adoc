@@ -1,0 +1,201 @@
+// Module included in the following assemblies:
+//
+// *observability/observability.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="configure-obs-data-plane-tracing_{context}"]
+= Configuring data plane tracing in {prodname}
+
+[role="_abstract"]
+Enable data plane tracing in {service-mesh} with the `kuadrant` CR. You must perform these steps on each {ocp} cluster that you want to use {prodname} on.
+
+.Prerequisites
+
+* You installed {prodname}.
+* You have administrator access to a running {ocp} cluster.
+* You have {TempoName} installed and configured to support OpenTelemetry.
+
+.Procedure
+
+. Enable tracing in {service-mesh} by configuring your `Telemetry` custom resource (CR) as follows:
++
+.Example {service-mesh} Telemetry CR with tracing
+[source,bash]
+----
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: mesh-default
+  namespace: gateway-system
+spec:
+  tracing:
+  - providers:
+    - name: tempo-otlp
+    randomSamplingPercentage: 100
+# ...
+----
+
+. Apply the configuration by running the following command:
++
+[source,terminal]
+----
+$ kubectl apply -f mesh-default.yaml
+----
+
+. Configure a tracing extension provider for {service-mesh} in your `Istio` CR by adding a list value to the `spec.values.meshConfig.extensionProviders` parameter. Ensure that you also add the `otel` port and service information:
++
+.Example Istio CR with tracing extension provider
+[source,terminal]
+----
+apiVersion: operator.istio.io/v1alpha1
+kind: Istio
+metadata:
+  name: default
+spec:
+  namespace: gateway-system
+  values:
+    meshConfig:
+      defaultConfig:
+        tracing: {}
+      enableTracing: true
+      extensionProviders:
+      - name: tempo-otlp
+        opentelemetry:
+          port: 4317
+          service: tempo.tempo.svc.cluster.local
+# ...
+----
++
+[IMPORTANT]
+====
+If you are setting the controller manually, you must set the OpenTelemetry Collector protocol in the `Service` CR port `name` and `appProtocol` fields. For example, when using gRPC, the port name should begin with `grpc-` or the `appProtocol` should be `grpc`:
+[source,yaml]
+----
+kind: Service
+apiVersion: v1
+metadata:
+  name: otel-collector
+spec:
+  ports:
+    - name: otlp-grpc
+      port: 4317
+      targetPort: 4317
+      appProtocol: grpc
+  selector:
+    app: otel-collector
+# ...
+----
+====
+
+. Apply the configuration by running the following command:
++
+[source,terminal]
+----
+$ kubectl apply -f istio.yaml
+----
+
+. Optional. If you want to collect `Authorino` and `Limitador` traces in a different location than your `Kaudrant` traces, complete the following steps:
+
+.. Enable request tracing in your `Authorino` custom resource (CR) and send authentication and authorization traces to the central collector as follows:
++
+.Example Authorino CR with request tracing
+[source,bash]
+----
+apiVersion: operator.authorino.kuadrant.io/v1beta1
+kind: Authorino
+metadata:
+  name: authorino
+spec:
+  tracing:
+    endpoint: rpc://authorino-collector:4317
+    insecure: true
+# ...
+----
++
+Set `insecure` to `true` to skip TLS certificate verification in development environments. Set to `false` for production environments.
+
+.. Apply the configuration by running the following command:
++
+[source,terminal]
+----
+$ kubectl apply -f authorino.yaml
+----
+
+.. Enable request tracing in your `Limitador` CR and send rate limit traces to the central collector as follows:
++
+.Example Limitador CR with request tracing
+[source,bash]
+----
+apiVersion: limitador.kuadrant.io/v1alpha1
+kind: Limitador
+metadata:
+  name: limitador
+spec:
+  tracing:
+    endpoint: rpc://limitador-collector:4317
+    insecure: true
+# ...
+----
++
+Set `insecure` to `true` to skip TLS certificate verification in development environments. Set to `false` for production environments.
+
+.. Apply the configuration by running the following command:
++
+[source,terminal]
+----
+$ kubectl apply -f limitador.yaml
+----
++
+[IMPORTANT]
+====
+Trace IDs do not propagate to WebAssembly modules in {service-mesh}. This means that requests passed to Limitador do not have the relevant parent trace ID. However, if the trace initiation point is outside {service-mesh}, the parent trace ID is available to Limitador and included in traces. This impacts correlating traces from Limitador with traces from Authorino, the gateway, and any other components in the request path.
+====
+
+. Configure data-plane tracing in the `Kuadrant` CR by providing the collector endpoint as shown in the following example:
++
+.Example `kuadrant` CR
+[source,yaml]
+----
+apiVersion: kuadrant.io/v1beta1
+kind: Kuadrant
+metadata:
+  name: kuadrant
+  namespace: kuadrant-system
+spec:
+  observability:
+    dataPlane:
+      defaultLevels:
+        - debug: "true" # Enable DEBUG level trace filtering
+      httpHeaderIdentifier: x-request-id
+    tracing:
+      defaultEndpoint: rpc://tempo.tempo.svc.cluster.local:4317
+      insecure: true
+----
++
+where:
++
+* `spec.observability.tracing.defaultEndpoint`: The URL of the tracing collector backend. That is, the OpenTelemetry endpoint. The following are supported protocols:
+** `rpc://` for gRPC OTLP, port 4317
+** `http://` for HTTP OTLP, port 4318
+* ``spec.observability.tracing.insecure`: Set to `true` to skip TLS certificate verification in development environments. Set to `false` for production environments.
++
+[IMPORTANT]
+====
+Point to the collector service, such as the {TempoShortName}, not the query service. The collector receives traces from your applications. The query service is only for viewing traces in the GUI.
+====
+
+. Apply the configuration by running the following command:
++
+[source,bash]
+----
+$ kubectl apply -f kuadrant.yaml
+----
+
+.Verification
+
+* Verify that the CR applied successfully by listing the objects of that `Kind` by running the following command:
++
+[source,bash]
+----
+$ kubectl get kuadrant
+----
