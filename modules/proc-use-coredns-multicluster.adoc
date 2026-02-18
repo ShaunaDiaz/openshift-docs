@@ -16,7 +16,7 @@ You can use CoreDNS as a DNS provider for {prodname} in an existing multi-cluste
 * You have administrator privileges on both {ocp} clusters.
 * Your {ocp} clusters have support for the `loadbalanced` service type that allows UDP and TCP traffic on port 53, such as MetalLB.
 * You have access to configure your authoritative on-premise DNS server to delegate a subdomain.
-* Kustomize is installed.
+* Podman is installed.
 
 .Procedure
 

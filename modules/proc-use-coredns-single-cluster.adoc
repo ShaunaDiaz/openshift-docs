@@ -77,31 +77,20 @@ metadata:
   namespace: kuadrant-coredns
 data:
   Corefile: |
-    example.local:53 {
+    ${KUADRANT_SUBDOMAIN}.${ONPREM_DOMAIN}:53 {
+        debug
         errors
         health {
             lameduck 5s
-    }
+        }
         ready
         log
-    geoip <GeoIP-database-name>.mmdb {
+        geoip <GeoIP-database-name>.mmdb {
             edns-subnet
-    }
-    .:53 {
-        kubernetes
-        forward . 8.8.8.8 8.8.4.4
-        log
-        errors
-        cache 30
-    }
+        }
         metadata
         kuadrant
     }
- example.db: |
-    example.local.      IN SOA sns.dns.icann.org. noc.dns.icann.org. 2017042745 7200 3600 1209600 3600
-    example.local.      IN A     10.0.0.10
-    web.example.local.  IN A     10.0.0.11
-    api.example.local.  IN A     10.0.0.12
 ----
 +
 Mount your licensed MaxMind GeoIP database into the CoreDNS pod and update the filename in the `Corefile.geoip` parameter.
@@ -110,7 +99,7 @@ Mount your licensed MaxMind GeoIP database into the CoreDNS pod and update the f
 +
 [source,bash]
 ----
-$ kubectl --context $CTX_PRIMARY -n kuadrant-system patch deployment _<coredns-deployment-name>_ --patch '{"spec":{"template":{"spec":{"volumes":[{"name":"config-volume","configMap":{"name":"coredns-kuadrant-config","items":[{"key":"Corefile","path":"Corefile"}]}}]}}}}'
+$ kubectl --context $CTX_PRIMARY -n kuadrant-coredns patch deployment kuadrant-coredns --patch '{"spec":{"template":{"spec":{"volumes":[{"name":"config-volume","configMap":{"name":"coredns-kuadrant-config","items":[{"key":"Corefile","path":"Corefile"}]}}]}}}}'
 ----
 +
 Replace _<coredns-deployment-name>_ with the name of your coreDNS service.
@@ -119,22 +108,20 @@ Replace _<coredns-deployment-name>_ with the name of your coreDNS service.
 +
 [source,bash]
 ----
-$ kubectl --context $CTX_PRIMARY -n kuadrant-system rollout status deployment/<coredns-deployment-name>
+$ kubectl --context $CTX_PRIMARY -n kuadrant-coredns rollout status deployment/kuadrant-coredns
 ----
-+
-Replace _<coredns-deployment-name>_ with the name of your coreDNS service.
 +
 .Example output
 [source,text]
 ----
-<coredns-deployment-name> successfully rolled out
+kuadrant-coredns successfully rolled out
 ----
 
 . Create the Kubernetes `Secret` that {prodname} uses to interact with CoreDNS. This secret specifies the zones this provider instance is authoritative for.
 +
 [source,bash]
 ----
-$ kubectl --context $CTX_PRIMARY -n kuadrant-system create secret generic coredns-credentials \
+$ kubectl --context $CTX_PRIMARY -n kuadrant-coredns create secret generic coredns-credentials \
   --from-literal=params='{"ZONES":["'"$NAMESERVERS"'.'"$ONPREM_DOMAIN"'"]}' \
   --from-literal=endpoints='["10.96.0.10:53"]'
 ----
@@ -152,10 +139,10 @@ $ oc -n kuadrant-coredns rollout restart deployment kuadrant-coredns
 +
 [source,terminal]
 ----
-$ kubectl --context $CTX_PRIMARY -n kuadrant-system logs deployment/kuadrant-operator
+$ kubectl --context $CTX_PRIMARY -n kuadrant-coredns logs deployment/kuadrant-operator
 ----
 +
-Expect to see `Registered DNS provider: coredns`.
+Expect to see `Registered DNS provider: `kuadrant-operator-controller-manager`.
 
 .Troubleshooting
 
@@ -163,7 +150,7 @@ Expect to see `Registered DNS provider: coredns`.
 +
 [source,terminal]
 ----
-$ oc logs -n openshift-dns -l dns.operator.openshift.io/daemonset-dns=default -c dns
+$ oc logs -n kuadrant-coredns deployment/kuadrant-coredns
 ----
 
 * If the `DNSRecord` is not appearing in the zone, verify that the record has the zone label by running the following command:
