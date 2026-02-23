@@ -24,7 +24,8 @@
 |4.21, 4.20, 4.19
 |4.21, 4.20, 4.19
 |4.21, 4.20, 4.19
-|4.17
+|4.19
+//TODO need to verify 1.3
 
 |Version 1.2
 |4.20, 4.19, 4.18
@@ -45,8 +46,8 @@ For Microsoft Azure, see the link:https://learn.microsoft.com/en-us/azure/opensh
 |*{cert-manager}*
 
 |Version 1.3
-|3.1
-|1.17
+|3.2
+|1.18
 //TBD 1.3
 
 |Version 1.2
@@ -80,6 +81,11 @@ For DNS policies, all versions of {prodname} support the following cloud DNS pro
 * Amazon Route 53
 * Google Cloud Platform DNS
 * Microsoft Azure DNS
+
+[NOTE]
+====
+CoreDNS can be used to configure an on-cluster DNS zone.
+====
 
 For more information, see the documentation for your chosen cloud DNS provider.
 
