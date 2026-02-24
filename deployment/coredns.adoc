@@ -1,0 +1,36 @@
+:_mod-docs-content-type: ASSEMBLY
+[id="rhcl-using-on-prem-dns-coredns"]
+= Using on-premise DNS with CoreDNS
+include::_attributes/attributes.adoc[]
+:context: rhcl-using-on-prem-dns-coredns
+
+//toc::[]
+
+[role="_abstract"]
+You can secure, protect, and connect an API exposed by a gateway that uses Gateway API by using {prodname}.
+
+include::modules/con-about-using-onprem-dns-coredns.adoc[leveloffset=+1]
+
+include::modules/con-rhcl-coredns-arch.adoc[leveloffset=+1]
+
+include::modules/con-coredns-dnsrecord-security.adoc[leveloffset=+1]
+
+include::modules/proc-use-coredns-single-cluster.adoc[leveloffset=+1]
+
+include::modules/proc-use-coredns-multicluster.adoc[leveloffset=+1]
+
+include::modules/ref-coredns-corefile-config.adoc[leveloffset=+1]
+
+include::modules/ref-coredns-default-plugins.adoc[leveloffset=+2]
+
+include::modules/con-coredns-troubleshooting.adoc[leveloffset=+1]
+
+include::modules/con-coredns-removal-migration.adoc[leveloffset=+1]
+
+[id="additional-resources_rhcl-using-on-prem-dns-coredns"]
+[role="_additional-resources"]
+== Additional resources
+
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/networking_operators/dns-operator[DNS Operator in {ocp}]
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/network_security/logging-network-security#logging-network-security[Audit logging for network security]
+

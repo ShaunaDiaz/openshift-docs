@@ -1,0 +1,10 @@
+// Module included in the following assemblies:
+//
+// *deployment/deployment.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="rhcl-coredns-removal-migration_{context}"]
+= CoreDNS removal or migration
+
+[role="_abstract"]
+You can remove your CoreDNS integration by deleting the CoreDNS deployment and deleting your DNS policies. To migrate to a different provider, delete existing `dnsPolicy` CRs and re-create them with the new provider secret reference. No data is permanently locked into CoreDNS.
