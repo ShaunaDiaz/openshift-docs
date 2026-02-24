@@ -24,7 +24,7 @@ You can define your infrastructure by using code to ensure that it is version co
 
 Use the tools you have::
 You can use the technologies and tools that you already have in place with {prodname}. For example, the following are services and tools you can use:
-//Q: is this an exhaustive list?
+
 * Cloud service providers: Amazon Web Services, Google Cloud, Microsoft Azure
 * DNS providers: Amazon Route 53, Google Cloud DNS, Microsoft Azure DNS, CoreDNS
 * Gateway API controllers: {ocp}, {ocp} Service Mesh
@@ -38,8 +38,5 @@ Using Gateway API to set up ingress policies on each {ocp} cluster means that in
 +
 In Kubernetes-based environments, link:https://gateway-api.sigs.k8s.io/[Gateway API] is the standard for deploying ingress gateways and managing application networking. Gateway API provides standardized APIs for ingress traffic management and support for many protocols.
 +
-.Gateway API user-persona-based design
-image::connectivity-link-gateway-api.png[{prodname} Gateway API user-persona-based design]
-//this image does not match what we list here in RHCL; these roles should be the same, or we should remove this image; it is confusing
 Observability::
 {prodname} uses Kuadrant-maintained Gateway API state metrics, metrics exposed by {prodname} components, and standard metrics exposed by Envoy to build a set of example template alerts and dashboards. You can download and use these Kuadrant community templates to integrate with Grafana, Prometheus, and Alertmanager deployments, or use them as starting points that you can tailor for your specific needs.

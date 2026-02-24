@@ -12,7 +12,7 @@ You can use the following technologies and patterns with {prodname}:
 Policy-based configuration::
 You can use the {prodname} _policy attachment_ pattern to add behavior to a Kubernetes object by using configuration that cannot be described in the object `spec` field.
 +
-With policy attachments comes the concept of defaults and overrides. These defaults and overrides mean that you can configure different roles to operate with policy APIs at different levels of the object hierarchy. These policies are then merged with specific rules and strategies to form an effective policy than can be used across your organization.
+With policy attachments comes the concept of defaults and overrides. These defaults and overrides mean that you can configure different roles to operate with policy APIs at different levels of the object hierarchy. These policies are then merged with specific rules and strategies to form an effective policy that can be used across your organization.
 
 WebAssembly plugin::
 As a link:https://webassembly.org/[WebAssembly (WASM)] plugin developed for the Envoy proxy, {prodname} is lightweight, hardware independent, non-intrusive, and secure. This means that clusters that are using {ocp} {service-mesh}, Istio, or Envoy for ingress do not require major changes to their existing ingress objects and policies to begin using {prodname}.
