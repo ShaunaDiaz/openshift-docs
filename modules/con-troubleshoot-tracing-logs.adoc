@@ -3,43 +3,12 @@
 // *observability/observability.adoc
 
 :_mod-docs-content-type: CONCEPT
-[id="troubleshoot-tracing-logs_{context}"]
+[id="rhcl-troubleshooting-tracing-logs_{context}"]
 = Troubleshooting by using traces and logs
 
 [role="_abstract"]
-You can use a tracing user interface such as Jaeger or Grafana to search for {service-mesh} and {product-title} trace information by trace ID. You can get the trace ID from logs, or from a header in a sample request that you want to troubleshoot. You can also search for recent traces, filtering by the service that you want to focus on.
-
-[id="rhcl-viewing-traces_{context}"]
-== Viewing {product-title} traces
-
-The following example trace in the Grafana user interface shows the total request time from the Istio-based Gateway, the time to check and update the rate limit count in Limitador, and the time to check authentication and authorization in Authorino:
-
-.Example {prodname} trace in Grafana
-image::connectivity-link-grafana-trace.png[Connectivity Link tracing in Grafana]
-
-//TODO this is a separate procedure FIXME
-[id="rhcl-viewing-rate-limit-trace-IDS_{context}"]
-== Viewing rate limit logging with trace IDs
-
-When using the Limitador component of {product-title} for rate limiting, you can enable request logging with trace IDs to get more information on requests. This requires the log level to be increased to at least debug, so you must set the verbosity to `3` or higher in your `Limitador` custom resource as follows:
-
-[source,bash]
-----
-apiVersion: limitador.kuadrant.io/v1alpha1
-kind: Limitador
-metadata:
-  name: limitador
-spec:
-  verbosity: 3
-----
-
-Example log entry with the `traceparent` field holding the trace ID:
-
-[source,bash]
-----
-"Request received: Request { metadata: MetadataMap { headers: {"te": "trailers", "grpc-timeout": "5000m", "content-type": "application/grpc", "traceparent": "00-4a2a933a23df267aed612f4694b32141-00f067aa0ba902b7-01", "x-envoy-internal": "true", "x-envoy-expected-rq-timeout-ms": "5000"} }, message: RateLimitRequest { domain: "default/toystore", descriptors: [RateLimitDescriptor { entries: [Entry { key: "limit.general_user__f5646550", value: "1" }, Entry { key: "metadata.filter_metadata.envoy\\.filters\\.http\\.ext_authz.identity.userid", value: "alice" }], limit: None }], hits_addend: 1 }, extensions: Extensions }"
-----
+You can use a tracing user interface such Grafana to search for {service-mesh} and {prodname} trace information by trace ID. You can get the trace ID from logs, or from a header in a sample request that you want to troubleshoot. You can also search for recent traces, filtering by the service that you want to focus on.
 
 If you centrally aggregate logs by using tools such as Grafana Loki and Promtail, you can jump between trace information and the relevant logs for that service.
 
-By using a combination of tracing and logs, you can visualize and troubleshoot request timing issues and drill down to specific services. This method becomes even more powerful when combined with {prodname} metrics and dashboards to get a more complete picture of your user traffic.
+By using a combination of tracing and logs, you can visualize and troubleshoot request timing issues and narrow down to specific services. This method gives you even more insight a more complete picture of your user traffic when you combine it with {prodname} metrics and dashboards.
