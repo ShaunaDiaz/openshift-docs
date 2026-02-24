@@ -7,26 +7,19 @@
 = Configuring DNS provider credentials for AWS
 
 [role="_abstract"]
-If you want to configure AWS DNS policies in {prodname}, you must configure the DNS credentials.
+If you want to configure AWS DNS policies in {prodname}, you must configure the DNS credentials. You must perform the steps on each {ocp} cluster that you want to use {prodname} on.
 
-[IMPORTANT]
-====
-* You must perform the steps on each {ocp} cluster that you want to use {prodname} on.
-* You must configure the secret in the same namespace that includes your gateway.
-* You must configure a DNS hosted zone. The credentials for your DNS provider must have permissions to update DNS records within this zone.
-====
-//admonition can be a snippet
+You must configure a DNS hosted zone. The credentials for your DNS provider must have permissions to update DNS records within this zone.
 
 .Prerequisites
-//could also be a snippet
-* You installed {prodname}.
-* You have access to the namespace in which your gateway is to be created, for example, `api-gateway`.
+
+* You installed {prodname} on an {ocp} cluster.
+* You have access to the namespace of your gateway, for example, `api-gateway`.
 +
 [NOTE]
 ====
-If you already know your environment variable values, you can create the required `.yaml` files as required for your use case.
+If you already know your environment variable values, you can create the required YAML files as required for your use case.
 ====
-//there are no yamls in this procedure
 
 .Procedure
 
@@ -57,7 +50,7 @@ $ export AWS_REGION=your-aws-region
 +
 [source,terminal]
 ----
-$ kubectl create secret generic aws-credentials \
+$ oc create secret generic aws-credentials \
   --namespace=api-gateway \
   --type=kuadrant.io/aws \
   --from-literal=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
@@ -65,7 +58,7 @@ $ kubectl create secret generic aws-credentials \
   --from-literal=AWS_REGION=$AWS_REGION
 ----
 +
-Set the secret `type` to `aws`.
-//right now this says `kuadrant.io/aws`; which is it?
-
-//Anything else? do we need to apply this somewhere?
+[IMPORTANT]
+====
+You must configure the secret in the same namespace as your gateway.
+====

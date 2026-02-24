@@ -3,18 +3,16 @@
 // *install-guide/install-guide.adoc
 
 :_mod-docs-content-type: PROCEDURE
-[id="enable-openshift-dynamic-plugin_{context}"]
-= Enabling the {prodname} dynamic plug-in in {ocp}
+[id="enable-openshift-dynamic-plugin-web-console_{context}"]
+= Enabling the {prodname} dynamic plugin for {ocp} web console
 
 [role="_abstract"]
-The {prodname} Operator automatically installs and configures the {prodname} dynamic plug-in for the {ocp} web console. You can use the {prodname} dynamic plug-in to view and manage your gateways and policies in the {ocp} web console.
-
-NOTE: You must perform these steps on each {ocp} cluster that you want to use the {prodname} dynamic plug-in.
+You can use the {prodname} dynamic plugin to view and manage your gateways and policies in the {ocp} web console. You must perform these steps on each {ocp} cluster.
 
 .Prerequisites
 
-* See xref:install-prerequisites_{context}[].
-//TODO
+* You are logged into {ocp} as a cluster administrator.
+* You are using a supported configuration of {ocp} and required components.
 * You have access to the {ocp} web console.
 
 .Procedure
@@ -37,14 +35,10 @@ NOTE: You must perform these steps on each {ocp} cluster that you want to use th
 
 .Verification
 
-After the plug-in is enabled, refresh the console. A new *{prodname}* menu item in the navigation sidebar.
+. Refresh the {ocp} web console. A new *{prodname}* menu item is expected in the navigation sidebar.
 
-You can click  *{prodname} > Overview* to explore the available resources and to get started with creating a Gateway and configuring policies in the {ocp} web console.
+.. You can click  *{prodname} > Overview* to explore the available resources and to get started with creating a Gateway and configuring policies in the {ocp} web console.
 
 .Next steps
 
-* For examples of Gateway and policy configuration, see {LinkRHCLDeploy}[{NameRHCLDeploy}].
-
-
-
-
+* For examples of gateway and policy configuration, see {LinkRHCLDeploy}[{NameRHCLDeploy}].

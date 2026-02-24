@@ -16,21 +16,16 @@
 :operator-version: 1.3.0
 :ocp: OpenShift Container Platform
 :ocp-latest-version: 4.21
+:ocp-min-version: 4.19
 :oc-first: pass:quotes[OpenShift CLI (`oc`)]
 
 :service-mesh: OpenShift Service Mesh
 :service-mesh-version: 3.2
-:api-controller: API controller
-:api-controller-version: 1.0 Developer Preview
-:apicurio-studio: API Designer
-:apicurio-studio-version: 1.0
-:apicurio-registry: {rh} build of Apicurio Registry
-:apicurio-registry-version: 3.0
 
 :cert-manager: cert-manager Operator for Red Hat OpenShift
-:cert-manager-version: 1.15
+:cert-manager-version: 1.18
 :keycloak: Red Hat build of Keycloak
-:keycloak-version: 26.2
+:keycloak-version: 26.4
 
 :TempoName: Red{nbsp}Hat OpenShift Distributed Tracing Platform
 :TempoShortName: Distributed Tracing Platform
