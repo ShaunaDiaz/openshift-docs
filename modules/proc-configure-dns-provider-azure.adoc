@@ -32,7 +32,7 @@ If you already know your environment variable values, you can set up the require
 
 . Create a new Azure service principal for managing DNS as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 DNS_NEW_SP_NAME=kuadrantDnsPrincipal
 DNS_SP=$(az ad sp create-for-rbac --name $DNS_NEW_SP_NAME)
@@ -46,7 +46,7 @@ For more details on service principals, see the https://learn.microsoft.com/en-u
 
 .. Fetch the DNS ID used to grant access to the service principal as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ DNS_ID=$(az network dns zone show --name example.com \
  --resource-group ExampleDNSResourceGroup --query "id" --output tsv)
@@ -57,21 +57,21 @@ $ RESOURCE_GROUP_ID=az group show --resource-group ExampleDNSResourceGroup | jq 
 
 .. Provide reader access to the resource group as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ az role assignment create --role "Reader" --assignee $DNS_SP_APP_ID --scope $DNS_ID
 ----
 
 .. Provide contributor access to the DNS zone as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ az role assignment create --role "Contributor" --assignee $DNS_SP_APP_ID --scope $DNS_ID
 ----
 
 . Because you are setting up advanced traffic rules for geographic and weighted responses, you must also grant traffic manager and DNS zone access as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ az role assignment create --role "Traffic Manager Contributor" --assignee $DNS_SP_APP_ID --scope $RESOURCE_GROUP_ID
 
@@ -90,7 +90,7 @@ EOF
 
 . Create a `Secret` resource for your credentials as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl create secret generic test-azure-credentials \
   --namespace=api-gateway \
