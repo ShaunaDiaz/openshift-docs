@@ -34,7 +34,7 @@ To use {prodname} observability dashboards, you must enable observability on eac
 * To enable default observability for {prodname} and any gateways, set `spec.observability.enable` parameter value to `true` in your `Kuadrant` custom resource (CR):
 +
 .Example `Kuadrant` CR
-[source,bash]
+[source,yaml]
 ----
 apiVersion: kuadrant.io/v1beta1
 kind: Kuadrant
@@ -52,8 +52,8 @@ You can also set the `spec.observability.enable` to `false` and create your own 
 
 * Check the created monitors by running the following command:
 +
-[source,bash]
+[source,terminal]
 ----
-$ kubectl get servicemonitor,podmonitor -A -l kuadrant.io/observability=true
+$ oc get servicemonitor,podmonitor -A -l kuadrant.io/observability=true
 ----
 //Q: example output?

@@ -10,19 +10,19 @@
 You can troubleshoot your CoreDNS deployment by restarting CoreDNS and by checking the logs. Use the following commands as needed to investigate your specific errors:
 
 Restart CoreDNS by using the following command:
-[source,bash]
+[source,terminal]
 ----
 $ oc -n kuadrant-coredns rollout restart deployment kuadrant-coredns
 ----
 
 You can view CoreDNS logs by running the following command:
-[source, bash]
+[source,terminal]
 ----
 $ oc logs -f deployments/kuadrant-coredns -n kuadrant-coredns
 ----
 
 You can get recent logs by running the following command:
-[source, bash]
+[source,terminal]
 ----
 $ oc logs --tail=100 deployments/kuadrant-coredns -n kuadrant-coredns
 ----

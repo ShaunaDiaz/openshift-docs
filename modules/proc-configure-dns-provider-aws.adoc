@@ -55,7 +55,7 @@ $ export AWS_REGION=your-aws-region
 
 . Create a `Secret` resource for your credentials as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl create secret generic aws-credentials \
   --namespace=api-gateway \

@@ -23,7 +23,7 @@ This example uses the Let's Encrypt TLS certificate issuer for simplicity, but y
 
 . Enter the following command to define a TLS certificate issuer:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl apply -f - <<EOF
 apiVersion: cert-manager.io/v1
@@ -37,7 +37,7 @@ EOF
 
 . Wait for the `ClusterIssuer` to become ready as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl wait clusterissuer/${KUADRANT_CLUSTER_ISSUER_NAME} --for=condition=ready=true
 ----
