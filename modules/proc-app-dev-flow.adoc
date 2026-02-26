@@ -34,7 +34,7 @@ $ export KUADRANT_SYSTEM_NS=$(kubectl get kuadrant -A -o jsonpath="{.items[0].me
 +
 [source,bash]
 ----
-kubectl apply -f - <<EOF
+$ kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Secret
 metadata:
@@ -69,7 +69,7 @@ EOF
 +
 [source,bash]
 ----
-kubectl apply -f - <<EOF
+$ kubectl apply -f - <<EOF
 apiVersion: kuadrant.io/v1
 kind: AuthPolicy
 metadata:

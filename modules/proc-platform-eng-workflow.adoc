@@ -29,7 +29,7 @@ In multicluster environments, you must perform the following steps in each clust
 
 . Set the `TLSPolicy` for your Gateway as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl apply -f - <<EOF
 apiVersion: kuadrant.io/v1
@@ -51,7 +51,7 @@ EOF
 
 . Check that your TLS policy has an `Accepted` and `Enforced` status as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get tlspolicy ${KUADRANT_GATEWAY_NAME}-tls -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
 ----
@@ -65,7 +65,7 @@ This may take a few minutes depending on the TLS provider, for example, Let's En
 
 . Create an `HTTPRoute` for the example Toystore application as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl apply -f - <<EOF
 apiVersion: gateway.networking.k8s.io/v1
@@ -105,9 +105,9 @@ EOF
 
 . Set a default `AuthPolicy` with a `deny-all` setting for your Gateway as follows:
 +
-[source,bash]
+[source,terminal]
 ----
-kubectl apply -f - <<EOF
+$ kubectl apply -f - <<EOF
 apiVersion: kuadrant.io/v1
 kind: AuthPolicy
 metadata:
@@ -142,7 +142,7 @@ EOF
 
 . Check that your `AuthPolicy` has `Accepted` and `Enforced` status as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get authpolicy ${KUADRANT_GATEWAY_NAME}-auth -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
 ----
@@ -154,9 +154,9 @@ $ kubectl get authpolicy ${KUADRANT_GATEWAY_NAME}-auth -n ${KUADRANT_GATEWAY_NS}
 
 . Set the default `RateLimitPolicy` with a `low-limit` setting for your Gateway as follows:
 +
-[source,bash]
+[source,terminal]
 ----
-kubectl apply -f  - <<EOF
+$ kubectl apply -f  - <<EOF
 apiVersion: kuadrant.io/v1
 kind: RateLimitPolicy
 metadata:
@@ -180,7 +180,7 @@ It might take a few minutes for the `RateLimitPolicy` to be applied depending on
 
 . Check that your `RateLimitPolicy` has `Accepted` and `Enforced` status as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get ratelimitpolicy ${KUADRANT_GATEWAY_NAME}-rlp -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
 ----
@@ -192,7 +192,7 @@ $ kubectl get ratelimitpolicy ${KUADRANT_GATEWAY_NAME}-rlp -n ${KUADRANT_GATEWAY
 
 . Set the `DNSPolicy` for your Gateway as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl apply -f - <<EOF
 apiVersion: kuadrant.io/v1
@@ -222,7 +222,7 @@ The `DNSPolicy` uses the DNS Provider `Secret` that you defined earlier. The `ge
 
 . Check that your `DNSPolicy` has status of `Accepted` and `Enforced` as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get dnspolicy ${KUADRANT_GATEWAY_NAME}-dnspolicy -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
 ----
@@ -231,7 +231,7 @@ This might take a few minutes.
 
 . Check the status of the DNS health checks that are enabled on your DNSPolicy as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get dnspolicy ${KUADRANT_GATEWAY_NAME}-dnspolicy -n ${KUADRANT_GATEWAY_NS} -
 ----
@@ -252,7 +252,7 @@ You can use a `curl` command to test the default `low-limit` and `deny-all` poli
 
 * Enter the following `curl` command:
 +
-[source,bash]
+[source,terminal]
 ----
 $ while :; do curl -k --write-out '%{http_code}\n' --silent --output /dev/null  "https://api.$KUADRANT_ZONE_ROOT_DOMAIN/cars" | grep -E --color "\b(429)\b|$"; sleep 1; done
 ----
