@@ -23,9 +23,9 @@ Any new HTTPRoutes are affected by the existing Gateway-level policy. Because yo
 
 . Create a new `RateLimitPolicy` in a different namespace to override the default `low-limit` policy created previously and set rate limits for specific users as follows:
 +
-[source,bash]
+[source,terminal]
 ----
-kubectl apply -f - <<EOF
+$ kubectl apply -f - <<EOF
 apiVersion: kuadrant.io/v1
 kind: RateLimitPolicy
 metadata:
@@ -59,14 +59,14 @@ It might take a few minutes for the `RateLimitPolicy` to be applied, depending o
 +
 . Check that the `RateLimitPolicy` has a status of `Accepted` and `Enforced` as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get ratelimitpolicy -n ${KUADRANT_DEVELOPER_NS} toystore-rlp -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
 ----
 
 . Check that the status of the `HTTPRoute` is now affected by the `RateLimitPolicy` in the same namespace:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get httproute toystore -n ${KUADRANT_DEVELOPER_NS} -o=jsonpath='{.status.parents[0].conditions[?(@.type=="kuadrant.io/RateLimitPolicyAffected")].message}'
 ----
@@ -75,7 +75,7 @@ $ kubectl get httproute toystore -n ${KUADRANT_DEVELOPER_NS} -o=jsonpath='{.stat
 
 . Send requests as user *alice* as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ while :; do curl -k --write-out '%{http_code}\n' --silent --output /dev/null -H 'Authorization: APIKEY IAMALICE' "https://api.$KUADRANT_ZONE_ROOT_DOMAIN/cars" | grep -E --color "\b(429)\b|$"; sleep 1; done
 ----
@@ -84,7 +84,7 @@ You should see HTTP status `200` every second for 5 seconds, followed by HTTP st
 
 . Send requests as user *bob* as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ while :; do curl -k --write-out '%{http_code}\n' --silent --output /dev/null -H 'Authorization: APIKEY IAMBOB' "https://api.$KUADRANT_ZONE_ROOT_DOMAIN/cars" | grep -E --color "\b(429)\b|$"; sleep 1; done
 ----
