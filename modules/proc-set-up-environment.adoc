@@ -18,20 +18,20 @@ This section shows how you can set up your environment variables and deploy the 
 //TODO FIXME steps, also Q: we need to define these as upstream?
 . Optional: Set the following environment variables:
 +
-[source,bash]
+[source,terminal]
 ----
-export KUADRANT_GATEWAY_NS=api-gateway
-export KUADRANT_GATEWAY_NAME=external
-export KUADRANT_DEVELOPER_NS=toystore
-export KUADRANT_AWS_ACCESS_KEY_ID=xxxx
-export KUADRANT_AWS_SECRET_ACCESS_KEY=xxxx
-export KUADRANT_AWS_DNS_PUBLIC_ZONE_ID=xxxx
-export KUADRANT_ZONE_ROOT_DOMAIN=example.com
-export KUADRANT_CLUSTER_ISSUER_NAME=self-signed
+$ export KUADRANT_GATEWAY_NS=api-gateway \
+  export KUADRANT_GATEWAY_NAME=external \
+  export KUADRANT_DEVELOPER_NS=toystore \
+  export KUADRANT_AWS_ACCESS_KEY_ID=xxxx \
+  export KUADRANT_AWS_SECRET_ACCESS_KEY=xxxx \
+  export KUADRANT_AWS_DNS_PUBLIC_ZONE_ID=xxxx \
+  export KUADRANT_ZONE_ROOT_DOMAIN=example.com
+  export KUADRANT_CLUSTER_ISSUER_NAME=self-signed
 ----
 +
 These environment variables are described as follows:
-
++
 * `KUADRANT_GATEWAY_NS`: Namespace for your example gateway in {ocp}.
 * `KUADRANT_GATEWAY_NAME`: Name of your example gateway in {ocp}.
 * `KUADRANT_DEVELOPER_NS`: Namespace for the example Toystore app in {ocp}.
@@ -49,14 +49,14 @@ If you know your environment variable values, you can set up the required YAML f
 
 . Create the namespace for the Toystore app as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl create ns ${KUADRANT_DEVELOPER_NS}
 ----
 
 . Deploy the Toystore app to the developer namespace:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl apply -f https://raw.githubusercontent.com/Kuadrant/Kuadrant-operator/main/examples/toystore/toystore.yaml -n ${KUADRANT_DEVELOPER_NS}
 ----

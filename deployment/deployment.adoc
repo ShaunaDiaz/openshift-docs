@@ -21,7 +21,7 @@ include::modules/proc-set-up-tls-issuer.adoc[leveloffset=+1]
 
 include::modules/proc-create-gateway.adoc[leveloffset=+1]
 
-include::modules/proc-platform-eng-flow.adoc[leveloffset=+1]
+include::modules/proc-platform-eng-workflow.adoc[leveloffset=+1]
 
 include::modules/proc-configure-onprem-dns.adoc[leveloffset=+1]
 

@@ -29,7 +29,7 @@ You must perform these steps on each {ocp} cluster that you want to use {prodnam
 
 . Verify that user workload monitoring is configured correctly in your {ocp} cluster as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get configmap cluster-monitoring-config -n openshift-monitoring -o jsonpath='{.data.config\.yaml}'|grep enableUserWorkload
 ----
@@ -38,14 +38,14 @@ The expected output is `enableUserWorkload: true`.
 
 . Install the {prodname}, Gateway, and Grafana component metrics and configuration as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl apply -k https://github.com/Kuadrant/kuadrant-operator/config/install/configure/observability?ref=v1.2.0
 ----
 
 . From the root directory of your Kuadrant Operator repository, configure the {ocp} `thanos-query` instance as a data source in Grafana as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 TOKEN="Bearer $(oc whoami -t)"
 HOST="$(kubectl -n openshift-monitoring get route thanos-querier -o jsonpath='https://{.status.ingress[].host}')"

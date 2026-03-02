@@ -30,7 +30,7 @@ If you already know your environment variable values, you can set up the require
 
 . Optional: Specify your environment variables as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ export GOOGLE=xxxxxxx
 $ export PROJECT_ID=xxxxxxx
@@ -51,7 +51,7 @@ For example, `$HOME/.config/gcloud/application_default_credentials.json`, which 
 
 . Create a `Secret` resource for your credentials as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl create secret generic test-gcp-credentials \
   --namespace=api-gateway \
