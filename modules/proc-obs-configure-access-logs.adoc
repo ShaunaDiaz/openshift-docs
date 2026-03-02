@@ -81,7 +81,7 @@ The `expression` field uses Common Expression Language (CEL). You can use CEL-ba
 
 .  If you are using the Sail Operator, check which `Istio` Operator is active in your cluster by running the following command:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get istio -A
 ----
