@@ -4,7 +4,7 @@
 
 :_mod-docs-content-type: PROCEDURE
 [id="create-gateway_{context}"]
-= Create your Gateway instance
+= Create your gateway instance
 
 [role="_abstract"]
 This section shows how you can deploy a Gateway in your {ocp} cluster. This task is typically performed by platform engineers when setting up the infrastructure to be used by application developers.
@@ -23,7 +23,7 @@ In a multicluster environment, for {prodname} to balance traffic by using DNS ac
 
 . Enter the following command to create the Gateway:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl apply -f - <<EOF
 apiVersion: gateway.networking.k8s.io/v1
@@ -54,16 +54,16 @@ EOF
 
 . Check the status of your Gateway as follows:
 +
-[source,bash]
+[source,terminal]
 ----
-kubectl get gateway ${KUADRANT_GATEWAY_NAME} -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Programmed")].message}'
+$ kubectl get gateway ${KUADRANT_GATEWAY_NAME} -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Programmed")].message}'
 ----
 +
 Your Gateway should be `Accepted` and `Programmed`, which means that it is valid and assigned an external address.
 
 . Check the status of your HTTPS listener as follows:
 +
-[source,bash]
+[source,terminal]
 ----
 $ kubectl get gateway ${KUADRANT_GATEWAY_NAME} -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.listeners[0].conditions[?(@.type=="Programmed")].message}'
 ----

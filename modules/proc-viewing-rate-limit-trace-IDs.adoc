@@ -21,7 +21,7 @@ You can enable request logging with trace IDs to get more information about requ
 * Set the verbosity to `3` or higher in your `Limitador` custom resource (CR) as follows:
 +
 .Example Limitador CR
-[source,bash]
+[source,yaml]
 ----
 apiVersion: limitador.kuadrant.io/v1alpha1
 kind: Limitador
@@ -32,7 +32,7 @@ spec:
 ----
 +
 .Example log entry with the `traceparent` field holding the trace ID
-[source,bash]
+[source,terminal]
 ----
 "Request received: Request { metadata: MetadataMap { headers: {"te": "trailers", "grpc-timeout": "5000m", "content-type": "application/grpc", "traceparent": "00-4a2a933a23df267aed612f4694b32141-00f067aa0ba902b7-01", "x-envoy-internal": "true", "x-envoy-expected-rq-timeout-ms": "5000"} }, message: RateLimitRequest { domain: "default/toystore", descriptors: [RateLimitDescriptor { entries: [Entry { key: "limit.general_user__f5646550", value: "1" }, Entry { key: "metadata.filter_metadata.envoy\\.filters\\.http\\.ext_authz.identity.userid", value: "alice" }], limit: None }], hits_addend: 1 }, extensions: Extensions }"
 ----

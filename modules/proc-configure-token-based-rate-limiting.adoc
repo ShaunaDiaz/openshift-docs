@@ -97,21 +97,21 @@ spec:
 
 . Apply the policy:
 +
-[source,bash]
+[source,terminal]
 ----
 $ oc apply -f your-tokenratelimitpolicy.yaml -n my-api-namespace
 ----
 
 . Check the status of the policy to ensure it has been accepted and enforced on the target `HTTPRoute`. Look for conditions with `type: Accepted` and `type: Enforced` with `status: "True"`.
 +
-[source,bash]
+[source,terminal]
 ----
 $ oc get tokenratelimitpolicy llm-protection -n my-api-namespace -o jsonpath='{.status.conditions}'
 ----
 
 . Send requests to your API endpoint, including the required authentication details.
 +
-[source,bash]
+[source,terminal]
 ----
 $ curl -H "Authorization: <auth-details>" \
      -d '{"model": "gpt-4", "messages": [{"role": "user", "content": "Hello"}]}' \
