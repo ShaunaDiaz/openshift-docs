@@ -68,7 +68,7 @@ $ oc wait --for=jsonpath={.status.installPlanRef.name} subscription rhcl-operato
 ip=$(oc get subscription rhcl-operator -o=jsonpath={.status.installPlanRef.name})
 ----
 +
-[source,bash]
+[source,terminal]
 ----
 $ oc wait --for=condition=Installed installplan ${ip} --timeout=60s
 ----
@@ -77,7 +77,7 @@ Expect the status of `installplan.operators.coreos.com/install-4rql7` when {prod
 
 . To create your {prodname} CR, enter the following command:
 +
-[source,bash]
+[source,terminal]
 ----
 $ oc apply -f - <<EOF
 apiVersion: kuadrant.io/v1beta1
