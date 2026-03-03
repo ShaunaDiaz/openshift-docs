@@ -42,7 +42,7 @@ For Microsoft Azure, see the link:https://learn.microsoft.com/en-us/azure/opensh
 |===
 |*{product-title}*
 |*{rh} {service-mesh}*
-|*cert-manager Operator for Red Hat OpenShift*
+|*{cert-manager}*
 
 |Version 1.2
 |3.1
@@ -54,7 +54,7 @@ For Microsoft Azure, see the link:https://learn.microsoft.com/en-us/azure/opensh
 |===
 
 * {ocp} 4.19 includes Gateway API. A separate installation of OpenShift Service Mesh is not required.
-* On {ocp} 4.18 or earlier, {prodname} requires OpenShift Service Mesh 3.0 General Availability as the Gateway API provider.
+* On {ocp} 4.18 and 4.17, {prodname} requires {service-mesh} 3.0 General Availability as the Gateway API provider.
 
 [id="rhcl-supported-cloud-providers_{context}"]
 == Supported cloud providers
@@ -101,7 +101,6 @@ For rate limiting policies, {prodname} supports the following Redis-based data s
 |===
 
 For more information, see the documentation for your chosen Redis-based datastore.
-//Q: Presented this way, do all versions of RCHL really support the latest versions of these? e.g, does 1.1 support the same versions as 1.3?
 
 [id="rhcl-supported-identity-access-management_{context}"]
 == Supported identity access management

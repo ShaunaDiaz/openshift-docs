@@ -7,40 +7,42 @@
 = Configuring Azure DNS provider credentials
 
 [role="_abstract"]
-If you want to configure Microsoft Azure DNS policies in {prodname}, you must configure the DNS credentials.
+If you want to configure Microsoft Azure DNS policies in {prodname}, you must configure the DNS credentials. You must perform the steps on each {ocp} cluster that you want to use {prodname} on.
 
-[IMPORTANT]
-====
-* You must perform the steps on each {ocp} cluster that you want to use {prodname} on.
-* You must configure the secret in the same namespace that includes your gateway.
-* You must configure a DNS hosted zone. The credentials for your DNS provider must have permissions to update DNS records within this zone.
-====
-//admonition can be a snippet
+You must configure a DNS hosted zone. The credentials for your DNS provider must have permissions to update DNS records within this zone.
 
 .Prerequisites
-//could also be a snippet
-* You installed {prodname}.
-* You have access to the namespace in which your gateway is to be created, for example, `api-gateway`.
+
+* You installed {prodname} on an {ocp} cluster.
+* You have access to the namespace of your gateway, for example, `api-gateway`.
 +
 [NOTE]
 ====
-If you already know your environment variable values, you can set up the required `.yaml` files as required for your use case.
+If you already know your environment variable values, you can create the required YAML files as required for your use case.
 ====
-//there are no yamls in this procedure
 
 .Procedure
 
-. Create a new Azure service principal for managing DNS as follows:
+. Create a new Azure service principal for managing DNS by setting the following environment variables:
 +
 [source,terminal]
 ----
-DNS_NEW_SP_NAME=kuadrantDnsPrincipal
-DNS_SP=$(az ad sp create-for-rbac --name $DNS_NEW_SP_NAME)
-DNS_SP_APP_ID=$(echo $DNS_SP | jq -r '.appId')
-DNS_SP_PASSWORD=$(echo $DNS_SP | jq -r '.password')
+$ DNS_NEW_SP_NAME=kuadrantDnsPrincipal \
+  DNS_SP=$(az ad sp create-for-rbac --name $DNS_NEW_SP_NAME) \
+  DNS_SP_APP_ID=$(echo $DNS_SP | jq -r '.appId') \
+  DNS_SP_PASSWORD=$(echo $DNS_SP | jq -r '.password')
 ----
 +
 For more details on service principals, see the https://learn.microsoft.com/en-us/entra/identity-platform/app-objects-and-service-principals?tabs=browser#service-principal-object[Microsoft Azure documentation].
+
+. Set the resource group environment variable by running the following command:
++
+[source,bash]
+----
+$ DNS_RESOURCE_GROUP="ExampleDNSResourceGroup"
+----
++
+Replace _"ExampleDNSResourceGroup"_ with the DNS resource group that you want to use.
 
 . To grant read and contributor access to the zones that you want managed for the service principal you are using, perform the following steps:
 
@@ -49,54 +51,72 @@ For more details on service principals, see the https://learn.microsoft.com/en-u
 [source,terminal]
 ----
 $ DNS_ID=$(az network dns zone show --name example.com \
- --resource-group ExampleDNSResourceGroup --query "id" --output tsv)
-
-# Get your resource group ID
-$ RESOURCE_GROUP_ID=az group show --resource-group ExampleDNSResourceGroup | jq ".id" -r
+ --resource-group $DNS_RESOURCE_GROUP --query "id" --output tsv)
 ----
 
-.. Provide reader access to the resource group as follows:
+.. Get your resource group ID by running the following command:
++
+[source,bash]
+----
+$ RESOURCE_GROUP_ID=$(az group show --resource-group $DNS_RESOURCE_GROUP | jq ".id" -r)
+----
+
+.. Give reader access to the resource group as follows:
 +
 [source,terminal]
 ----
 $ az role assignment create --role "Reader" --assignee $DNS_SP_APP_ID --scope $DNS_ID
 ----
 
-.. Provide contributor access to the DNS zone as follows:
+.. Give contributor access to the DNS zone as follows:
 +
 [source,terminal]
 ----
 $ az role assignment create --role "Contributor" --assignee $DNS_SP_APP_ID --scope $DNS_ID
 ----
 
-. Because you are setting up advanced traffic rules for geographic and weighted responses, you must also grant traffic manager and DNS zone access as follows:
+. Because you are setting up advanced traffic rules for geographic and weighted responses, you must also grant traffic manager and DNS zone access:
++
+.. Create the role assignment for the traffic manager contributor by running the following command:
 +
 [source,terminal]
 ----
 $ az role assignment create --role "Traffic Manager Contributor" --assignee $DNS_SP_APP_ID --scope $RESOURCE_GROUP_ID
-
+----
++
+.. Create the role assignment for the DNA zone contributor by running the following command:
++
+[source,bash]
+----
 $ az role assignment create --role "DNS Zone Contributor" --assignee $DNS_SP_APP_ID --scope $RESOURCE_GROUP_ID
-
-cat <<-EOF > /local/path/to/azure.json
+----
++
+.. Configure the DNS zone access by running the following command:
++
+[source,bash]
+----
+$ cat <<-EOF > /local/path/to/azure.json
 {
   "tenantId": "$(az account show --query tenantId -o tsv)",
   "subscriptionId": "$(az account show --query id -o tsv)",
-  "resourceGroup": "ExampleDNSResourceGroup",
+  "resourceGroup": "$DNS_RESOURCE_GROUP",
   "aadClientId": "$DNS_SP_APP_ID",
   "aadClientSecret": "$DNS_SP_PASSWORD"
 }
 EOF
 ----
 
-. Create a `Secret` resource for your credentials as follows:
+. Create a `Secret` resource for your credentials by running the following command:
 +
 [source,terminal]
 ----
-$ kubectl create secret generic test-azure-credentials \
+$ oc create secret generic test-azure-credentials \
   --namespace=api-gateway \
   --type=kuadrant.io/azure \
   --from-file=azure.json=/local/path/to/azure.json
 ----
 +
-Set the secret `type` to `azure`.
-//still need kuadrant?
+[IMPORTANT]
+====
+You must configure the secret in the same namespace as your gateway.
+====

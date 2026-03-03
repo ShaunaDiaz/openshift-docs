@@ -4,27 +4,29 @@
 
 :_mod-docs-content-type: PROCEDURE
 [id="rhcl-install-ocp-web-console_{context}"]
-= Installing {prodname} in the {ocp} web console
+= Installing {prodname} with the {ocp} web console
 
 [role="_abstract"]
-You can use the {ocp} web console to install the {product-title} Operator.
+You can use the {ocp} web console to install the {product-title} Operator. You must perform these steps on each {ocp} cluster that you want to use {prodname} on.
 
-[NOTE]
+An `OperatorGroup` custom resource (CR) is created automatically when you use the web console. For more information, see link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html-single/operators/index#olm-understanding-operatorgroups[Operator Groups].
+
+[WARNING]
 ====
-You must perform these steps on each {ocp} cluster that you want to use {prodname} on.
+{prodname} requires `kuadrant.io/*` labels to search and filter resources on the cluster. Do not remove labels with this prefix. Removal might cause unexpected behavior and degradation of {prodname}.
 ====
-//TODO snippet
 
 .Prerequisites
-//TODO Fixme
-* See xref:install-prerequisites_{context}[].
+
+* You are logged into {ocp} as a cluster administrator.
+* You are using a supported configuration of {ocp} and required components.
 * You have access to the {ocp} web console.
 
 .Procedure
 
 . In the {ocp} web console, log in with `cluster-admin` privileges.
 
-. In the left navigation menu, click *Operators > OperatorHub*.
+. In the left navigation menu, click *Ecosystem > Software Catalog*.
 
 . In the *Filter by keyword* text box, enter `Connectivity` to find the *{product-title}* Operator.
 
@@ -40,20 +42,18 @@ You must perform these steps on each {ocp} cluster that you want to use {prodnam
 
 . Click *Install*, and wait a few moments until the Operator is installed and ready for use.
 
-. Click *Operators > Installed Operators* > *{product-title}*.
+. Click *Ecosystem > Installed Operators* > *{product-title}*.
 
-. Click the *Kuadrant* tab, and click *Create Kuadrant* to create a deployment.
+. Click the *Kuadrant* tab, and click *Create Kuadrant* to create a Kuadrant custom resource (CR).
 
-. In the *Configure via* field, click *YAML view* to edit the definition, for example, the deployment name.
+. In the *Configure via* field, click *YAML view* to edit the definition, for example, the Kuadrant CR name.
 
 . Click *Create* and wait for the deployment to be displayed in the list.
 
 .Verification
 
-After you have installed the Operator, click *Operators > Installed Operators* to verify that the *{product-title}* Operator and the following component Operators are installed in your namespace:
+After you have installed the Operator, click *Ecosystem > Installed Operators* to verify that the *{product-title}* Operator and the following component Operators are installed in your namespace:
 
-* *Red Hat - Authorino Operator*: Enables authentication and authorization for gateways and applications in a Gateway API network.
-* *Red Hat - DNS Operator*: Configures how north-south traffic from outside the network is balanced and reaches gateways.
-* *Red Hat - Limitador Operator*: Enables rate limiting for gateways and applications in a Gateway API network.
-
-//WARNING: {prodname} uses a number of labels to search and filter resources on the cluster. All required labels are formatted as `kuadrant.io/*`. Removal of any labels with this prefix may cause unexpected behavior and degradation of {prodname}.
+* *Authorino Operator*: Enables authentication and authorization for gateways and applications in a Gateway API network.
+* *DNS Operator*: Configures how north-south traffic from outside the network is balanced and reaches gateways.
+* *Limitador Operator*: Enables rate limiting for gateways and applications in a Gateway API network.
