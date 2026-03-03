@@ -7,29 +7,35 @@
 = Installing {prodname} on {ocp} from the command line
 
 [role="_abstract"]
-You can install {product-title} from the CLI.
+You can install {product-title} with {oc-first}. You must complete these steps on each {ocp} cluster that you want to use {prodname} on.
 
-NOTE: You must perform these steps on each {ocp} cluster that you want to use {prodname} on.
+[WARNING]
+====
+{prodname} uses labels formatted as `kuadrant.io/*` to search and filter resources on the cluster. Removing of any labels with the prefix might cause unexpected behavior and degradation of {prodname}.
+====
 
 .Prerequisites
 
-* See xref:install-prerequisites_{context}[].
-//TODO make this a snippet or figure out a better way to list this.
+* You are logged into {ocp} as a cluster administrator.
+* You are using a supported configuration of {ocp} and required components.
+* You installed the {oc-first}.
 
 .Procedure
 
-. Create the namespace where you want to install the Operator as follows, for example, `kuadrant-system`:
+. Create the namespace where you want to install {prodname} by running the following command:
 +
 [source,terminal]
 ----
-$ kubectl create ns kuadrant-system
+$ oc create ns <kuadrant_system>
 ----
++
+You can replace _<kuadrant_system>_ with the namespace you want to use.
 
-. To install the {prodname} Operator, enter the following command:
+. Install {prodname} by running the following command:
 +
 [source,terminal]
 ----
-$ kubectl apply -f - <<EOF
+$ oc apply -f - <<EOF
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
@@ -52,36 +58,41 @@ spec:
 EOF
 ----
 +
-Wait for the {prodname} Operators to be installed as follows:
-+
-[source,terminal]
-----
-$ kubectl get installplan -n kuadrant-system -o=jsonpath='{.items[0].status.phase}'
-----
-+
-After some time, this command will return `Complete` when ready.
+Replace the value of `metatdata.namespace:` with the namespace you used.
 
-. To create your {prodname} deployment, enter the following command:
+. Confirm that the {prodname} installation is done by running one of the following commands:
 +
 [source,terminal]
 ----
-$ kubectl apply -f - <<EOF
+$ oc wait --for=jsonpath={.status.installPlanRef.name} subscription rhcl-operator --timeout=10s
+ip=$(oc get subscription rhcl-operator -o=jsonpath={.status.installPlanRef.name})
+----
++
+[source,bash]
+----
+$ oc wait --for=condition=Installed installplan ${ip} --timeout=60s
+----
++
+Expect the status of `installplan.operators.coreos.com/install-4rql7` when {prodname} is ready. The name of the install plan has a random suffix, in this example, `4rql7`.
+
+. To create your {prodname} CR, enter the following command:
++
+[source,bash]
+----
+$ oc apply -f - <<EOF
 apiVersion: kuadrant.io/v1beta1
 kind: Kuadrant
 metadata:
   name: kuadrant
   namespace: kuadrant-system
 EOF
-
 ----
-+
-Wait for Kuadrant to be ready as follows:
+
+. Check the status of the {prodname} CR generation by running the following command:
 +
 [source,terminal]
 ----
-$ kubectl wait kuadrant/kuadrant --for="condition=Ready=true" -n kuadrant-system --timeout=300s
+$ oc wait kuadrant/kuadrant --for="condition=Ready=true" -n kuadrant-system --timeout=300s
 ----
 +
-This command will return `Complete` when ready.
-
-//WARNING: {prodname} uses a number of labels to search and filter resources on the cluster. All required labels are formatted as `kuadrant.io/*`. Removal of any labels with the prefix may cause unexpected behavior and degradation of {prodname}.
+Expect the status of `kuadrant.kuadrant.io/kuadrant condition met` when the {prodname} CR is ready.

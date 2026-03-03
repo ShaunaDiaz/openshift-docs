@@ -1,0 +1,69 @@
+// Module included in the following assemblies:
+//
+// *install-guide/install-guide.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="rhcl-getting-ready-to-install_{context}"]
+= Getting ready to install {prodname}
+
+[role="_abstract"]
+As you plan your {prodname} install, ensure that you have access to the required platforms in your environment with the correct user permissions. You can also decide whether to use optional supported components, such as rate limiting and Observability.
+
+[id="rhcl-required-platforms-components_{context}"]
+== Required platforms and components
+
+The following platforms and components are required to install {prodname} successfully:
+
+{rh} account::
+You have a {rh} account with subscriptions for {prodname} and {ocp}.
+
+{ocp}::
+{ocp} {ocp-min-version} or later is installed, or you have access to a supported {ocp} cloud service. See link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/installation_overview/index[OpenShift Container Platform installation documentation].
++
+[IMPORTANT]
+====
+In Gateway API, you must create a `GatewayClass` named `openshift-default` and specify a `controllerName` of `openshift.io/gateway-controller/v1`. For more details, see the link:https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/ingress_and_load_balancing/configuring-ingress-cluster-traffic#ingress-gateway-api[OpenShift documentation on using Gateway API].
+====
+
+{service-mesh}::
+
+You must use {service-mesh} {service-mesh-version} or later.
+
+{cert-manager}::
+
+You installed {cert-manager} {cert-manager-version} to manage the TLS certificates for your gateways. See the link:https://docs.redhat.com/en/documentation/openshift_container_platform/{ocp-latest-version}/html/security_and_compliance/cert-manager-operator-for-red-hat-openshift[cert-manager Operator for Red Hat OpenShift documentation].
++
+[IMPORTANT]
+====
+Before using a {prodname} TLSPolicy, you must set up a certificate issuer for your cloud provider platform. See the link:https://docs.redhat.com/en/documentation/openshift_container_platform/{ocp-latest-version}/html-single/security_and_compliance/index#cert-manager-operator-issuer-acme[OpenShift documentation on configuring an ACME issuer].
+====
+
+[id="rhcl-optional-components_{context}"]
+== Optional components
+
+The following components are optional with {prodname}. You can decide what you want to use and plan for those configurations before beginning your installation.
+
+DNSPolicy::
+
+For DNSPolicy, you must have an account for one of the supported cloud DNS providers and have set up a hosted zone for {prodname}. For more details, see your cloud DNS provider documentation:
+
+* link:https://docs.aws.amazon.com/route53/?icmpid=docs_homepage_networking[Amazon Route 53 documentation]
+* link:https://cloud.google.com/dns/docs[Google Cloud DNS documentation]
+* link:https://learn.microsoft.com/en-us/azure/dns/[Microsoft Azure DNS documentation]
+
+RateLimitPolicy::
+
+For rate-limiting policies, you must have a shared accessible Redis-based datastore for rate-limit counters in a multicluster environment. For details on how to install and configure a secure and highly available datastore, see the documentation for your Redis-compatible datastore:
+
+* link:https://redis.io/docs/latest/[Redis documentation]
+* link:https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/WhatIs.html[AWS ElastiCache (Redis OSS) User Guide]
+* link:https://www.dragonflydb.io/docs[Dragonfly documentation]
+* link:https://valkey.io/docs/[Valkey documentation]
+
+AuthPolicy::
+
+For AuthPolicy, you can install {keycloak} if required in your environment. For more details, see the link:https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak[{keycloak} documentation].
+
+Observability::
+
+For Observability, you must configure {ocp} user workload monitoring to remote-write to a central storage system.
