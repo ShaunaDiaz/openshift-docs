@@ -37,7 +37,7 @@ For more details on service principals, see the https://learn.microsoft.com/en-u
 
 . Set the resource group environment variable by running the following command:
 +
-[source,bash]
+[source,terminal]
 ----
 $ DNS_RESOURCE_GROUP="ExampleDNSResourceGroup"
 ----
@@ -56,7 +56,7 @@ $ DNS_ID=$(az network dns zone show --name example.com \
 
 .. Get your resource group ID by running the following command:
 +
-[source,bash]
+[source,terminal]
 ----
 $ RESOURCE_GROUP_ID=$(az group show --resource-group $DNS_RESOURCE_GROUP | jq ".id" -r)
 ----
@@ -86,14 +86,14 @@ $ az role assignment create --role "Traffic Manager Contributor" --assignee $DNS
 +
 .. Create the role assignment for the DNA zone contributor by running the following command:
 +
-[source,bash]
+[source,terminal]
 ----
 $ az role assignment create --role "DNS Zone Contributor" --assignee $DNS_SP_APP_ID --scope $RESOURCE_GROUP_ID
 ----
 +
 .. Configure the DNS zone access by running the following command:
 +
-[source,bash]
+[source,terminal]
 ----
 $ cat <<-EOF > /local/path/to/azure.json
 {
