@@ -50,7 +50,7 @@ $ export PROJECT_ID=xxxxxxx
 
 . Create a `Secret` resource for your credentials by running the following command:
 +
-[source,bash]
+[source,terminal]
 ----
 $ oc create secret generic test-gcp-credentials \
   --namespace=api-gateway \
