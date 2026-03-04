@@ -3,11 +3,11 @@
 // *install-guide/install-guide.adoc
 
 :_mod-docs-content-type: PROCEDURE
-[id="install-on-ocp-cmd_{context}"]
-= Installing {prodname} on {ocp} from the command line
+[id="proc-install-on-ocp-cmd-istio_{context}"]
+= Installing {prodname} on {ocp} from the CLI with Istio as Gateway controller
 
 [role="_abstract"]
-You can install {product-title} with {oc-first}. You must complete these steps on each {ocp} cluster that you want to use {prodname} on.
+If you are using {service-mesh}, you can install {prodname} with {oc-first} using Istio as your `Gateway` object controller. You must complete these steps on each {ocp} cluster that you want to use {prodname} on.
 
 [WARNING]
 ====
@@ -19,17 +19,18 @@ You can install {product-title} with {oc-first}. You must complete these steps o
 * You are logged into {ocp} as a cluster administrator.
 * You are using a supported configuration of {ocp} and required components.
 * You installed the {oc-first}.
+* You installed and configured {service-mesh}.
 
 .Procedure
 
 . Create the namespace where you want to install {prodname} by running the following command:
 +
-[source,terminal]
+[source,terminal,subs="+quotes"]
 ----
-$ oc create ns <kuadrant_system>
+$ oc create ns _<kuadrant-system>_
 ----
 +
-You can replace _<kuadrant_system>_ with the namespace you want to use.
+You can replace the default _<kuadrant-system>_ with the namespace you want to use.
 
 . Install {prodname} by running the following command:
 +
@@ -47,6 +48,10 @@ spec:
   name: rhcl-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
+  config:
+    env:
+    - name: ISTIO_GATEWAY_CONTROLLER_NAMES
+      value: istio.io/gateway-controller
 ---
 kind: OperatorGroup
 apiVersion: operators.coreos.com/v1
@@ -58,9 +63,9 @@ spec:
 EOF
 ----
 +
-Replace the value of `metatdata.namespace:` with the namespace you used.
+Replace _<kuadrant-system>_ with the namespace you used.
 
-. Confirm that the {prodname} installation is done by running one of the following commands:
+. Confirm that the {prodname} installation has finished by running one of the following commands:
 +
 [source,terminal]
 ----
@@ -73,26 +78,36 @@ ip=$(oc get subscription rhcl-operator -o=jsonpath={.status.installPlanRef.name}
 $ oc wait --for=condition=Installed installplan ${ip} --timeout=60s
 ----
 +
-Expect the status of `installplan.operators.coreos.com/install-4rql7` when {prodname} is ready. The name of the install plan has a random suffix, in this example, `4rql7`.
+Expect the status of `installplan.operators.coreos.com/install-<suffix>` when {prodname} is ready. The name of the install plan has a random suffix, for example, `4rql7`.
 
-. To create your {prodname} CR, enter the following command:
+. Create your {prodname} custom resource (CR) by running the following command:
 +
-[source,terminal]
+[source,terminal,subs="+quotes"]
 ----
 $ oc apply -f - <<EOF
 apiVersion: kuadrant.io/v1beta1
 kind: Kuadrant
 metadata:
   name: kuadrant
-  namespace: kuadrant-system
+  namespace: _<kuadrant-system>_
 EOF
 ----
++
+Replace _<kuadrant-system>_ with the namespace you used.
 
-. Check the status of the {prodname} CR generation by running the following command:
+.Verification
+
+* Check the status of the {prodname} CR generation by running the following command:
 +
-[source,terminal]
+[source,terminal,subs="+quotes"]
 ----
-$ oc wait kuadrant/kuadrant --for="condition=Ready=true" -n kuadrant-system --timeout=300s
+$ oc wait kuadrant/kuadrant --for="condition=Ready=true" -n _<kuadrant-system>_ --timeout=300s
 ----
 +
-Expect the status of `kuadrant.kuadrant.io/kuadrant condition met` when the {prodname} CR is ready.
+Replace _<kuadrant-system>_ with the namespace you used.
++
+.Example output
+[source,terminal,subs="+quotes"]
+----
+kuadrant.kuadrant.io/kuadrant Ready
+----
