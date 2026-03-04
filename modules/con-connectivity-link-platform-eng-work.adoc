@@ -7,25 +7,26 @@
 = Platform engineer workflow
 
 [role="_abstract"]
-As a platform engineer or infrastructure provider, you can use {prodname} to set up ingress gateways on {ocp} clusters in specific regions. You can ensure that all policies are configured identically on all gateways for consistency.
+As a platform engineer or infrastructure provider, you can use {prodname} to set up ingress gateways on {ocp} clusters in specific regions. You can configure all policies identically on all gateways for consistency.
 
-For example, configure DNS policies to ensure that customers in Brazil are routed to the South American data center, and that other customers around the world are routed to the appropriate environment. You can also configure TLS, authentication and authorization, and rate-limiting policies to ensure that gateway security, performance, and monitoring all conform to your standards.
+For example, configure DNS policies to ensure that customers in Brazil are routed to the South American data center and so on. You can also configure TLS, authentication and authorization, and rate-limiting policies to ensure that gateway security, performance, and monitoring all conform to your standards.
 
-The following diagrams show a high-level overview of the {prodname} platform engineer workflow:
-
-.{prodname} platform engineer sets up gateways
-image::connectivity-link-platform-eng-gateway-flow.png[{prodname} platform engineer sets up gateway workflow]
-
+Connect gateways and load balance::
 As a platform engineer, you must start by creating at least one gateway. If gateways exist, you can move on to configuring policies for your gateways.
 
-.{prodname} platform engineer configures gateway policies
-image::connectivity-link-platform-eng-policy-flow.png[{prodname} platform engineer configures gateway policies workflow]
+You can connect gateways by creating a DNS policy and configuring a global load balancing strategy. DNS records are reconciled with your cloud DNS provider automatically, whether in a single-cluster or multicluster environment. You can use the following features:
 
-Connect gateways::
-You can connect gateways by creating a DNS policy and configuring a global load balancing strategy. DNS records are reconciled with your cloud DNS provider automatically, whether in a single-cluster or multicluster environment.
+* Automatic DNS configuration
+* Mutiple DNS providers
+* DNS-based load balancing, such as round-robin, weighted, and geo-based
+* Single or multi-cluster ready
 
 Secure gateways::
-You can secure gateways by using a TLS policy that automatically generates certificate requests for the hostnames specified in your gateway. This includes support for the main ACME providers such as Let's Encrypt. You can also set up application security defaults and overrides by using authentication and authorization policies and rate-limiting policies.
+After you create your gateways, secure them. You can secure gateways by using a TLS policy that automatically generates certificate requests for the host names specified in your gateway. You can also set up application security defaults and overrides by using authentication and authorization policies and rate-limiting policies. You can use the following features:
+
+* TLS: Automatic certificate requests and ACME providers
+* Auth policies
+* Rate-limiting: Global rate-limiting, external IDPs, default and overrides
 
 Observe gateways::
-In addition, you can observe your connectivity and runtime metrics by using Grafana-based dashboards and alerts. For example, this includes metrics for policy compliance and governance, resource consumption, error rates, request latency and throughput, multicluster split, and so on.
+After your gateways are created and secured, you can configure your observability stack. Observe your connectivity and runtime metrics by using dashboards and alerts. For example, configure metrics for policy compliance and governance, resource consumption, error rates, request latency and throughput.
