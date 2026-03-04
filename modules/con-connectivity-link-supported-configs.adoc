@@ -4,10 +4,12 @@
 
 :_mod-docs-content-type: CONCEPT
 [id="rhcl-supported-configs_{context}"]
-= Supported configurations with {product-title}
+= Supported configurations with {prodname}
 
 [role="_abstract"]
-{prodname} must run on a supported combination of {ocp} with {rh} {service-mesh} as the Gateway API provider, and use the {cert-manager}. {rh} provides both production and development support for supported configurations and tested integrations according to your subscription agreement.
+{prodname} must run on a supported combination of {ocp} and use the {cert-manager}. To configure observability, use {rh} {service-mesh}. {rh} provides both production and development support for supported configurations and tested integrations according to your subscription agreement.
+
+include::snippets/snippet-rhcl-with-ocp-418-ossm.adoc[]
 
 [id="rhcl-supported-openshift-version-configs_{context}"]
 == Supported {ocp} version configurations

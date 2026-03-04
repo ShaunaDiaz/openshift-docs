@@ -9,6 +9,8 @@
 [role="_abstract"]
 You can use the {ocp} web console to install the {product-title} Operator. You must perform these steps on each {ocp} cluster that you want to use {prodname} on.
 
+The {ocp} Cluster Ingress Operator is the default gateway controller for {prodname}.
+
 An `OperatorGroup` custom resource (CR) is created automatically when you use the web console. For more information, see link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html-single/operators/index#olm-understanding-operatorgroups[Operator Groups].
 
 [WARNING]
@@ -18,13 +20,11 @@ An `OperatorGroup` custom resource (CR) is created automatically when you use th
 
 .Prerequisites
 
-* You are logged into {ocp} as a cluster administrator.
 * You are using a supported configuration of {ocp} and required components.
-* You have access to the {ocp} web console.
+* You are logged into {ocp} as a cluster administrator.
+* You are logged into the {ocp} web console with `cluster-admin` privileges.
 
 .Procedure
-
-. In the {ocp} web console, log in with `cluster-admin` privileges.
 
 . In the left navigation menu, click *Ecosystem > Software Catalog*.
 
@@ -57,3 +57,7 @@ After you have installed the Operator, click *Ecosystem > Installed Operators* t
 * *Authorino Operator*: Enables authentication and authorization for gateways and applications in a Gateway API network.
 * *DNS Operator*: Configures how north-south traffic from outside the network is balanced and reaches gateways.
 * *Limitador Operator*: Enables rate limiting for gateways and applications in a Gateway API network.
+
+.Next step
+
+* Update your Subscription CR to use the {ocp} Cluster Ingress Operator.
