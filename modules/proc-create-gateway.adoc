@@ -4,28 +4,27 @@
 
 :_mod-docs-content-type: PROCEDURE
 [id="create-gateway_{context}"]
-= Create your gateway instance
+= Creating a gateway
 
 [role="_abstract"]
-This section shows how you can deploy a Gateway in your {ocp} cluster. This task is typically performed by platform engineers when setting up the infrastructure to be used by application developers.
+As a platform engineer, create a gateway to your {ocp} cluster to set up the infrastructure used by application developers. The following example assumes that you are using the {ocp} Cluster Ingress Operator (CIO).
 
-[NOTE]
-====
-In a multicluster environment, for {prodname} to balance traffic by using DNS across clusters, you must define a Gateway with a shared hostname. You can define this by using an HTTPS listener with a wildcard hostname based on the root domain. As mentioned previously, you must apply these resources to all clusters.
-====
+include::snippets/snippet-openshift-cio-gatewayclass.adoc[leveloffset=+1]
+
+If you are using {service-mesh} on {ocp} 4.19 and newer and you set the `ISTIO_GATEWAY_CONTROLLER_NAMES` variable to `istio.io/gateway-controller` during your {prodname} installation, then you can use the `GatewayClass` custom resource (CR) created by default by {service-mesh}. Make sure you use the corresponding `spec.gatewayClassName` value in your `Gateway` CR.
 
 .Prerequisites
 
-* You installed {prodname} on one or more clusters.
-* If plan to use rate-limiting in a multicluster environment, you have a shared Redis-based datastore.
-* You installed the {oc-first}.
-* You have write access to the {ocp} namespaces you need to work with.
-* You have access to external or on-premise DNS.
-* If you plan to use observability, you configured {ocp} user workload monitoring to remote-write to a central storage system.
+* {prodname} is installed on the {ocp} cluster you are working with.
+* You set the `ISTIO_GATEWAY_CONTROLLER_NAMES` environment variable value to `openshift.io/gateway-controller/v1` during your {prodname} installation.
+* You created a `GatewayClass` named `openshift-default` and specified a `controllerName` of `openshift.io/gateway-controller/v1`.
+* The {oc-first} is installed.
+* You are logged in to the {ocp} cluster with write access to the namespaces you need to use.
+* You have a DNS zone available for use.
 
 .Procedure
 
-. Enter the following command to create the Gateway:
+* Create a gateway that uses the {ocp} CIO by running the following command:
 +
 [source,terminal]
 ----
@@ -38,7 +37,7 @@ metadata:
   labels:
     kuadrant.io/gateway: "true"
 spec:
-    gatewayClassName: istio
+    gatewayClassName: openshift-default
     listeners:
     - allowedRoutes:
         namespaces:
@@ -55,22 +54,30 @@ spec:
         mode: Terminate
 EOF
 ----
++
+[IMPORTANT]
+====
+In a multicluster environment, for {prodname} to balance traffic by using DNS across clusters, you must specify a gateway with a shared hostname. You can define this by using an HTTPS listener with a wildcard hostname based on the root domain.
+====
 
-. Check the status of your Gateway as follows:
+.Verification
+
+. Check the status of your gateway by running the following command:
 +
 [source,terminal]
 ----
 $ oc get gateway ${KUADRANT_GATEWAY_NAME} -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Programmed")].message}'
 ----
 +
-Your Gateway should be `Accepted` and `Programmed`, which means that it is valid and assigned an external address.
+The statuses `Accepted` and `Programmed` mean that your gateway is valid and assigned an external address.
 
-. Check the status of your HTTPS listener as follows:
+. Check the status of your HTTPS listener by running the following command:
 +
 [source,terminal]
 ----
 $ oc get gateway ${KUADRANT_GATEWAY_NAME} -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.listeners[0].conditions[?(@.type=="Programmed")].message}'
 ----
-+
-You will see that the HTTPS listener is not yet programmed or ready to accept traffic due to bad TLS configuration. {prodname} can help with this by using a TLSPolicy, which is described in the next step.
-//TODO FIXME Next steps
+
+.Next steps
+
+* Configure a TLS policy so that the The HTTPS listener can accept traffic.
