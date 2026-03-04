@@ -54,7 +54,7 @@ kubectl apply -k config/observability/openshift/grafana
 
 . Configure the example Grafana dashboards as follows:
 +
-[source,bash,subs="attributes+"]
+[source,terminal,subs="attributes+"]
 ----
 $ kubectl apply -k https://github.com/Kuadrant/kuadrant-operator/examples/dashboards?ref=v{operator-version}
 ----
