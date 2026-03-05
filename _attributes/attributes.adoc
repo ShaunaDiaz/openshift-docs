@@ -30,25 +30,6 @@
 :keycloak: Red Hat build of Keycloak
 :keycloak-version: 26.4
 
-:download-url-rhcl-container-catalog: https://catalog.redhat.com/software/containers/search
-:download-url-rhcl-distribution: https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions
-
-:reg: ®
-:trade: ™
-
-:prodname: Connectivity Link
-:productpkg: red_hat_connectivity_link
-:RHCLProductURL: connectivity_link
-:RHCLURLVersion: 1.2
-//TODO FIXME
-:LinkRHCLIntro: https://access.redhat.com/documentation/en-us/{productpkg}/{RHCLURLVersion}/html-single/introduction_to_{RHCLProductURL}/index
-:NameRHCLIntro: Introduction to {prodname}
-
-:LinkRHCLInstall: https://access.redhat.com/documentation/en-us/{productpkg}/{RHCLURLVersion}/html-single/installing_{RHCLProductURL}_on_openshift/index
-:NameRHCLInstall: Installing {prodname} on OpenShift
-
-:LinkRHCLObserve: https://access.redhat.com/documentation/en-us/{productpkg}/{RHCLURLVersion}/html-single/{RHCLProductURL}_observability_guide/index
-:NameRHCLObserve: {prodname} Observability Guide
-
-:LinkRHCLDeploy: https://access.redhat.com/documentation/en-us/{productpkg}/{RHCLURLVersion}/html-single/configuring_and_deploying_gateway_policies_with_{RHCLProductURL}/index
-:NameRHCLDeploy: Configuring and deploying Gateway policies with {prodname}
+:TempoName: Red{nbsp}Hat OpenShift Distributed Tracing Platform
+:TempoShortName: Distributed Tracing Platform
+:TempoOperator: Tempo Operator
