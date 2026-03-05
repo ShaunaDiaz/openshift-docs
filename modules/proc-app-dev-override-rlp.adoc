@@ -30,7 +30,7 @@ Any new HTTPRoutes are affected by the existing Gateway-level policy. Because yo
 +
 [source,terminal]
 ----
-$ kubectl apply -f - <<EOF
+$ oc apply -f - <<EOF
 apiVersion: kuadrant.io/v1
 kind: RateLimitPolicy
 metadata:
@@ -66,14 +66,14 @@ It might take a few minutes for the `RateLimitPolicy` to be applied, depending o
 +
 [source,terminal]
 ----
-$ kubectl get ratelimitpolicy -n ${KUADRANT_DEVELOPER_NS} toystore-rlp -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
+$ oc get ratelimitpolicy -n ${KUADRANT_DEVELOPER_NS} toystore-rlp -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
 ----
 
 . Check that the status of the `HTTPRoute` is now affected by the `RateLimitPolicy` in the same namespace:
 +
 [source,terminal]
 ----
-$ kubectl get httproute toystore -n ${KUADRANT_DEVELOPER_NS} -o=jsonpath='{.status.parents[0].conditions[?(@.type=="kuadrant.io/RateLimitPolicyAffected")].message}'
+$ oc get httproute toystore -n ${KUADRANT_DEVELOPER_NS} -o=jsonpath='{.status.parents[0].conditions[?(@.type=="kuadrant.io/RateLimitPolicyAffected")].message}'
 ----
 
 .Verification

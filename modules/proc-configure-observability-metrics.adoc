@@ -31,7 +31,7 @@ You must perform these steps on each {ocp} cluster that you want to use {prodnam
 +
 [source,terminal]
 ----
-$ kubectl get configmap cluster-monitoring-config -n openshift-monitoring -o jsonpath='{.data.config\.yaml}'|grep enableUserWorkload
+$ oc get configmap cluster-monitoring-config -n openshift-monitoring -o jsonpath='{.data.config\.yaml}'|grep enableUserWorkload
 ----
 +
 The expected output is `enableUserWorkload: true`.
@@ -40,7 +40,7 @@ The expected output is `enableUserWorkload: true`.
 +
 [source,terminal]
 ----
-$ kubectl apply -k https://github.com/Kuadrant/kuadrant-operator/config/install/configure/observability?ref=v1.2.0
+$ oc apply -k https://github.com/Kuadrant/kuadrant-operator/config/install/configure/observability?ref=v1.2.0
 ----
 
 . From the root directory of your Kuadrant Operator repository, configure the {ocp} `thanos-query` instance as a data source in Grafana as follows:
@@ -48,15 +48,15 @@ $ kubectl apply -k https://github.com/Kuadrant/kuadrant-operator/config/install/
 [source,terminal]
 ----
 TOKEN="Bearer $(oc whoami -t)"
-HOST="$(kubectl -n openshift-monitoring get route thanos-querier -o jsonpath='https://{.status.ingress[].host}')"
+HOST="$(oc -n openshift-monitoring get route thanos-querier -o jsonpath='https://{.status.ingress[].host}')"
 echo "TOKEN=$TOKEN" > config/observability/openshift/grafana/datasource.env
 echo "HOST=$HOST" >> config/observability/openshift/grafana/datasource.env
-kubectl apply -k config/observability/openshift/grafana
+oc apply -k config/observability/openshift/grafana
 ----
 
 . Configure the example Grafana dashboards as follows:
 +
 [source,terminal,subs="attributes+"]
 ----
-$ kubectl apply -k https://github.com/Kuadrant/kuadrant-operator/examples/dashboards?ref=v{operator-version}
+$ oc apply -k https://github.com/Kuadrant/kuadrant-operator/examples/dashboards?ref=v{operator-version}
 ----
