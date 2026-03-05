@@ -25,14 +25,14 @@ You must apply the following `Secret` resource to each cluster. If you are addin
 +
 [source,terminal]
 ----
-$ kubectl create ns ${KUADRANT_GATEWAY_NS}
+$ oc create ns ${KUADRANT_GATEWAY_NS}
 ----
 
 . Create the secret credentials in the same namespace as the Gateway as follows:
 +
 [source,terminal]
 ----
-$ kubectl -n ${KUADRANT_GATEWAY_NS} create secret generic aws-credentials \
+$ oc -n ${KUADRANT_GATEWAY_NS} create secret generic aws-credentials \
   --type=kuadrant.io/aws \
   --from-literal=AWS_ACCESS_KEY_ID=$KUADRANT_AWS_ACCESS_KEY_ID \
   --from-literal=AWS_SECRET_ACCESS_KEY=$KUADRANT_AWS_SECRET_ACCESS_KEY
@@ -42,7 +42,7 @@ $ kubectl -n ${KUADRANT_GATEWAY_NS} create secret generic aws-credentials \
 +
 [source,terminal]
 ----
-$ kubectl -n cert-manager create secret generic aws-credentials \
+$ oc -n cert-manager create secret generic aws-credentials \
   --type=kuadrant.io/aws \
   --from-literal=AWS_ACCESS_KEY_ID=$KUADRANT_AWS_ACCESS_KEY_ID \
   --from-literal=AWS_SECRET_ACCESS_KEY=$KUADRANT_AWS_SECRET_ACCESS_KEY

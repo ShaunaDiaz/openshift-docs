@@ -178,7 +178,7 @@ Replace `<node-name>` with the node you are testing on.
 [source,terminal]
 ----
 $ oc patch cm kuadrant-coredns -n kuadrant-coredns --type merge \
-   -p "$(kubectl get cm kuadrant-coredns -n kuadrant-coredns -o jsonpath='{.data.Corefile}' | \
+   -p "$(oc get cm kuadrant-coredns -n kuadrant-coredns -o jsonpath='{.data.Corefile}' | \
    sed 's/kuadrant/transfer {\n        to *\n    }\n    kuadrant/' | \
    jq -Rs '{data: {Corefile: .}}')"
 ----
@@ -208,7 +208,7 @@ In this example, `k.example` is the delegated zone and `ns1.k.example` is the pr
 [source,terminal]
 ----
 $ oc patch cm kuadrant-coredns -n kuadrant-coredns --type merge \
-   -p "$(kubectl get cm kuadrant-coredns -n kuadrant-coredns -o jsonpath='{.data.Corefile}' | \
+   -p "$(oc get cm kuadrant-coredns -n kuadrant-coredns -o jsonpath='{.data.Corefile}' | \
    sed '/transfer {/,/}/d' | \
    jq -Rs '{data: {Corefile: .}}')"
 ----

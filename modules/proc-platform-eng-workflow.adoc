@@ -31,7 +31,7 @@ In multicluster environments, you must perform the following steps in each clust
 +
 [source,terminal]
 ----
-$ kubectl apply -f - <<EOF
+$ oc apply -f - <<EOF
 apiVersion: kuadrant.io/v1
 kind: TLSPolicy
 metadata:
@@ -53,7 +53,7 @@ EOF
 +
 [source,terminal]
 ----
-$ kubectl get tlspolicy ${KUADRANT_GATEWAY_NAME}-tls -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
+$ oc get tlspolicy ${KUADRANT_GATEWAY_NAME}-tls -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
 ----
 +
 This may take a few minutes depending on the TLS provider, for example, Let's Encrypt.
@@ -67,7 +67,7 @@ This may take a few minutes depending on the TLS provider, for example, Let's En
 +
 [source,terminal]
 ----
-$ kubectl apply -f - <<EOF
+$ oc apply -f - <<EOF
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -107,7 +107,7 @@ EOF
 +
 [source,terminal]
 ----
-$ kubectl apply -f - <<EOF
+$ oc apply -f - <<EOF
 apiVersion: kuadrant.io/v1
 kind: AuthPolicy
 metadata:
@@ -144,7 +144,7 @@ EOF
 +
 [source,terminal]
 ----
-$ kubectl get authpolicy ${KUADRANT_GATEWAY_NAME}-auth -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
+$ oc get authpolicy ${KUADRANT_GATEWAY_NAME}-auth -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
 ----
 
 //TODO new module
@@ -156,7 +156,7 @@ $ kubectl get authpolicy ${KUADRANT_GATEWAY_NAME}-auth -n ${KUADRANT_GATEWAY_NS}
 +
 [source,terminal]
 ----
-$ kubectl apply -f  - <<EOF
+$ oc apply -f  - <<EOF
 apiVersion: kuadrant.io/v1
 kind: RateLimitPolicy
 metadata:
@@ -182,7 +182,7 @@ It might take a few minutes for the `RateLimitPolicy` to be applied depending on
 +
 [source,terminal]
 ----
-$ kubectl get ratelimitpolicy ${KUADRANT_GATEWAY_NAME}-rlp -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
+$ oc get ratelimitpolicy ${KUADRANT_GATEWAY_NAME}-rlp -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
 ----
 
 //TODO new module
@@ -194,7 +194,7 @@ $ kubectl get ratelimitpolicy ${KUADRANT_GATEWAY_NAME}-rlp -n ${KUADRANT_GATEWAY
 +
 [source,terminal]
 ----
-$ kubectl apply -f - <<EOF
+$ oc apply -f - <<EOF
 apiVersion: kuadrant.io/v1
 kind: DNSPolicy
 metadata:
@@ -224,7 +224,7 @@ The `DNSPolicy` uses the DNS Provider `Secret` that you defined earlier. The `ge
 +
 [source,terminal]
 ----
-$ kubectl get dnspolicy ${KUADRANT_GATEWAY_NAME}-dnspolicy -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
+$ oc get dnspolicy ${KUADRANT_GATEWAY_NAME}-dnspolicy -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
 ----
 +
 This might take a few minutes.
@@ -233,7 +233,7 @@ This might take a few minutes.
 +
 [source,terminal]
 ----
-$ kubectl get dnspolicy ${KUADRANT_GATEWAY_NAME}-dnspolicy -n ${KUADRANT_GATEWAY_NS} -
+$ oc get dnspolicy ${KUADRANT_GATEWAY_NAME}-dnspolicy -n ${KUADRANT_GATEWAY_NS} -
 ----
 +
 These health checks flag a published endpoint as healthy or unhealthy based on defined configuration. When unhealthy, an endpoint will not be published if it has not already been published to the DNS provider. An endpoint will only be unpublished if it is part of a multi-value A record, and in all cases can be observed in the DNSPolicy status.

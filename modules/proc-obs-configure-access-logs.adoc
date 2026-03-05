@@ -83,7 +83,7 @@ The `expression` field uses Common Expression Language (CEL). You can use CEL-ba
 +
 [source,terminal]
 ----
-$ kubectl get istio -A
+$ oc get istio -A
 ----
 +
 The expected output is a list of your mesh deployments, such as `default`, `prod-mesh` and their current status.

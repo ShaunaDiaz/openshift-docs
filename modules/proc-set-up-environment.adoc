@@ -51,12 +51,12 @@ If you know your environment variable values, you can set up the required YAML f
 +
 [source,terminal]
 ----
-$ kubectl create ns ${KUADRANT_DEVELOPER_NS}
+$ oc create ns ${KUADRANT_DEVELOPER_NS}
 ----
 
 . Deploy the Toystore app to the developer namespace:
 +
 [source,terminal]
 ----
-$ kubectl apply -f https://raw.githubusercontent.com/Kuadrant/Kuadrant-operator/main/examples/toystore/toystore.yaml -n ${KUADRANT_DEVELOPER_NS}
+$ oc apply -f https://raw.githubusercontent.com/Kuadrant/Kuadrant-operator/main/examples/toystore/toystore.yaml -n ${KUADRANT_DEVELOPER_NS}
 ----

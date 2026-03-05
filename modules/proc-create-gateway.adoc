@@ -25,7 +25,7 @@ In a multicluster environment, for {prodname} to balance traffic by using DNS ac
 +
 [source,terminal]
 ----
-$ kubectl apply -f - <<EOF
+$ oc apply -f - <<EOF
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
@@ -56,7 +56,7 @@ EOF
 +
 [source,terminal]
 ----
-$ kubectl get gateway ${KUADRANT_GATEWAY_NAME} -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Programmed")].message}'
+$ oc get gateway ${KUADRANT_GATEWAY_NAME} -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Programmed")].message}'
 ----
 +
 Your Gateway should be `Accepted` and `Programmed`, which means that it is valid and assigned an external address.
@@ -65,7 +65,7 @@ Your Gateway should be `Accepted` and `Programmed`, which means that it is valid
 +
 [source,terminal]
 ----
-$ kubectl get gateway ${KUADRANT_GATEWAY_NAME} -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.listeners[0].conditions[?(@.type=="Programmed")].message}'
+$ oc get gateway ${KUADRANT_GATEWAY_NAME} -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.listeners[0].conditions[?(@.type=="Programmed")].message}'
 ----
 +
 You will see that the HTTPS listener is not yet programmed or ready to accept traffic due to bad TLS configuration. {prodname} can help with this by using a TLSPolicy, which is described in the next step.
