@@ -6,7 +6,7 @@ Expand All and Ctrl-F to find your Jira project ID (pid) and components: https:/
 
 [id="proc-providing-feedback-on-redhat-documentation"]
 = Providing feedback on {rh} documentation
-
+//do we still allow this, or does redhat.com have a diff mech?
 {rh} appreciates your feedback on product documentation.
 
 To propose improvements, open a Jira issue and describe your suggested changes.

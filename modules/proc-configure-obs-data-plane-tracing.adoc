@@ -12,8 +12,9 @@ Enable data plane tracing in {service-mesh} with the `kuadrant` CR. You must per
 .Prerequisites
 
 * You installed {prodname}.
-* You have administrator access to a running {ocp} cluster.
+* You are logged into a running {ocp} cluster as an administrator.
 * You have {TempoName} installed and configured to support OpenTelemetry.
+* You installed a compatible version of {service-mesh}.
 
 .Procedure
 
