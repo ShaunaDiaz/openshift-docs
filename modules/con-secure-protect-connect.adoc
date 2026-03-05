@@ -32,9 +32,3 @@ You can use {prodname} capabilities in single or multiple {ocp} clusters. The fo
 +
 Platform engineers can use {prodname} in clusters in different geographic regions to bring specific traffic to geo-located gateways. This approach reduces latency, distributes load, and protects and secures with global rate limiting and auth policies.
 * *Application developer*: This guide shows how application developers can override the Gateway-level global auth and rate limiting policies to configure application-level auth and rate limiting requirements for specific users.
-
-[id="rhcl-deployment-management_{context}"]
-== Deployment management
-
-The examples in this guide use `kubectl` commands for simplicity. However, working with multiple clusters is complex, and it is best to use a tool such as {ocp} GitOps, based on Argo CD, to manage the deployment of resources to multiple clusters.
-//TODO: then we should show gitops or link to it; what is used in production?
