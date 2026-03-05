@@ -16,8 +16,13 @@ You must configure connection details for your shared Redis-based datastore on e
 
 .Prerequisites
 
-* You installed Connectivity Link.
-//TODO
+* You installed {prodname} on one or more clusters.
+* You have a shared Redis-based datastore.
+* You installed the {oc-first}.
+* You have write access to the {ocp} namespaces you need to work with.
+* You have access to external or on-premise DNS.
+* You created a gateway.
+* You configured your gateway policies and `HTTP` routes.
 
 .Procedure
 
