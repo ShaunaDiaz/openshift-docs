@@ -1,0 +1,8 @@
+:_mod-docs-content-type: ASSEMBLY
+[id="mcp-gateway-register-servers"]
+= Registering MCP servers
+include::_attributes/attributes.adoc[]
+:context: mcp-gateway-register-servers
+
+[role="_abstract"]
+FPO assembly

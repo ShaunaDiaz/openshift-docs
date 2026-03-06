@@ -1,0 +1,8 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/attributes.adoc[]
+[id="mcp-gateway-observe"]
+= Observing {mcpg} connections
+:context: mcp-gateway-observe
+
+[role="_abstract"]
+FPO assembly
