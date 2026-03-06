@@ -1,0 +1,8 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/attributes.adoc[]
+[id="mcp-gateway-introduction"]
+= Introduction to {mcpg}
+:context: mcp-gateway-introduction
+
+[role="_abstract"]
+FPO assembly
