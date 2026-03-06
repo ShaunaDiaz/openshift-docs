@@ -31,6 +31,5 @@ include::modules/con-coredns-removal-migration.adoc[leveloffset=+1]
 [role="_additional-resources"]
 == Additional resources
 
-* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/networking_operators/dns-operator[DNS Operator in {ocp}]
 * link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/network_security/logging-network-security#logging-network-security[Audit logging for network security]
 
