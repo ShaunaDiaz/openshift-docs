@@ -1,0 +1,71 @@
+
+// Module included in the following assemblies:
+//
+// *deployment/deployment.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-set-tls-policy_{context}"]
+= Setting a TLS policy
+
+[role="_abstract"]
+Create a `TLSPolicy` custom resource (CR) for your gateway to regulate the ciphers a client can use when connecting to the server. This ensures that {prodname} components use cryptographic libraries that do not allow known insecure protocols, ciphers, or algorithms.
+
+If you set up your `Gateway` CR to use HTTP instead of than HTTPS, setting up TLS and a `TLSPolicy` CR are not required.
+
+.Prerequisites
+
+* You installed {prodname} on one or more clusters.
+* You installed the {oc-first}.
+* You have write access to the {ocp} namespaces you need to work with.
+* You have access to external or on-premise DNS.
+* You created and applied a `Gateway` object.
+
+.Procedure
+
+. Create a `TLSPolicy` custom resource (CR) such as `_<toystore_tls.yaml>_`, that has the following information:
++
+.Example `TLSPolicy` CR
+[source,yaml]
+----
+apiVersion: kuadrant.io/v1
+kind: TLSPolicy
+metadata:
+  name: ${KUADRANT_GATEWAY_NAME}-tls
+  namespace: ${KUADRANT_GATEWAY_NS}
+spec:
+  targetRef:
+    name: ${KUADRANT_GATEWAY_NAME}
+    group: gateway.networking.k8s.io
+    kind: Gateway
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: ${KUADRANT_CLUSTER_ISSUER_NAME}
+----
+
+. Apply your `TLSPolicy` CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<toystore_tls.yaml>_
+----
++
+Replace `_<toystore>_` with the name of your `TLSPolicy` object.
+
+.Verification
+
+* Verify that your `TLSPolicy` object has an `Accepted` and `Enforced` status by running the following command:
++
+[source,terminal]
+----
+$ oc get tlspolicy ${KUADRANT_GATEWAY_NAME}-tls -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
+----
++
+This might take a few minutes.
++
+.Example output
+[source,text]
+----
+TLSPolicy has been accepted
+TLSPolicy has been successfully enforced
+----
