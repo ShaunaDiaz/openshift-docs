@@ -3,24 +3,19 @@
 // *install-guide/install-guide.adoc
 
 :_mod-docs-content-type: CONCEPT
-[id="install-prerequisites_{context}"]
-= {prodname} prerequisites and permissions
-//TODO FIXME
+[id="rhcl-required-platforms-components_{context}"]
+= Required platforms and components
 
 [role="_abstract"]
 Before you install {prodname}, you must ensure that you have access to the required platforms in your environment with the correct user permissions.
-
-[id="rhcl-required-platforms-components_{context}"]
-== Required platforms and components
 
 {rh} account::
 You have a {rh} account with subscriptions for {prodname} and {ocp}.
 
 {ocp}::
-* {ocp} 4.17 or later is installed, or you have access to a supported {ocp} cloud service. See https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/installation_overview/index[OpenShift Container Platform installation documentation].
+* {ocp} {min-version} or later is installed, or you have access to a supported {ocp} cloud service.
 * You are logged into an {ocp} cluster with the `cluster-admin` role.
-* You have the `kubectl` or `oc` command installed.
-//add openshift cli first attribute
+* You have the {oc-first} installed.
 +
 [IMPORTANT]
 ====
