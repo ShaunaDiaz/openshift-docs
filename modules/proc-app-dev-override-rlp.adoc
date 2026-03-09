@@ -16,8 +16,13 @@ Any new HTTPRoutes are affected by the existing Gateway-level policy. Because yo
 
 .Prerequisites
 
-* Your {prodname} policies are configured as described in xref:platform-engineer-workflow_{context}[].
-//TODO FIXME
+* You installed {prodname} on one or more clusters.
+* If you plan to use rate-limiting in a multicluster environment, you have a shared Redis-based datastore.
+* You installed the {oc-first}.
+* You have write access to the {ocp} namespaces you need to work with.
+* You have access to external or on-premise DNS.
+* You created a gateway.
+* You configured your gateway policies and `HTTP` routes.
 
 .Procedure
 

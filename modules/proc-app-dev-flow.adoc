@@ -20,7 +20,7 @@ Any new `HTTPRoutes` are affected by the existing gateway-level policy. Because 
 
 * {prodname} is installed.
 * You configured {prodname} policies.
-* The {oc-first} is installed.
+* You installed the {oc-first}.
 * You are logged into {ocp} as a cluster administrator.
 
 .Procedure
