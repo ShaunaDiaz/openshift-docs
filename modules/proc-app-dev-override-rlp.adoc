@@ -7,11 +7,11 @@
 = Overriding the low-limit RateLimitPolicy for specific users
 
 [role="_abstract"]
-The configured Gateway limits provide a good set of limits for the general case. However, as the developer of the Toystore API, you might want to only allow a certain number of requests for specific users, and a general limit for all other users.
+When you want to only allow a certain number of requests for specific users to an API that you are developing, and a general limit for all other users, you can override the default `low-limit` `RateLimitPolicy` custom resource (CR).
 
 [IMPORTANT]
 ====
-Any new HTTPRoutes are affected by the existing Gateway-level policy. Because you want users to now access this API, you must override that Gateway policy. For simplicity, you can use API keys to authenticate the requests, but other options such as OpenID Connect are also available.
+An existing `Gateway`-level policy affects new `HTTPRoute` objects. Because you want users to now access this API, you must override that `Gateway` policy. For simplicity, you can use API keys to authenticate the requests, but other options such as OpenID Connect are also available.
 ====
 
 .Prerequisites
@@ -21,16 +21,16 @@ Any new HTTPRoutes are affected by the existing Gateway-level policy. Because yo
 * You installed the {oc-first}.
 * You have write access to the {ocp} namespaces you need to work with.
 * You have access to external or on-premise DNS.
-* You created a gateway.
+* You created a `Gateway` object.
 * You configured your gateway policies and `HTTP` routes.
 
 .Procedure
 
-. Create a new `RateLimitPolicy` in a different namespace to override the default `low-limit` policy created previously and set rate limits for specific users as follows:
+. Create a new `RateLimitPolicy` custom resource (CR) in a different namespace to override the default `low-limit` policy and set rate limits for specific users by using the following example:
 +
-[source,terminal]
+.Example RateLimitPolicy CR for specific users
+[source,yaml]
 ----
-$ oc apply -f - <<EOF
 apiVersion: kuadrant.io/v1
 kind: RateLimitPolicy
 metadata:
@@ -44,7 +44,6 @@ spec:
   limits:
     "general-user":
       rates:
-
       - limit: 5
         window: 10s
       counters:
@@ -57,42 +56,50 @@ spec:
         window: 10s
       when:
       - predicate: "auth.identity.userid == 'bob'"
-EOF
+----
+
+. Apply the CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<toystore-rlp>_
 ----
 +
-It might take a few minutes for the `RateLimitPolicy` to be applied, depending on your cluster.
-+
-. Check that the `RateLimitPolicy` has a status of `Accepted` and `Enforced` as follows:
+* Replace `_<toystore-rlp>_` with the name of your YAML.
+* Wait a few minutes for the `RateLimitPolicy` CR to be applied.
+
+. Check that the `RateLimitPolicy` has a status of `Accepted` and `Enforced` by running the following command:
 +
 [source,terminal]
 ----
 $ oc get ratelimitpolicy -n ${KUADRANT_DEVELOPER_NS} toystore-rlp -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
 ----
 
-. Check that the status of the `HTTPRoute` is now affected by the `RateLimitPolicy` in the same namespace:
+. Check that the status of the `HTTPRoute` is now affected by the `RateLimitPolicy` CR in the same namespace:
 +
 [source,terminal]
 ----
 $ oc get httproute toystore -n ${KUADRANT_DEVELOPER_NS} -o=jsonpath='{.status.parents[0].conditions[?(@.type=="kuadrant.io/RateLimitPolicyAffected")].message}'
 ----
+//Example output?
 
 .Verification
 
-. Send requests as user *alice* as follows:
+. Send requests as user *alice* by running the following command:
 +
 [source,terminal]
 ----
 $ while :; do curl -k --write-out '%{http_code}\n' --silent --output /dev/null -H 'Authorization: APIKEY IAMALICE' "https://api.$KUADRANT_ZONE_ROOT_DOMAIN/cars" | grep -E --color "\b(429)\b|$"; sleep 1; done
 ----
 +
-You should see HTTP status `200` every second for 5 seconds, followed by HTTP status `429` every second for 5 seconds.
+The expected outcome is an HTTP status `200` every second for 5 seconds, followed by HTTP status `429` every second for 5 seconds.
 
-. Send requests as user *bob* as follows:
+. Send requests as user *bob* by running the following command:
 +
 [source,terminal]
 ----
 $ while :; do curl -k --write-out '%{http_code}\n' --silent --output /dev/null -H 'Authorization: APIKEY IAMBOB' "https://api.$KUADRANT_ZONE_ROOT_DOMAIN/cars" | grep -E --color "\b(429)\b|$"; sleep 1; done
 ----
 +
-You should see HTTP status `200` every second for 2 seconds, followed by HTTP status `429` every second for 8 seconds.
+The expected outcome is an HTTP status `200` every second for 2 seconds, followed by HTTP status `429` every second for 8 seconds.
 

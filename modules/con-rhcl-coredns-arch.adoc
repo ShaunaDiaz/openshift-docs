@@ -33,10 +33,10 @@ The DNS Operator reconciles authoritative records that have the CoreDNS secret r
 
 There are no changes to the `dnsPolicy` API and no required changes to the policy controllers. This integration is isolated to the DNS Operator and the CoreDNS plugin.
 
-The CoreDNS integration supports both single-cluster and multi-cluster deployments.
+The CoreDNS integration supports both single-cluster and multicluster deployments.
 
 Single cluster::
-Organizations that want to self-host their DNS infrastructure without the complexity of multi-cluster coordination can use single-cluster CoreDNS integration. Using delegation is not required.
+Organizations that want to self-host their DNS infrastructure without the complexity of multicluster coordination can use single-cluster CoreDNS integration. Using delegation is not required.
 +
 A single cluster runs both DNS Operator and CoreDNS with the plugin. CoreDNS only serves `DNSRecord` CRs that point to a CoreDNS provider secret. The CoreDNS plugin watches for DNS records labeled with the appropriate zone name and serves them directly. Any authoritative `DNSRecord` CR has endpoints from the single cluster.
 

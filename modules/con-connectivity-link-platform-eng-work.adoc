@@ -19,7 +19,7 @@ You can connect gateways by creating a DNS policy and configuring a global load 
 * Automatic DNS configuration
 * Mutiple DNS providers
 * DNS-based load balancing, such as round-robin, weighted, and geo-based
-* Single or multi-cluster ready
+* Single or multicluster ready
 
 Secure gateways::
 After you create your gateways, secure them. You can secure gateways by using a TLS policy that automatically generates certificate requests for the host names specified in your gateway. You can also set up application security defaults and overrides by using authentication and authorization policies and rate-limiting policies. You can use the following features:
