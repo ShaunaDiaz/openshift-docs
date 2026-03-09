@@ -1,0 +1,109 @@
+
+// Module included in the following assemblies:
+//
+// *deployment/deployment.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-create-http-route-for-app_{context}"]
+= Creating an HTTP route for an application
+
+[role="_abstract"]
+As an application developer, you can create a route to host your application at a public URL. In Gateway API, use the `HTTPRoute` custom resource (CR) to specify the routing behavior of HTTP requests from your `Gateway` object to your application. An `HTTPRoute` CR is especially useful for multiplexing HTTP or terminated HTTPS connections.
+
+.Prerequisites
+
+* You installed {prodname} on one or more clusters.
+* You installed the {oc-first}.
+* You have write access to the {ocp} namespaces you need to work with.
+* You have access to external or on-premise DNS.
+* You created and applied a `Gateway` object.
+* You have a web application that exposes a port and a TCP endpoint listening for traffic on the port.
+* You created a `Service` object for your application.
+* You have a local Certificate Authority (CA) bundle.
+
+.Procedure
+
+. Create an `HTTPRoute` custom resource (CR), such as `_<toystore>_-route.yaml`, that has the following information:
++
+.Example `HTTPRoute` CR
+[source,yaml,subs="+quotes"]
+----
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: _<toystore>_
+  namespace: _<${KUADRANT_DEVELOPER_NS}>_
+  labels:
+    deployment: _<toystore>_
+    service: _<toystore>_
+spec:
+  parentRefs:
+    - name: _<${KUADRANT_GATEWAY_NAME}>_
+      namespace: _<${KUADRANT_GATEWAY_NS}>_
+  hostnames:
+    - api.${KUADRANT_ZONE_ROOT_DOMAIN}
+  rules:
+    - matches:
+        - method: GET
+          path:
+            type: PathPrefix
+            value: /cars
+        - method: GET
+          path:
+            type: PathPrefix
+            value: /health
+      backendRefs:
+        - name: _<toystore>_
+          port: 80
+----
++
+* Replace `_<toystore>_` with the name of your application.
+* `metadata.namespace`: The namespace in which you are deploying your application. Replace _<${KUADRANT_DEVELOPER_NS}>_ with the environment variable you used during installation.
+* `spec.parentRefs.name` and `spec.parentRefs.namespace`: The values must match the `Gateway` object.
+* `spec.hostnames`: The hostname must match the one specified in the `Gateway` object.
+* `hostname.rules.matches.backendRefs.name`: The name of the `Service` for your application.
+
+. Apply your `HTTPRoute` CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<toystore>_-route.yaml
+----
++
+Replace `_<toystore>_` with the name of your application.
++
+.Example output
+[source,text]
+----
+httproute.gateway.networking.k8s.io/toystore-route created
+----
++
+The output indicates that the route to the application exists.
+
+.Verification
+
+. Verify that the `HTTPRoute` is created by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get httproute _<toystore>_ -n kuadrant -o=jsonpath='{.status.parents[*].conditions[?(@.type=="Accepted")].message}{"\n"}{.status.parents[*].conditions[?(@.type=="ResolvedRefs")].message}'
+----
++
+Replace `_<toystore>_` with the name of your application.
++
+.Example output
+[source,text]
+----
+Route was valid
+----
+
+. If you have `DNSPolicy` and `TLSPolicy` objects applied, you can validate that your backend is reachable by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ curl -k  https://api.${KUADRANT_ZONE_ROOT_DOMAIN}:443/cars
+----
++
+Note that the example `TLSPolicy` CR uses a self-signed `ClusterIssuer` object.
+
+//Example output?
