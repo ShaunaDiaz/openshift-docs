@@ -7,40 +7,60 @@
 = Add a TLS certificate issuer
 
 [role="_abstract"]
-To secure communication to your Gateways, you must define a certification authority as an issuer for TLS certificates.
+To secure communication to your `Gateway` object, you must define a certificate authority (CA) as an issuer for TLS certificates. Configure a `TLSPolicy` CR to automatically provision TLS certificates based on `Gateway` object listener hosts by using integration with {cert-manager} and ACME providers.
 
 [NOTE]
 ====
-This example uses the Let's Encrypt TLS certificate issuer for simplicity, but you can use any certificate issuer supported by `cert-manager`. In multicluster environments, you must add your TLS issuer in each {ocp} cluster.
+You can use any certificate issuer supported by `cert-manager`. In multicluster environments, you must add your TLS issuer in each {ocp} cluster.
 ====
+
+If you set up your `Gateway` CR to use HTTP instead of than HTTPS, setting up TLS and a `TLSPolicy` CR are not required.
 
 .Prerequisites
 
 * You installed {prodname} on one or more clusters.
-* If you plan to use rate-limiting in a multicluster environment, you have a shared Redis-based datastore.
 * You installed the {oc-first}.
 * You have write access to the {ocp} namespaces you need to work with.
 * You have access to external or on-premise DNS.
-* You created a gateway.
-* You configured your gateway policies and `HTTP` routes.
+* You created and applied a `Gateway` object.
+* You created and applied an `HTTPRoute` object.
 
 .Procedure
 
-. Enter the following command to define a TLS certificate issuer:
+. Before adding a TLS certificate issuer, create the secret credentials in the `cert-manager` namespace by running the following command:
 +
-[source,terminal]
+[source,terminal,subs="+quotes"]
 ----
-$ oc apply -f - <<EOF
+$ oc -n cert-manager create secret generic _<dns-provider-credentials>_ \
+  --type=kuadrant.io/aws \
+  --from-literal=AWS_ACCESS_KEY_ID=$KUADRANT_AWS_ACCESS_KEY_ID \
+  --from-literal=AWS_SECRET_ACCESS_KEY=$KUADRANT_AWS_SECRET_ACCESS_KEY
+----
++
+Replace `_<dns-provider-credentials>_` with the secret you want to use. This example uses Amazon Web Services (AWS).
+
+. Create a TLS certificate issuer resource, such as `{KUADRANT_CLUSTER_ISSUER_NAME}.yaml`, that has the following information:
++
+[source,yaml]
+----
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: ${KUADRANT_CLUSTER_ISSUER_NAME}
 spec:
   selfSigned: {}
-EOF
 ----
 
-. Wait for the `ClusterIssuer` to become ready as follows:
+. Apply the `ClusterIssuer` CR by running the following command:
++
+[source,terminal]
+----
+$ oc apply -f {KUADRANT_CLUSTER_ISSUER_NAME}.yaml
+----
+
+.Verification
+
+* Verify that the `ClusterIssuer` object is ready by running the following command:
 +
 [source,terminal]
 ----
