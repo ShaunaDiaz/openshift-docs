@@ -42,7 +42,7 @@ Include the appropriate URI scheme for your environment:
 +
 [source,terminal]
 ----
-$ kubectl -n kuadrant-system create secret generic redis-config \
+$ oc -n kuadrant-system create secret generic redis-config \
   --from-literal=URL=$REDIS_URL
 ----
 
@@ -50,7 +50,7 @@ $ kubectl -n kuadrant-system create secret generic redis-config \
 +
 [source,terminal]
 ----
-$ kubectl patch limitador limitador --type=merge -n kuadrant-system -p '
+$ oc patch limitador limitador --type=merge -n kuadrant-system -p '
 spec:
   storage:
     redis:

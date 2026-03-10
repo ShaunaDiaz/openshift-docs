@@ -30,7 +30,7 @@ In a single-cluster setup, ensure that the `endpoints` IP address value you use 
 +
 [source,terminal]
 ----
-$ export CTX_PRIMARY=$(kubectl config current-context) \
+$ export CTX_PRIMARY=$(oc config current-context) \
   export KUBECONFIG=~/.kube/config \
   export PRIMARY_CLUSTER_NAME=local-cluster \
   export ONPREM_DOMAIN=<onprem-domain> \
