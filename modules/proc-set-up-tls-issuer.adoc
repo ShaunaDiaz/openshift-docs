@@ -30,7 +30,7 @@ This example uses the Let's Encrypt TLS certificate issuer for simplicity, but y
 +
 [source,terminal]
 ----
-$ kubectl apply -f - <<EOF
+$ oc apply -f - <<EOF
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -44,5 +44,5 @@ EOF
 +
 [source,terminal]
 ----
-$ kubectl wait clusterissuer/${KUADRANT_CLUSTER_ISSUER_NAME} --for=condition=ready=true
+$ oc wait clusterissuer/${KUADRANT_CLUSTER_ISSUER_NAME} --for=condition=ready=true
 ----
