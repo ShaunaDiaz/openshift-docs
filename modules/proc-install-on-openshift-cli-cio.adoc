@@ -1,0 +1,108 @@
+// Module included in the following assemblies:
+//
+// *install-guide/install-guide.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-install-on-ocp-cmd-cio_{context}"]
+= Installing {prodname} on {ocp} from the command line
+
+[role="_abstract"]
+You can install {prodname} with {oc-first} using the {ocp} Cluster Ingress Operator as the default `Gateway` object controller. You must complete these steps on each {ocp} cluster that you want to use {prodname} on.
+
+[WARNING]
+====
+{prodname} uses labels formatted as `kuadrant.io/*` to search and filter resources on the cluster. Removing of any labels with the prefix might cause unexpected behavior and degradation of {prodname}.
+====
+
+.Prerequisites
+
+* You are logged into {ocp} as a cluster administrator.
+* You are using a supported configuration of {ocp} and required components.
+* You installed the {oc-first}.
+
+.Procedure
+
+. Create the namespace where you want to install {prodname} by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc create ns _<kuadrant_system>_
+----
++
+You can replace the default _<kuadrant_system>_ with the namespace you want to use.
+
+. Install {prodname} by creating and applying `Subscription` and `OperatorGroup` custom resources (CRs) by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f - <<EOF
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: rhcl-operator
+  namespace: _<kuadrant_system>_
+spec:
+  channel: stable
+  installPlanApproval: Automatic
+  name: rhcl-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+---
+kind: OperatorGroup
+apiVersion: operators.coreos.com/v1
+metadata:
+  name: kuadrant
+  namespace: _<kuadrant_system>_
+spec:
+  upgradeStrategy: Default
+EOF
+----
++
+Replace _<kuadrant_system>_ with the namespace you used.
+
+. Confirm that the {prodname} installation has finished by running one of the following commands:
++
+[source,terminal]
+----
+$ oc wait --for=jsonpath={.status.installPlanRef.name} subscription rhcl-operator --timeout=10s
+ip=$(oc get subscription rhcl-operator -o=jsonpath={.status.installPlanRef.name})
+----
++
+[source,terminal]
+----
+$ oc wait --for=condition=Installed installplan ${ip} --timeout=60s
+----
++
+Expect the status of `installplan.operators.coreos.com/install-<suffix>` when {prodname} is ready. The name of the install plan has a random suffix, for example, `4rql7`.
+
+. Create your {prodname} custom resource (CR) by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f - <<EOF
+apiVersion: kuadrant.io/v1beta1
+kind: Kuadrant
+metadata:
+  name: kuadrant
+  namespace: _<kuadrant_system>_
+EOF
+----
++
+Replace _<kuadrant_system>_ with the namespace you used.
+
+.Verification
+
+* Check the status of the {prodname} CR generation by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc wait kuadrant/kuadrant --for="condition=Ready=true" -n _<kuadrant_system>_ --timeout=300s
+----
++
+Replace _<kuadrant_system>_ with the namespace you used.
++
+.Example output
+[source,terminal,subs="+quotes"]
+----
+kuadrant.kuadrant.io/kuadrant Ready
+----

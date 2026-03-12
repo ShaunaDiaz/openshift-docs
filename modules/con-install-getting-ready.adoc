@@ -20,14 +20,11 @@ You have a {rh} account with subscriptions for {prodname} and {ocp}.
 {ocp}::
 {ocp} {ocp-min-version} or later is installed, or you have access to a supported {ocp} cloud service. See link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/installation_overview/index[OpenShift Container Platform installation documentation].
 +
-[IMPORTANT]
-====
-In Gateway API, you must create a `GatewayClass` named `openshift-default` and specify a `controllerName` of `openshift.io/gateway-controller/v1`. For more details, see the link:https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/ingress_and_load_balancing/configuring-ingress-cluster-traffic#ingress-gateway-api[OpenShift documentation on using Gateway API].
-====
+include::snippets/snippet-openshift-cio-gatewayclass.adoc[leveloffset=+1]
 
 {service-mesh}::
 
-You must use {service-mesh} {service-mesh-version} or later.
+A separate {service-mesh} installation is not required with {prodname} 1.3. If you use {service-mesh}, ensure that you are using {service-mesh-version} to stay in a supported configuration.
 
 {cert-manager}::
 
@@ -35,7 +32,7 @@ You installed {cert-manager} {cert-manager-version} to manage the TLS certificat
 +
 [IMPORTANT]
 ====
-Before using a {prodname} TLSPolicy, you must set up a certificate issuer for your cloud provider platform. See the link:https://docs.redhat.com/en/documentation/openshift_container_platform/{ocp-latest-version}/html-single/security_and_compliance/index#cert-manager-operator-issuer-acme[OpenShift documentation on configuring an ACME issuer].
+Before using a {prodname} `TLSPolicy` custom resource (CR), you must set up a certificate issuer for your cloud provider platform. See the link:https://docs.redhat.com/en/documentation/openshift_container_platform/{ocp-latest-version}/html-single/security_and_compliance/index#cert-manager-operator-issuer-acme[OpenShift documentation on configuring an ACME issuer].
 ====
 
 [id="rhcl-optional-components_{context}"]
@@ -45,7 +42,7 @@ The following components are optional with {prodname}. You can decide what you w
 
 DNSPolicy::
 
-For DNSPolicy, you must have an account for one of the supported cloud DNS providers and have set up a hosted zone for {prodname}. For more details, see your cloud DNS provider documentation:
+For a `DNSPolicy` CR, you must have an account for one of the supported cloud DNS providers and have set up a hosted zone for {prodname}. For more details, see your cloud DNS provider documentation:
 
 * link:https://docs.aws.amazon.com/route53/?icmpid=docs_homepage_networking[Amazon Route 53 documentation]
 * link:https://cloud.google.com/dns/docs[Google Cloud DNS documentation]
@@ -53,7 +50,7 @@ For DNSPolicy, you must have an account for one of the supported cloud DNS provi
 
 RateLimitPolicy::
 
-For rate-limiting policies, you must have a shared accessible Redis-based datastore for rate-limit counters in a multicluster environment. For details on how to install and configure a secure and highly available datastore, see the documentation for your Redis-compatible datastore:
+For `RateLimitPolicy` CRs, you must have a shared accessible Redis-based datastore for rate-limit counters in a multicluster environment. For details on how to install and configure a secure and highly available datastore, see the documentation for your Redis-compatible datastore:
 
 * link:https://redis.io/docs/latest/[Redis documentation]
 * link:https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/WhatIs.html[AWS ElastiCache (Redis OSS) User Guide]
@@ -62,7 +59,7 @@ For rate-limiting policies, you must have a shared accessible Redis-based datast
 
 AuthPolicy::
 
-For AuthPolicy, you can install {keycloak} if required in your environment. For more details, see the link:https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak[{keycloak} documentation].
+For an `AuthPolicy` CR, you can install {keycloak} if required in your environment. For more details, see the link:https://docs.redhat.com/en/documentation/red_hat_build_of_keycloak[{keycloak} documentation].
 
 Observability::
 
