@@ -39,5 +39,5 @@ You can use the {prodname} dynamic plugin to view and manage your gateways and p
 
 .Next steps
 
-* Create gateways.
-* Configure policies.
+* Create a gateway.
+* Create policies.

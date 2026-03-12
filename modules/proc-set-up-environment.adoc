@@ -8,15 +8,16 @@
 
 [role="_abstract"]
 This section shows how you can set up your environment variables and deploy the example Toystore application on your {ocp} cluster.
+//TODO this entire procedure needs a downstream example
 
 .Prerequisites
 
-* You installed {prodname} on one or more clusters.
-* If you plan to use rate-limiting in a multicluster environment, you have a shared Redis-based datastore.
-* You installed the {oc-first}.
-* You have write access to the {ocp} namespaces you need to work with.
-* You have access to external or on-premise DNS.
-* If you plan to use observability, you configured {ocp} user workload monitoring to remote-write to a central storage system.
+* {prodname} is installed on the {ocp} cluster you are working with.
+* The {oc-first} is installed.
+* You are logged in to the {ocp} cluster with write access to the namespaces you need to use.
+* You have a DNS zone available for use.
+* Optional. For rate limiting in a multicluster environment, you have installed {prodname} on more than one cluster. You also have a shared and accessible Redis-based datastore.
+* Optional. For observability, {ocp} user workload monitoring is configured to remote-write to a central storage system.
 
 .Procedure
 //TODO FIXME steps, also Q: we need to define these as upstream?
@@ -25,7 +26,7 @@ This section shows how you can set up your environment variables and deploy the 
 [source,terminal]
 ----
 $ export KUADRANT_GATEWAY_NS=api-gateway \
-  export KUADRANT_GATEWAY_NAME=external \
+  export KUADRANT_GATEWAY_NAME=ingress-gateway \
   export KUADRANT_DEVELOPER_NS=toystore \
   export KUADRANT_AWS_ACCESS_KEY_ID=xxxx \
   export KUADRANT_AWS_SECRET_ACCESS_KEY=xxxx \
@@ -36,8 +37,8 @@ $ export KUADRANT_GATEWAY_NS=api-gateway \
 +
 These environment variables are described as follows:
 +
-* `KUADRANT_GATEWAY_NS`: Namespace for your example gateway in {ocp}.
-* `KUADRANT_GATEWAY_NAME`: Name of your example gateway in {ocp}.
+* `KUADRANT_GATEWAY_NS`: Namespace for your gateway in {ocp}.
+* `KUADRANT_GATEWAY_NAME`: Name of your ingress gateway in {ocp}.
 * `KUADRANT_DEVELOPER_NS`: Namespace for the example Toystore app in {ocp}.
 * `KUADRANT_AWS_ACCESS_KEY_ID`: AWS key ID with access to manage your DNS zone.
 * `KUADRANT_AWS_SECRET_ACCESS_KEY`: AWS secret access key with permissions to manage your DNS zone.
@@ -51,6 +52,7 @@ If you know your environment variable values, you can set up the required YAML f
 ====
 //which are? example? link?
 
+//cannot use this, not secure
 . Create the namespace for the Toystore app as follows:
 +
 [source,terminal]
@@ -58,6 +60,7 @@ If you know your environment variable values, you can set up the required YAML f
 $ oc create ns ${KUADRANT_DEVELOPER_NS}
 ----
 
+//downstream example?
 . Deploy the Toystore app to the developer namespace:
 +
 [source,terminal]
