@@ -11,8 +11,6 @@ As a platform engineer or application developer, you can secure, protect, and co
 
 include::modules/con-secure-protect-connect.adoc[leveloffset=+1]
 
-include::modules/con-deploy-prerequisites.adoc[leveloffset=+1]
-
 include::modules/proc-set-up-environment.adoc[leveloffset=+1]
 
 include::modules/proc-set-up-dns-provider.adoc[leveloffset=+1]
@@ -37,6 +35,4 @@ include::modules/proc-app-dev-override-rlp.adoc[leveloffset=+1]
 [role="_additional-resources"]
 == Additional resources
 
-* For more details on {prodname} user persona roles and workflows, see {LinkRHCLIntro}[{NameRHCLIntro}].
-
-* For details on how all {prodname} user roles can observe and monitor Gateways when the OpenShift observability stack and user workload monitoring are deployed, see {LinkRHCLObserve}[{NameRHCLObserve}].
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/ingress_and_load_balancing/load-balancing-with-metallb[Load balancing with MetalLB]
