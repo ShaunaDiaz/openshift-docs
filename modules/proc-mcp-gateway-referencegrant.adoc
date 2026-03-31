@@ -1,0 +1,51 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_install/mcp-gateway-install.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-mcp-gateway-referencegrant_{context}"]
+= Applying a ReferenceGrant custom resource
+
+[role="_abstract"]
+You can isolate teams within a single cluster by applying team-specific `MCPGatewayExtension` custom resources (CRs) in individual namespaces that all target a shared `Gateway` object. When you apply an `MCPGatewayExtension` CR in a different namespace than the `Gateway` CR, you must then create a `ReferenceGrant` in the namespace of the gateway to give access.
+
+.Prerequisites
+
+* You installed {ocp}.
+* You installed {oc-first}.
+* You installed the {mcpg} Operator.
+* You configured at least one listener.
+
+.Procedure
+
+. Create a `ReferenceGrant` CR by using the following example as a template:
++
+.Example ReferenceGrant CR
+[source,yaml,subs="+quotes"]
+----
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: _<allow_team_a>_
+  namespace: gateway-system
+spec:
+  from:
+    - group: mcp.kuadrant.io
+      kind: MCPGatewayExtension
+      namespace: _<team_a>_
+  to:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+----
++
+* Replace the `metadata.name:` value with the name that you want to use.
+* Replace the `spec.from.namespace:` value with the namespace where the `MCPGatewayExtension` CR is applied.
+
+. Apply the CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<allow_team_a>_
+----
++
+Replace `_<allow_team_a>_` with name you used.

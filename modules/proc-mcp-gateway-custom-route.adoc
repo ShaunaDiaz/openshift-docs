@@ -1,0 +1,113 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_install/mcp-gateway-install.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-mcp-gateway-custom-route_{context}"]
+= Applying a customized HTTPRoute object
+
+[role="_abstract"]
+In many production environments, you are likely to require a custom `HTTPRoute` object for your MCP gateway. For example, if any of the following situations apply, use a custom HTTP route:
+
+* An identity provider protects your MCP gateway.
+* You have a web-based AI chat interface that requires cross-origin resource sharing (CORS) headers so that one domain can talk to the other.
+* You need additional path rules for things such as version switching, health check services, and tool dashboards.
+
+.Prerequisites
+
+* You installed {ocp}.
+* You installed {oc-first}.
+* You installed the {mcpg} Operator.
+* You configured at least one listener.
+* You created a `MCPGatewayExtension` CR.
+
+.Procedure
+
+. If you have not already done so, disable automatic route creation on your corresponding `MCPGatewayExtension` object by running the following command:
++
+[source,terminal]
+----
+$ oc patch mcpgatewayextension -n _<mcp_system>_ _<extension_name>_ \
+  --type merge -p '{"spec":{"httpRouteManagement":"Disabled"}}'
+----
++
+Replace `_<mcp_system>_` with the namespace where {mcpg} is installed.
+Replace `_<extension_name>_` with the name of your `MCPGatewayExtension` CR.
+
+. Create your customized `HTTPRoute` CR by using the following template:
++
+.Example customized HTTPRoute CR
+[source,yaml,subs="+quotes"]
+----
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: _<mcp_route_custom>_
+  namespace: _<mcp_system>_
+spec:
+  parentRefs:
+    - name: _<gateway_name>_
+      namespace: _<gateway_namespace>_
+      sectionName: _<mcp_gateway_listener>_
+  hostnames:
+    - _<'mcp.example.com'>_
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /mcp
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              - name: Access-Control-Allow-Origin
+                value: "*"
+              - name: Access-Control-Allow-Methods
+                value: "GET, POST, PUT, DELETE, OPTIONS, HEAD"
+              - name: Access-Control-Allow-Headers
+                value: "Content-Type, Authorization, Accept, Origin, X-Requested-With"
+              - name: Access-Control-Max-Age
+                value: "3600"
+              - name: Access-Control-Allow-Credentials
+                value: "true"
+      backendRefs:
+        - name: _<mcp_gateway>_
+          port: 8080
+    - matches:
+        - path:
+            type: PathPrefix
+            value: _</.well_known/oauth_protected_resource>_
+      backendRefs:
+        - name: _<mcp_gateway>_
+          port: 8080
+----
++
+* Replace the `metadata.name:` value with the name that you want to use.
+* Replace the `metadata.namespace:` value with the namespace that you want to use.
+* Replace the `spec.targetRef.sectionName:` parameter value with the MCP `Gateway` object listener.
+* Replace the `spec.parentRefs.name:` value the name that you want to use.
+* Replace `spec.parentRefs.namespace:` value with the namespace that you want to use.
+* Replace the `spec.hostnames:` value or list with the values you want to use.
+* Replace the `spec.rules.matches.path.value:` value with the URL path where you want to have your `Gateway` object available.
+* Replace the `spec.rules.backend.Refs.name:` value with the name of your MCP gateway deployment.
+
+. Apply the CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<mcp_route_custom>_
+----
++
+Replace `_<mcp_route_custom>_` with the name that you used for your `HTTPRoute` CR.
+
+. Delete automatically created `HTTPRoute` CRs by running the following command:
++
+[source,terminal]
+----
+$ oc delete httproute mcp-gateway-route  -n mcp-system --ignore-not-found
+----
++
+[IMPORTANT]
+====
+If you do not delete existing `HTTPRoute` CRs, the Gateway API chooses one based on a `spec`-defined precedence chain used when multiple `HTTPRoute` CRs match the same request.
+====

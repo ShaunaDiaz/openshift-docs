@@ -1,0 +1,181 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_install/mcp-gateway-install.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-config-mcp-gateway-listener_{context}"]
+= Configuring MCP gateway listeners
+
+[role="_abstract"]
+Connect your MCP gateway to your agentic AI systems by appending your `Gateway` custom resource (CR) with your MCP listener information. The MCP listener handles the transport protocol, opens an MCP session on the port, and establishes a security perimeter. You can also add listeners for unencrypted web traffic and secured traffic.
+
+.Prerequisites
+
+* You are logged in to your {ocp} cluster.
+* You created a gateway custom resource (CR).
+* You installed {mcpg}.
+* You configured a gateway API provider.
+* Optional. If you are adding a secure listener, you have a TLS certificate to reference. The certificate must be in the same namespace as the `Gateway` CR.
+
+.Procedure
+
+. Add an MCP gateway listener to your `Gateway` CR by appending it with the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ $ oc patch gateway _<mcp_gateway>_ -n _<gateway_namespace>_ --type='json' -p='[
+  {
+    "op": "add",
+    "path": "/spec/listeners/-",
+    "value": {
+      "name": "mcps",
+      "hostname": "_<mcp.example.com>_",
+      "port": 8080,
+      "protocol": "HTTP",
+      "allowedRoutes": {
+        "namespaces": {
+          "from": "All"
+        }
+      }
+    }
+  }
+]'
+----
++
+* Replace `_<mcp_gateway>_` with the name of your MCP gateway.
+* Replace `_<gateway_namespace>_` with the namespace where your `Gateway` object is applied.
+* Replace `_<mcp.example.com>_` with the hostname you want to use.
+
+. Verify that your listener is working by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get gateway _<mcp_gateway>_ -n _<gateway_namespace>_ -o yaml
+----
++
+* Replace `_<mcp_gateway>_` with the name of your MCP gateway deployment.
+* Replace `_<gateway_namespace>_` with the namespace where your `Gateway` object is applied.
+* The conditions `Accepted: True` and `Programmed: True` are expected in the `status` of the output.
+
+. Add a standard web traffic listener to your `Gateway` CR by appending it with the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc patch gateway _<mcp_gateway>_ -n _<gateway_namespace>_ --type='json' -p='[
+  {
+    "op": "add",
+    "path": "/spec/listeners/-",
+    "value": {
+      "name": "http-web",
+      "port": 80,
+      "protocol": "HTTP",
+      "allowedRoutes": {
+        "namespaces": {
+          "from": "All"
+        }
+      }
+    }
+  }
+]'
+----
++
+* Replace `_<mcp_gateway>_` with the name of your MCP gateway.
+* Replace `_<gateway_namespace>_` with the namespace where your `Gateway` object is applied.
+* The `listener.name` value must be a unique name within the `Gateway` object. In this example, `http-web` is used.
+* The `listener.port: 80,` is the standard port for unencrypted web traffic.
+* You can add a `hostname` if you want to limit incoming domain names.
+
+. Add a secure listener to your `Gateway` CR by appending it with the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc patch gateway _<mcp_gateway>_ -n _<gateway_namespace>_ --type='json' -p='[
+  {
+    "op": "add",
+    "path": "/spec/listeners/-",
+    "value": {
+      "name": "https",
+      "hostname": "_<mcp.example.com>_",
+      "port": 443,
+      "protocol": "HTTPS",
+      "tls": {
+        "mode": "Terminate",
+        "certificateRefs": [
+          {
+            "name": "mcp-tls-secret",
+            "kind": "Secret"
+          }
+        ]
+      },
+      "allowedRoutes": {
+        "namespaces": {
+          "from": "All"
+        }
+      }
+    }
+  }
+]'
+----
++
+* Replace `_<mcp_gateway>_` with the name of your MCP gateway deployment.
+* Replace `_<gateway_namespace>_` with the namespace where your `Gateway` object is applied.
+* Replace `_<mcp.example.com>_` with the hostname you are targeting.
+* The `spec.listeners.tls.certificateRefs.name:` parameter specifies the name of your secret. This example uses `mcp-tls-secret`.
+* The `spec.listeners.tls.mode: Terminate` value means that the gateway decrypts the traffic and sends it as plain text to your MCP server. You can specify the mode that you require.
+* You must set a `spec.listeners.hostname` so that the relevant certificate is presented to the correct client.
+
+. Check that your certificates are properly linked by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get gateway _<mcp_gateway>_ -n _<gateway_namespace>_ -o jsonpath='{.status.listeners[?(@.name=="https")]}'
+----
++
+* Replace `_<mcp_gateway>_` with the name of your MCP gateway deployment.
+* Replace `_<gateway_namespace>_` with the namespace where your `Gateway` object is applied.
+* The `status` message outputs any errors.
+
+.Verification
+
+. Check the status your listeners and related objects by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc describe gateway _<mcp_gateway>_ -n _<gateway_namespace>_
+----
++
+* Replace `_<mcp_gateway>_` with the name of your MCP gateway deployment.
+* Replace `_<gateway_namespace>_` with the namespace where your `Gateway` object is applied.
++
+.Example output
+[source,yaml]
+----
+# ...
+Status:
+  Listeners:
+    - Name: http-web
+      Supported Kinds:
+        Group: gateway.networking.k8s.io
+        Kind:  HTTPRoute
+      Conditions:
+        Last Transition Time:  2026-04-01T...
+        Message:               None
+        Reason:                Programmed
+        Status:                True
+        Type:                  Programmed
+    - Name: https
+      Conditions:
+        Reason:                ResolvedRefs
+        Status:                True
+        Type:                  ResolvedRefs
+# ...
+Events:
+  Type    Reason            Age   From                       Message
+  Normal  Synced            12m   gateway-api-controller     Successfully synced Gateway configuration
+  Normal  IPAllocated       11m   mcp-operator               Assigned IP 192.168.1.100 to Gateway
+  Normal  ListenerAccepted  10m   gateway-api-controller     Listener "http-web" accepted
+  Normal  Programmed        10m   gateway-api-controller     Gateway has been successfully programmed
+# ...
+----
++
+* The `Events` section of the output can also show port conflicts, problems with your `gatewayClassName:` value, missing routes, and a lack of permissions to read secrets.

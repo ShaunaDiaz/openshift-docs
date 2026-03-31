@@ -1,0 +1,33 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_install/mcp-gateway-install.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-mcp-gateway-config-verify_{context}"]
+= Verifying that an MCP endpoint is accessible through your MCP gateway
+
+[role="_abstract"]
+You can verify that your MCP gateway is reaching your MCP endpoint by running a curl command to check for communication.
+
+.Prerequisites
+
+* You completed all of the installation steps.
+
+.Procedure
+
+* Verify that the MCP endpoint is accessible through your MCP gateway instance by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ curl -X POST http://_<mcp.example.com:port/mcp>_ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc": "2.0", "id": 1, "method": "initialize"}'
+----
++
+Replace `_<mcp.example.com:port/mcp>_` with your `_<hostname_value/endpoint_name>_`.
++
+.Example output
+[source,text]
+----
+{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2025-11-25","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"Kuadrant MCP Gateway","version":"0.6.0"}}}
+----
