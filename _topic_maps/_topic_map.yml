@@ -36,8 +36,6 @@ Distros: rhcl
 Topics:
 - Name: About the MCP gateway
   File: mcp-gateway-introduction
-- Name: MCP gateway architecture
-  File: mcp-gateway-architecture
 ---
 Name: Release notes
 Dir: release_notes
