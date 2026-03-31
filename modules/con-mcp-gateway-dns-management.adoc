@@ -1,0 +1,16 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_install/mcp-gateway-install.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="con-dns-management-mcp-gateway_{context}"]
+= DNS management with the MCP gateway
+
+[role="_abstract"]
+You can use a variety of options to enable the resolution of `hostnames` associated within your `Gateway` object listeners, depending on the operating environment and targeted hostname.
+
+For example, if the `hostname` is within the DNS zone defined by a `dns.config.openshift.io/cluster` resource, you can use the OpenShift Cluster Ingress Operator to register the IP address of the `Gateway` object in the associated cloud DNS provider. You must create the `Gateway` object in the namespace where the `IngressController` object is applied.
+
+In environments where {ocp} is not connected to a cloud provider, you must take additional steps to manage how the `Gateway` object is exposed outside the cluster and how traffic is resolved. You can use MetalLB to advertise IP addresses associated with the `Gateway` object. You can then either perform DNS registration manually, or use automation, such as the ExternalDNS Operator.
+
+When `Gateway` and `MCPGatewayExtension` objects are applied in different namespaces, such as `openshift-ingress` and `mcp-system`, you must create a `ReferenceGrant` custom resource for cross-namespace communication.

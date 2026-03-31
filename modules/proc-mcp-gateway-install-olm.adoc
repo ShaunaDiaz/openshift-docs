@@ -1,0 +1,90 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_install/mcp-gateway-install.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-mcp-gateway-install-olm_{context}"]
+= Installing the MCP gateway with OLM
+
+[role="_abstract"]
+You can install the MCP gateway deployment Operator by using Operator Lifecycle Manager (OLM) with the CLI. When choosing this path, you must create a `MCPGatewayExtension` custom resources (CR) manually and apply it to complete your initial setup.
+
+.Prerequisites
+
+* You installed {ocp}.
+* You installed {oc-first}.
+
+.Procedure
+
+. Create the namespace where you want to install {mcpg} by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc create ns _<mcp_system>_
+----
++
+Replace the default `_<mcp_system>_` with the namespace you want to use.
+
+. Create and apply the {mcpg} `Subscription` and `OperatorGroup` custom resources (CRs) by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -n _<mcp_system>_ -f - <<EOF
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: mcp-gateway
+spec:
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  name: mcp-gateway
+  channel: preview
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: mcp-gateway
+spec:
+  targetNamespaces:
+  - _<mcp_system>_
+EOF
+----
++
+Replace `_<mcp_system>_` with the namespace you used in the earlier step.
+
+. Confirm that the {mcpg} installation has finished by running the following commands:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc wait --for=jsonpath={.status.installPlanRef.name} subscription mcp-gateway -n _<mcp_system>_ --timeout=10s
+ip=$(oc get subscription mcp-gateway -n _<mcp_system>_ -o=jsonpath={.status.installPlanRef.name})
+----
++
+Replace `_<mcp_system>_` with the namespace you used in the earlier step.
++
+[source,terminal,subs="+quotes"]
+----
+$ oc wait --for=condition=Installed installplan -n _<mcp_system>_ ${ip} --timeout=60s
+----
++
+* Replace `_<mcp_system>_` with the namespace you used in the earlier step.
+* Expect the status of `installplan.operators.coreos.com/install-<suffix>` when {mcpg} is ready. The name of the install plan has a random suffix, for example, `4rql7`.
+
+.Verification
+
+. Wait for the controller to be ready by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc wait csv -n _<mcp_system>_ -l operators.coreos.com/mcp-gateway._<mcp_system>_="" --for=jsonpath='{.status.phase}'=Succeeded --timeout=5m
+----
++
+Replace `_<mcp_system>_` with the namespace you used.
+
+.Next steps
+
+* Configure a listener for your `Gateway` object.
+* Create a `ReferenceGrant` CR if you require cross-namespace referencing.
+* Deploy the MCP gateway by creating an `MCPGatewayExtension` CR.
+* Configure authentication and authorization for your connections.
+* Create `MCPServerRegistration` CRs to register your MCP servers.

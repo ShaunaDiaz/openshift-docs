@@ -1,0 +1,88 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_install/mcp-gateway-install.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-config-mcp-gateway-gateway_{context}"]
+= Creating a Gateway object for your MCP gateway
+
+[role="_abstract"]
+You must create a `Gateway` object and configure listeners to create pods to handle your traffic, assign IP addresses, and give HTTP routes a place to connect.
+
+[TIP]
+====
+You can attach your {prodnamefull} `DNSPolicy` CR to your `Gateway` object to automatically map your hostnames to your Gateway object's IP address. Point your `DNSPolicy` CR to your Gateway object by `name` in the `targetRef:` section. The `DNSPolicy` CR must reside in the same namespace as the `Gateway` object.
+====
+
+.Prerequisites
+
+* You installed {ocp}.
+* You installed {oc-first}.
+* You installed the {mcpg} Operator.
+
+.Procedure
+
+* Create a `Gateway` object by using the following example as a template:
++
+.Example Gateway CR with listeners
+[source,yaml]
+----
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: mcp-gateway
+  namespace: gateway-namespace
+spec:
+  gatewayClassName: openshift-default
+  listeners:
+    - name: http
+      port: 80
+      protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: mcps
+      hostname: mcp.example.com
+      port: 8080
+      protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      hostname: mcp.apps.openshift.example.com
+      port: 443
+      protocol: HTTPS
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - group: ''
+            kind: Secret
+            name: default-ingress-cert
+        mode: Terminate
+----
++
+* The custom resource (CR) is a `Gateway` named `mcp-gateway` that exists in the `gateway-namespace` namespace and has three listeners configured.
+* On {ocp}, the `spec.listeners.tls.certificateRefs:` value can specify the `Secret` CR containing the default wildcard certificate for the OpenShift Ingress controller.
++
+[IMPORTANT]
+====
+You must use the `spec.listeners[].name` value in the corresponding `MCPGatewayExtension` CR `spec.targetRef.sectionName:` field.
+====
+
+. Optional. Verify the {prodname} `DNSPolicy` CR attachment by checking its status with the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get dnspolicy _<mcp_dns_policy>_ -n _<gateway_namespace>_ -o wide
+----
++
+* Replace `_<mcp_dns_policy>_` with the name of your {prodname} `DNSPolicy` CR.
+* Replace `_<gateway_namespace>_` with the `Gateway` object namespace.
++
+.Example output
+[source,text]
+----
+ACCEPTED: True
+----
