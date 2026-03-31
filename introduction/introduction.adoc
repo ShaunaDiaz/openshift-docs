@@ -1,9 +1,8 @@
 :_mod-docs-content-type: ASSEMBLY
 include::_attributes/attributes.adoc[]
-[id="rhcl-introduction"]
-= Introduction to {prodname}
+[id="introduction"]
+= About {prodname}
 :context: rhcl-introduction
-//toc:[]
 
 [role="_abstract"]
 {product-title} is a control plane for configuring the Gateway API data plane in {ocp} clusters. You can use it to apply authentication, rate limiting, and DNS policies to gateway resources.
@@ -33,6 +32,6 @@ include::modules/con-connectivity-link-supported-configs.adoc[leveloffset=+1]
 == Additional resources
 
 * link:https://developers.redhat.com/products/red-hat-connectivity-link[Red Hat Connectivity Link]
-* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html-single/ingress_and_load_balancing/index#ingress-gateway-api[Gateway API with OpenShift Container Platform networking]
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html-single/ingress_and_load_balancing/index#ingress-gateway-api[Gateway API with OpenShift Container Platform networking]
 * link:https://docs.redhat.com/en/documentation/red_hat_openshift_service_mesh/[Red Hat OpenShift Service Mesh 3.2 documentation]
 
