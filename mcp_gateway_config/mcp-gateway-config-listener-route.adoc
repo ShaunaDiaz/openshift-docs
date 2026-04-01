@@ -1,8 +1,0 @@
-:_mod-docs-content-type: ASSEMBLY
-include::_attributes/attributes.adoc[]
-[id="mcp-gateway-config-listener-route"]
-= Configuring the {mcpg} listener and route
-:context: mcp-gateway-config-listener-route
-
-[role="_abstract"]
-FPO assembly

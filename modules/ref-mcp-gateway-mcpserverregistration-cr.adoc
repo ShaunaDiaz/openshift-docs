@@ -1,0 +1,71 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-register-servers.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="ref-mcp-server-registration-cr_{context}"]
+= Understanding the MCPServerRegistration custom resource
+
+[role="_abstract"]
+You can explore the required parts and values for an `MCPServerRegistration` custom resource (CR) by studying the references contained here.
+
+.MCPServerRegistration
+
+[width="100%",cols="23%,19%,^26%,32%",options="header",]
+|===
+|*Field* |*Type* |*Required* |*Description*
+|`spec` |MCPServerRegistrationSpec |Yes
+|The specification for the `MCPServerRegistration` CR
+
+|`status`
+|MCPServerRegistrationStatus |No |The status for the CR
+|===
+
+.MCPServerRegistrationSpec
+
+[width="100%",cols="23%,19%,^26%,32%",options="header",]
+|===
+|*Field* |*Type* |*Required* |*Description*
+|`targetRef` |TargetReference |Yes |An `HTTPRoute` object that points to a backend MCP server. The controller discovers the backend service from this `HTTPRoute` CR and configures the broker to consolidate the MCP server's tools.
+
+|`toolPrefix` |String |No |The prefix added to all consolidated tools from referenced servers. Avoids naming conflicts when aggregating tools from multiple sources, such as `server1++_++search` and `server2++_++search`. Immutable setting.
+
+|`path` |String |No |The URL path where the MCP server endpoint is exposed. Default value is `/mcp`.
+
+|`credentialRef` |SecretReference |No |Reference to a `Secret` object that contains authentication credentials. The secret must have the `mcp.kuadrant.io/secret=true` label. The gateway makes the credentials available to the broker automatically.
+|===
+
+.TargetReference
+
+[width="100%",cols="23%,19%,^26%,32%",options="header",]
+|===
+|*Field* |*Type* |*Required* |*Description*
+|`group` |String |No |Group of the target resource. Default value is `gateway.networking.k8s.io`.
+
+|`kind` |String |No |Kind of the target resource. Default value is `HTTPRoute`.
+
+|`name` |String |Yes |Name of the target `HTTPRoute` object.
+
+|`namespace` |String |No |Namespace of the target resource. Defaults to same namespace.
+|===
+
+.SecretReference
+
+[width="100%",cols="23%,19%,^26%,32%",options="header",]
+|===
+|*Field* |*Type* |*Required* |*Description*
+|`name` |String |Yes |Name of the `Secret` CR.
+
+|`key` |String |No |Key within the `Secret` CR that has the credential value. Default value is `token`.
+|===
+
+.MCPServerRegistrationStatus
+
+[width="100%",cols="30%,26%,44%",options="header",]
+|===
+|*Field* |*Type* |*Description*
+|`conditions` |link:https://pkg.go.dev/k8s.io/apimachinery/pkg/apis/meta/v1++#++Condition[++Kubernetes meta/v1.Condition++]
+|List of conditions that define the status of the Kubernetes resource.
+
+|`discoveredTools` |Integer |Number of tools discovered from this `MCPServerRegistration` CR.
+|===
