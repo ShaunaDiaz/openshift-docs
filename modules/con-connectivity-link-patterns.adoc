@@ -22,15 +22,7 @@ Multicluster configuration mirroring::
 You can configure and deploy your policies across different cloud service providers in a consistent way with {prodname}. {prodname} uses multicluster configuration mirroring across multicloud and hybrid cloud environments. You can deploy your routing, configuration, and policies wherever you need them through one interface.
 +
 This means that your development, test, and production environments can be consistent. Use {prodname} to supply unified experiences, global administration, and security compliance.
-+
-The following image shows {prodname} multicluster configuration mirroring:
-+
-.Multicluster configuration mirroring across multicloud and hybrid cloud environments
-image::connectivity-link-multicluster-config.png[{prodname} multicluster configuration mirroring]
 
 API connectivity and API management::
 
 {prodname} provides scalable multicluster and multi-gateway connectivity management, along with API management features such as API observability, authentication, and rate limiting.
-+
-.{prodname} API management and connectivity
-image::connectivity-link-api-management.png[{prodname} API management and connectivity]
