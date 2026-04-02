@@ -33,13 +33,5 @@ In addition, you can use the following included templates to see what is happeni
 * Tracing
 * Alerts
 
-[id="rhcl-architecture_{context}"]
-== {product-title} architecture
-
-The following diagram shows a high-level overview of the {prodname} architecture with its main features and technologies:
-
-.{prodname} architecture
-image::connectivity-link-architecture.png[{prodname} architecture, 600, 575]
-
 {prodname} supports link:https://docs.redhat.com/en/documentation/red_hat_openshift_service_mesh/latest/html-single/about/index[{service-mesh} {service-mesh-version}] as the Gateway API provider.
 
