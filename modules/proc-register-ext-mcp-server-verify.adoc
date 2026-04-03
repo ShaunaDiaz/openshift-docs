@@ -1,0 +1,37 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-register-ext-mcp-servers.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-register-ext-mcp-server-verify_{context}"]
+= Verifying that your external MCP server is ready to use
+
+[role="_abstract"]
+To verify that your an external MCP server is ready to use, check the status of your `MCPServerRegistration` custom resource (CR).
+
+.Prerequisites
+
+* You completed all of the installation and configuration steps for {mcpg}.
+* You have the information for the external MCP server you want to connect to.
+* You installed the {oc-first}.
+* You are using Istio for ingress control.
+* You completed the previous steps to register your MCP server with the MCP gateway.
+
+.Procedure
+
+* Check the status of all `MCPServerRegistration` CRs in the cluster by running the following command:
++
+[source,terminal]
+----
+$ oc get mcpsr -A
+----
++
+.Example output
+[source,text]
+----
+NAMESPACE    NAME               READY   TARGET-ROUTE           PREFIX       AGE
+mcp-test     mcp-server-ext     True    external-mcp-server    extserver    14m
+mcp-test     mcp-server-one     True    mcp-api-key-server     serverone    1d
+mcp-test     mcp-server-two     True    mcp-generic-route      servertwo    2d
+mcp-prod     analytics-tools    True    analytics-route        stats        5h
+----
