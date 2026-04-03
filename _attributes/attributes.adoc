@@ -20,7 +20,7 @@
 :ocp-min-version: 4.19
 :oc-first: pass:quotes[OpenShift CLI (`oc`)]
 
-:service-mesh: OpenShift Service Mesh
+:ossm: OpenShift Service Mesh
 :service-mesh-version: 3.2
 
 :cert-manager: cert-manager Operator for Red Hat OpenShift
