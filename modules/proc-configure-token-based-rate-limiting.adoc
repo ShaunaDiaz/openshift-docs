@@ -4,62 +4,24 @@
 
 :_mod-docs-content-type: PROCEDURE
 [id="proc-configure-token-based-rate-limiting_{context}"]
-= Configure token-based rate limiting with TokenRateLimitPolicy
-//TODO concept module
+= Configuring token-based rate limiting for LLM APIs
+
 [role="_abstract"]
-{product-title} provides the `TokenRateLimitPolicy` custom resource to enforce rate limits based on token consumption rather than the number of requests. This policy extends the Envoy Rate Limit Service (RLS) protocol with automatic token usage extraction. It is particularly useful for protecting Large Language Model (LLM) APIs, where the cost and resource usage correlate more closely with the number of tokens processed.
-
-Unlike the standard `RateLimitPolicy` which counts requests, `TokenRateLimitPolicy` counts tokens by extracting usage metrics in the body of the AI inference API call, allowing for finer-grained control over API usage based on actual workload.
-
-[id="proc-token-based-rate-limiting-about_{context}"]
-== How token rate limiting works
-
-The `TokenRateLimitPolicy` tracks cumulative token usage per client. Before forwarding a request, it checks if the client has already exceeded their limit from previous usage. After the upstream responds, it extracts the actual token cost and updates the client's counter.
-
-The flow is as follows:
-
-. On an incoming request, the gateway evaluates the matching rules and predicates from the `TokenRateLimitPolicy` resources.
-. If the request matches, the gateway prepares the necessary rate limit descriptors and monitors the response.
-. After receiving the response, the gateway extracts the `usage.total_tokens` field from the JSON response body.
-. The gateway then sends a `RateLimitRequest` to Limitador, including the actual token count as a `hits_addend`.
-. Limitador tracks the cumulative token usage and responds to the gateway with `OK` or `OVER_LIMIT`.
-
-[id="proc-token-based-rate-use-cases_{context}"]
-== Key features and use cases
-
-Token-based rate limiting means you complete the following tasks:
-
-* Enforces limits based on token usage by extracting the `usage.total_tokens` field from an OpenAI-style inference JSON response body.
-* Suitable for consumption-based APIs such as LLMs where the cost is tied to token counts.
-* Allows defining different limits based on criteria such as user identity, API endpoints, or HTTP methods.
-* Works with `AuthPolicy` to apply specific limits to authenticated users or groups.
-* Inherits functionalities from `RateLimitPolicy`, including defining multiple limits with different durations and using Redis for shared counters in multi-cluster environments.
-
-[id="proc-token-based-rate-integrate-auth-policy_{context}"]
-== Integrating with AuthPolicy
-
-You can combine `TokenRateLimitPolicy` with `AuthPolicy` to apply token limits based on authenticated user identity.
-When an `AuthPolicy` successfully authenticates a request, it injects identity information which can then be used by the `TokenRateLimitPolicy` to select the appropriate limit.
-
-For example, you can define different token limits for users belonging to 'free-tier' versus 'premium-tier' groups, identified using claims in a JWT validated by `AuthPolicy`.
-
-[id="proc-token-based-rate-rate-limiting_{context}"]
-== Configure token-based rate limiting for LLM APIs
-//actual procedure overview
-This guide shows how to configure `TokenRateLimitPolicy` to You can protect a hypothetical LLM API deployed on {ocp}, integrated with `AuthPolicy` for user-specific limits.
+You can protect Large Language Model (LLM) APIs deployed on {ocp} by configuring a `TokenRateLimitPolicy` custom resource (CR) that you integrate with an `AuthPolicy` object for user-specific limits.
 
 .Prerequisites
 
-* {prodname} is installed on your {ocp} cluster.
-* A Gateway and an `HTTPRoute` are configured to expose your service.
-* An `AuthPolicy` is configured for authentication (for example, using API keys or OIDC).
-* Redis is configured for Limitador if running in a multi-cluster setup or requiring persistent counters.
-* Your upstream service is configured to return an OpenAI-compatible JSON response containing a `usage.total_tokens` field in the response body.
+* You installed {prodname} on the {ocp} cluster you are working with.
+* `Gateway` and `HTTPRoute` objects are both configured to expose your service.
+* You created and applied an `AuthPolicy` custom resource (CR) that overrides the default `deny-all` setting.
+* If you are running in a multicluster setup, or requiring persistent counters, Redis is configured for the Limitador Operator component.
+* Your configured your upstream service to return an OpenAI-compatible JSON response containing a `usage.total_tokens` field in the response body.
 
 .Procedure
 
-. Create a `TokenRateLimitPolicy` resource. This example defines two limits: one for free users on a 10,000 tokens per day request limit, and one for pro users with a 100,000 tokens per day request limit.
+. Create a `TokenRateLimitPolicy` YAML, for example, `tokenratelimitpolicy.yaml` that includes the following information:
 +
+.Example TokenRateLimitPolicy YAML
 [source,yaml]
 ----
 apiVersion: kuadrant.io/v1alpha1
@@ -74,49 +36,60 @@ spec:
   limits:
     free-users:
       rates:
-        - limit: 10000 # 10k tokens per day for free tier
+        - limit: 10000
           window: 24h
       when:
-        - predicate: request.path == "/v1/chat/completions" # Inference traffic only
+        - predicate: request.path == "/v1/chat/completions"
         - predicate: |
             auth.identity.groups.split(",").exists(g, g == "free")
       counters:
         - expression: auth.identity.userid
     pro-users:
       rates:
-        - limit: 100000 # 200 tokens per minute for pro users
+        - limit: 100000
           window: 24h
       when:
-        - predicate: request.path == "/v1/chat/completions" # Inference traffic only
+        - predicate: request.path == "/v1/chat/completions"
         - predicate: |
             auth.identity.groups.split(",").exists(g, g == "pro")
       counters:
         - expression: auth.identity.userid
 
 ----
-
-. Apply the policy:
 +
-[source,terminal]
-----
-$ oc apply -f your-tokenratelimitpolicy.yaml -n my-api-namespace
-----
+* Choose a filename for the policy that makes sense in your environment.
+* `spec.limits.free-users.rates.limit`: 10,000 tokens per day for free tier.
+* `spec.limits.free-users.when.predicate`: Set to inference traffic only.
+* `pro-users.rates.limit`: 100,000 per day for the pro user.
+* `spec.limits.pro-users.when.predicate`: Set to inference traffic only.
 
-. Check the status of the policy to ensure it has been accepted and enforced on the target `HTTPRoute`. Look for conditions with `type: Accepted` and `type: Enforced` with `status: "True"`.
+. Apply the `TokenRateLimitPolicy` policy by running the following command:
 +
-[source,terminal]
+[source,terminal,subs="+quotes"]
 ----
-$ oc get tokenratelimitpolicy llm-protection -n my-api-namespace -o jsonpath='{.status.conditions}'
+$ oc apply -f _<tokenratelimitpolicy.yaml>_ -n <gateway_namespace>
 ----
++
+Replace `_<tokenratelimitpolicy.yaml>_` with the filename you used. Replace `_<gateway-namespace>_` with your gateway namespace.
 
-. Send requests to your API endpoint, including the required authentication details.
+. Check the status of the policy to ensure it was accepted and enforced on the target `HTTPRoute`. Look for conditions with `type: Accepted` and `type: Enforced` with `status: "True"`.
 +
-[source,terminal]
+[source,terminal,subs="+quotes"]
 ----
-$ curl -H "Authorization: <auth-details>" \
+$ oc get _<tokenratelimitpolicy.yaml>_ llm-protection -n _<gateway-namespace>_ -o jsonpath='{.status.conditions}'
+----
++
+Replace `_<tokenratelimitpolicy.yaml>_` with the filename you used. Replace `_<gateway_namespace>_` with your gateway namespace.
+
+. Send requests to your API endpoint, including the required authentication details, by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ curl -H "Authorization: _<auth_policy>_" \
      -d '{"model": "gpt-4", "messages": [{"role": "user", "content": "Hello"}]}' \
-     <your-api-endpoint>
+     _<api_endpoint>_
 ----
+Replace `_<auth_policy>_` and `_<api_endpoint>_` with your values.
 
 .Verification
 
