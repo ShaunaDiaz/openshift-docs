@@ -7,16 +7,18 @@
 = About token-based rate limiting with TokenRateLimitPolicy
 
 [role="_abstract"]
-{product-title} provides the `TokenRateLimitPolicy` custom resource to enforce rate limits based on token consumption rather than the number of requests. This policy extends the Envoy Rate Limit Service (RLS) protocol with automatic token usage extraction. It is particularly useful for protecting Large Language Model (LLM) APIs, where the cost and resource usage correlate more closely with the number of tokens processed.
+As an application developer, you can use a `TokenRateLimitPolicy` custom resource (CR) to enforce rate limits based on token consumption rather than the number of requests.
 
-Unlike the standard `RateLimitPolicy` which counts requests, `TokenRateLimitPolicy` counts tokens by extracting usage metrics in the body of the AI inference API call, allowing for finer-grained control over API usage based on actual workload.
+This policy extends the Envoy Rate Limit Service (RLS) protocol with automatic token usage extraction. It is particularly useful for protecting Large Language Model (LLM) APIs, where the cost and resource usage correlate more closely with the number of tokens processed.
+
+`TokenRateLimitPolicy` counts tokens by extracting usage metrics in the body of the artificial intelligence (AI) inference API call, allowing for finer-grained control over API usage based on actual workload.
 
 [id="rhcl-token-rate-limiting_{context}"]
 == How token rate limiting works
 
-The `TokenRateLimitPolicy` tracks cumulative token usage per client. Before forwarding a request, it checks if the client has already exceeded their limit from previous usage. After the upstream responds, it extracts the actual token cost and updates the client's counter.
+The `TokenRateLimitPolicy` object tracks cumulative token usage per client. Before forwarding a request, it checks whether the client has already exceeded their limit. After the upstream responds, the policy extracts the actual token cost and updates the client's counter.
 
-The flow is as follows:
+For example:
 
 . On an incoming request, the gateway evaluates the matching rules and predicates from the `TokenRateLimitPolicy` resources.
 . If the request matches, the gateway prepares the necessary rate limit descriptors and monitors the response.
@@ -31,12 +33,11 @@ The flow is as follows:
 * Suitable for consumption-based APIs such as LLMs where the cost is tied to token counts.
 * Allows defining different limits based on criteria such as user identity, API endpoints, or HTTP methods.
 * Works with `AuthPolicy` to apply specific limits to authenticated users or groups.
-* Inherits functionalities from `RateLimitPolicy`, including defining multiple limits with different durations and using Redis for shared counters in multi-cluster environments.
+* Inherits functionalities from `RateLimitPolicy`, including defining multiple limits with different durations and using Redis for shared counters in multicluster environments.
 
 [id="rhcl-token-rate-limiting-authpolicy_{context}"]
 == Integrating with AuthPolicy
 
-You can combine `TokenRateLimitPolicy` with `AuthPolicy` to apply token limits based on authenticated user identity.
-When an `AuthPolicy` successfully authenticates a request, it injects identity information that is used by the `TokenRateLimitPolicy` to select the appropriate limit.
+You can combine `TokenRateLimitPolicy` with `AuthPolicy` to apply token limits based on authenticated user identity. When an `AuthPolicy` successfully authenticates a request, it injects identity information that is used by the `TokenRateLimitPolicy` to select the appropriate limit.
 
-For example, you can define different token limits for users belonging to 'free-tier' compared to 'premium-tier' groups, identified using claims in a JWT validated by `AuthPolicy`.
+For example, you can define different token limits for users belonging to differently tiered groups, identified using claims in a JWT-validated by `AuthPolicy`.

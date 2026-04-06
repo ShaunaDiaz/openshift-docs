@@ -7,13 +7,11 @@
 = Override your gateway policies for auth and rate limiting
 
 [role="_abstract"]
-As an application developer, you can override your existing gateway-level policies to configure your application-level auth and rate limiting requirements.
-
-You can allow authenticated access to the Toystore API by defining a new `AuthPolicy` that targets the `HTTPRoute` resource created in the previous section.
+As an application developer, you can allow users access to your API by overriding existing `deny-all` gateway-level policies. You must attach application-level `AuthPolicy` objects and rate-limiting CRs to your `HTTPRoute` objects.
 
 [IMPORTANT]
 ====
-Any new `HTTPRoutes` are affected by the existing gateway-level policy. Because you want users to now access this API, you must override that gateway policy. For simplicity, you can use API keys to authenticate the requests, but other options such as OpenID Connect are also available.
+The following example allows two users authenticated access to the Toystore API. The following example uses API keys to authenticate the requests. Other options, such as OpenID Connect, might be more appropriate for production use. Use the "least-access" approach that is best for your use case.
 ====
 
 .Prerequisites
@@ -25,18 +23,18 @@ Any new `HTTPRoutes` are affected by the existing gateway-level policy. Because 
 
 .Procedure
 
-. Ensure that your {prodname} system namespace is set correctly by running the following command:
+. Set the `KUADRANT_SYSTEM_NS` environment variable based on where you created the `Kuadrant` custom resource (CR) by running the following command:
 +
 [source,terminal]
 ----
 $ export KUADRANT_SYSTEM_NS=$(oc get kuadrant -A -o jsonpath="{.items[0].metadata.namespace}")
 ----
 
-. Define API keys for *bob* and *alice* users as follows:
+. Create the `Secret` custom resources (CRs), or API keys, for *bob* and *alice* users that contain the following information:
 +
-[source,terminal]
+.Example user Secret CRs
+[source,yaml]
 ----
-$ oc apply -f - <<EOF
 apiVersion: v1
 kind: Secret
 metadata:
@@ -67,11 +65,27 @@ type: Opaque
 EOF
 ----
 
-. Create a new `AuthPolicy` in a different namespace that overrides the `deny-all` policy created earlier and accepts the API keys as follows:
+. Apply the API keys by running the following commands:
 +
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<bob-key.yaml>_
+----
++
+Replace `_<bob-key.yaml>_` with the filename you used.
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<alice-key.yaml>_
+----
++
+Replace `_<alice-key.yaml>_` with the filename you used.
+
+. Create a new `AuthPolicy` in a different namespace that overrides the `deny-all` policy and accepts the API keys. For example, the following `toystore-auth.yaml`:
++
+.Example user AuthPolicy
 [source,terminal]
 ----
-$ oc apply -f - <<EOF
 apiVersion: kuadrant.io/v1
 kind: AuthPolicy
 metadata:
@@ -103,5 +117,13 @@ spec:
               properties:
                 "userid":
                   selector: auth.identity.metadata.annotations.secret\.kuadrant\.io/user-id
-EOF
 ----
+
+. Apply the `AuthPolicy` CR by running the following commands:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<bob-key.yaml>_
+----
++
+Replace `_<bob-key.yaml>_` with the filename you used.

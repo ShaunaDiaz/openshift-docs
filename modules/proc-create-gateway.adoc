@@ -3,32 +3,31 @@
 // *deployment/deployment.adoc
 
 :_mod-docs-content-type: PROCEDURE
-[id="create-gateway_{context}"]
-= Creating a gateway
+[id="rhcl-create-gateway-object_{context}"]
+= Create your Gateway object
 
 [role="_abstract"]
-As a platform engineer, create a gateway to your {ocp} cluster to set up the infrastructure used by application developers. The following example assumes that you are using the {ocp} Cluster Ingress Operator (CIO).
+As a platform engineer or cluster administrator, you must deploy a `Gateway` object in your {ocp} cluster to begin setting up the infrastructure used by application developers. The `Gateway` is the instantiation of your entry point. It tells the controller to provision load balancer with specific ports and security credentials.
 
-include::snippets/snippet-openshift-cio-gatewayclass.adoc[leveloffset=+1]
-
-If you are using {service-mesh} on {ocp} 4.19 and newer and you set the `ISTIO_GATEWAY_CONTROLLER_NAMES` variable to `istio.io/gateway-controller` during your {prodname} installation, then you can use the `GatewayClass` custom resource (CR) created by default by {service-mesh}. Make sure you use the corresponding `spec.gatewayClassName` value in your `Gateway` CR.
+[IMPORTANT]
+====
+In a multicluster environment, for {prodname} to balance traffic by using DNS across clusters, you must define your `Gateway` object with a shared hostname. You can define this by using an HTTPS listener with a wildcard hostname based on the root domain. You must apply these resources to each cluster that you want to use them.
+====
 
 .Prerequisites
 
-* {prodname} is installed on the {ocp} cluster you are working with.
-* You set the `ISTIO_GATEWAY_CONTROLLER_NAMES` environment variable value to `openshift.io/gateway-controller/v1` during your {prodname} installation.
-* You created a `GatewayClass` named `openshift-default` and specified a `controllerName` of `openshift.io/gateway-controller/v1`.
-* The {oc-first} is installed.
-* You are logged in to the {ocp} cluster with write access to the namespaces you need to use.
-* You have a DNS zone available for use.
+* You installed {prodname} on one or more clusters.
+* You installed the {oc-first}.
+* You have write access to the {ocp} namespaces you need to work with.
+* You have access to external or on-premise DNS.
 
 .Procedure
 
-* Create a gateway that uses the {ocp} CIO by running the following command:
+. Create a `Gateway` custom resource (CR), such as `{KUADRANT_GATEWAY_NAME}.yaml`, that has the following information:
 +
-[source,terminal]
+.Example `Gateway` CR
+[source,yaml]
 ----
-$ oc apply -f - <<EOF
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
@@ -52,7 +51,6 @@ spec:
           kind: Secret
           name: api-${KUADRANT_GATEWAY_NAME}-tls
         mode: Terminate
-EOF
 ----
 +
 [IMPORTANT]
@@ -60,16 +58,28 @@ EOF
 In a multicluster environment, for {prodname} to balance traffic by using DNS across clusters, you must specify a gateway with a shared hostname. You can define this by using an HTTPS listener with a wildcard hostname based on the root domain.
 ====
 
+. Apply the `Gateway` CR by running the following command:
++
+[source,terminal]
+----
+$ oc apply -f {KUADRANT_GATEWAY_NAME}.yaml
+----
+
 .Verification
 
-. Check the status of your gateway by running the following command:
+. Check the status of your `Gateway` object by running the following command:
 +
 [source,terminal]
 ----
 $ oc get gateway ${KUADRANT_GATEWAY_NAME} -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Programmed")].message}'
 ----
 +
-The statuses `Accepted` and `Programmed` mean that your gateway is valid and assigned an external address.
+.Example output
+[source,terminal]
+----
+Resource accepted
+Resource programmed, assigned to service(s) ${KUADRANT_GATEWAY_NAME}.${KUADRANT_GATEWAY_NS}.svc.cluster.local:443
+----
 
 . Check the status of your HTTPS listener by running the following command:
 +
@@ -77,7 +87,9 @@ The statuses `Accepted` and `Programmed` mean that your gateway is valid and ass
 ----
 $ oc get gateway ${KUADRANT_GATEWAY_NAME} -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.listeners[0].conditions[?(@.type=="Programmed")].message}'
 ----
++
+The HTTPS listener exists, but is not programmed or ready to accept traffic because you do not have valid certificates available.
 
-.Next steps
+.Next step
 
-* Configure a TLS policy so that the The HTTPS listener can accept traffic.
+* Create a `TLSPolicy` CR to program your HTTPS listener to accept traffic.
