@@ -7,21 +7,24 @@
 = Set up your environment
 
 [role="_abstract"]
-This section shows how you can set up your environment variables and deploy the example Toystore application on your {ocp} cluster.
-//TODO this entire procedure needs a downstream example
+You can set up your environment variables and deploy an application on your {ocp} cluster. In this example, a demonstration application is used.
+
+[NOTE]
+====
+The Toystore application is an example only and is not intended for production use.
+====
 
 .Prerequisites
 
-* {prodname} is installed on the {ocp} cluster you are working with.
-* The {oc-first} is installed.
-* You are logged in to the {ocp} cluster with write access to the namespaces you need to use.
-* You have a DNS zone available for use.
-* Optional. For rate limiting in a multicluster environment, you have installed {prodname} on more than one cluster. You also have a shared and accessible Redis-based datastore.
-* Optional. For observability, {ocp} user workload monitoring is configured to remote-write to a central storage system.
+* You installed {prodname} on at least one {ocp} cluster.
+* You installed the {oc-first}.
+* You have write access to the {ocp} namespaces you need to work with.
+* You have access to external or on-premise DNS.
+* You know the name and namespace of the gateway you want to connect your application to.
 
 .Procedure
-//TODO FIXME steps, also Q: we need to define these as upstream?
-. Optional: Set the following environment variables:
+
+. Set the following environment by running the following command:
 +
 [source,terminal]
 ----
@@ -30,40 +33,30 @@ $ export KUADRANT_GATEWAY_NS=api-gateway \
   export KUADRANT_DEVELOPER_NS=toystore \
   export KUADRANT_AWS_ACCESS_KEY_ID=xxxx \
   export KUADRANT_AWS_SECRET_ACCESS_KEY=xxxx \
-  export KUADRANT_AWS_DNS_PUBLIC_ZONE_ID=xxxx \
-  export KUADRANT_ZONE_ROOT_DOMAIN=example.com
+  export KUADRANT_ZONE_ROOT_DOMAIN=example.com \
   export KUADRANT_CLUSTER_ISSUER_NAME=self-signed
 ----
 +
-These environment variables are described as follows:
-+
 * `KUADRANT_GATEWAY_NS`: Namespace for your gateway in {ocp}.
-* `KUADRANT_GATEWAY_NAME`: Name of your ingress gateway in {ocp}.
-* `KUADRANT_DEVELOPER_NS`: Namespace for the example Toystore app in {ocp}.
-* `KUADRANT_AWS_ACCESS_KEY_ID`: AWS key ID with access to manage your DNS zone.
-* `KUADRANT_AWS_SECRET_ACCESS_KEY`: AWS secret access key with permissions to manage your DNS zone.
-* `KUADRANT_AWS_DNS_PUBLIC_ZONE_ID`: AWS Route 53 zone ID for the Gateway. This is the ID of the hosted zone that is displayed in the AWS Route 53 console.
-* `KUADRANT_ZONE_ROOT_DOMAIN`: Root domain in AWS Route 53 associated with your DNS zone ID.
+* `KUADRANT_GATEWAY_NAME`: Name of your gateway in {ocp}.
+* `KUADRANT_DEVELOPER_NS`: Namespace for the example Toystore app in {ocp}. You can replace this value with the name of the application you want to use.
+* `KUADRANT_AWS_ACCESS_KEY_ID`: DNS provider access key ID. In this example, AWS is used. You can replace this value with your DNS provider information.
+* `KUADRANT_AWS_SECRET_ACCESS_KEY`: DNS provider secret access key with permissions to manage your DNS zone. In this example, AWS is used. You can replace this value with your DNS provider information.
+* `KUADRANT_ZONE_ROOT_DOMAIN`: The root domain associated with your DNS zone ID. In this example, the {ocp} secret containing the credentials for the DNS provider is AWS Route53. You can replace this value with your DNS provider information.
 * `KUADRANT_CLUSTER_ISSUER_NAME`: Name of the certificate authority or issuer TLS certificates.
-+
-[NOTE]
-====
-If you know your environment variable values, you can set up the required YAML files to suit your environment.
-====
-//which are? example? link?
 
-//cannot use this, not secure
-. Create the namespace for the Toystore app as follows:
+. Create the namespace for the application by running the following command:
 +
 [source,terminal]
 ----
 $ oc create ns ${KUADRANT_DEVELOPER_NS}
 ----
 
-//downstream example?
-. Deploy the Toystore app to the developer namespace:
+. Deploy your application to the namespace you specified by running the following command:
 +
 [source,terminal]
 ----
 $ oc apply -f https://raw.githubusercontent.com/Kuadrant/Kuadrant-operator/main/examples/toystore/toystore.yaml -n ${KUADRANT_DEVELOPER_NS}
 ----
++
+You can replace the Toystore application with the path to the one you want to use.
