@@ -1,0 +1,29 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-create-virtual-mcp-servers.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-mcp-gateway-delete-virt-mcp-server_{context}"]
+= Deleting virtual MCP servers
+
+[role="_abstract"]
+You can delete a virtual MCP server when you no longer need it or when your MCP servers change.
+
+.Prerequisites
+
+* You completed all of the installation and configuration steps for {mcpg}.
+* You registered your MCP servers.
+* You installed the {oc-first}.
+* You created a virtual MCP server.
+
+.Procedure
+
+* Delete a virtual MCP server by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc delete mcpvirtualserver _<dev_tools>_ -n _<mcp_system>_
+----
++
+* Replace `_<dev_tools>_` with the name of the `MCPVirtualServer` custom resource you want to remove.
+* Replace `_<mcp_system>_` with the namespace where the CR is applied.
