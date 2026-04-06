@@ -1,0 +1,103 @@
+
+// Module included in the following assemblies:
+//
+// *deployment/deployment.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-set-default-auth-policy_{context}"]
+= Setting the default AuthPolicy
+
+[role="_abstract"]
+As a platform engineer you can use `Auth` policy objects to define who you allow to connect. Configure a {prodname} `AuthPolicy` custom resource (CR) to use external `auth` providers. You can ensure that different clusters exposing the same API can authenticate with the same permissions.
+
+[TIP]
+====
+Apply an `AuthPolicy` custom resource (CR) with a `deny-all` policy to create a zero-trust environment. Using a zero-trust `AuthPolicy` object means that no traffic flows unless a specific allow rule is set. Every connection request must be authenticated. You can prevent the accidental exposing of services by using a `deny-all` policy.
+====
+
+In a zero-trust environment, every application with an `HTTPRoute` exposed by an application developer must also have an attached route-level `AuthPolicy` CR. You can attach multiple `AuthPolicy` objects to your `Gateway` and `HTTPRoute` CRs.
+
+.Prerequisites
+
+* You installed {prodname} on one or more clusters.
+* You installed the {oc-first}.
+* You have write access to the {ocp} namespaces you need to work with.
+* You have access to external or on-premise DNS.
+* You created a `Gateway` object.
+* You created an `HTTPRoute` object.
+
+.Procedure
+
+. Create a default `AuthPolicy` CR, such as `gateway_name-auth.yaml`, with a `deny-all` setting for your `Gateway` object:
++
+.Example AuthPolicy CR
+[source,yaml]
+----
+apiVersion: kuadrant.io/v1
+kind: AuthPolicy
+metadata:
+  name: ${KUADRANT_GATEWAY_NAME}-auth
+  namespace: ${KUADRANT_GATEWAY_NS}
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: ${KUADRANT_GATEWAY_NAME}
+  defaults:
+   when:
+     - predicate: "request.path != '/health'"
+   rules:
+    authorization:
+      deny-all:
+        opa:
+          rego: "allow = false"
+    response:
+      unauthorized:
+        headers:
+          "content-type":
+            value: application/json
+        body:
+          value: |
+            {
+              "error": "Forbidden",
+              "message": "Access denied by default by the gateway operator. If you are the administrator of the service, create a specific auth policy for the route."
+            }
+----
+
+. Apply your `HTTPRoute` CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<gateway_name-auth.yaml>_
+----
++
+* Replace `_<gateway_name-auth.yaml>_` with the name of your `HTTPRoute` CR.
+
+.Verification
+
+. Check that your `AuthPolicy` has `Accepted` and `Enforced` status by running the following command:
++
+[source,terminal]
+----
+$ oc get authpolicy ${KUADRANT_GATEWAY_NAME}-auth -n ${KUADRANT_GATEWAY_NS} -o=jsonpath='{.status.conditions[?(@.type=="Accepted")].message}{"\n"}{.status.conditions[?(@.type=="Enforced")].message}'
+----
++
+.Example output
+[source,terminal]
+----
+AuthPolicy has been accepted
+AuthPolicy has been successfully enforced
+----
+
+. Test your `AuthPolicy` by running the following `curl` command:
++
+[source,terminal]
+----
+$ curl -H 'Authorization: APIKEY ndyBzreUzF4zqDQsqSPMHkRhriEOtcRx' http://talker-api.127.0.0.1.nip.io:8000/hello
+----
++
+.Example output
+[source,text]
+----
+HTTP/1.1 200 OK
+----

@@ -23,17 +23,20 @@ You can use CoreDNS as a DNS provider for {prodname} in an existing multi-cluste
 
 . Set up the primary cluster. Set the following environment variables for your primary cluster context:
 +
-[source,terminal]
+[source,terminal,subs="+quotes"]
 ----
-$ export CTX_PRIMARY=<primary_cluster_context_name> # such as, primary \
-  export KUBECONFIG=~/.kube/config # Adjust path if necessary \
-  export PRIMARY_CLUSTER_NAME=<primary_cluster_name> # such as, primary \
-  export ONPREM_DOMAIN=<onprem-domain> # such as, example.local \
-  export KUADRANT_SUBDOMAIN=kuadrant # Subdomain to delegate
+$ export CTX_PRIMARY=_<primary_cluster_context_name>_ \
+  export KUBECONFIG=~/.kube/config \
+  export PRIMARY_CLUSTER_NAME=_<primary_cluster_name>_ \
+  export ONPREM_DOMAIN=_<onprem-domain>_ \
+  export KUADRANT_SUBDOMAIN=_<kuadrant>_
 ----
 +
-Replace `<primary_cluster_context_name>` with the name of the cluster that you are specifying as primary.
-For the `ONPREM_DOMAIN` variable value, use your actual root domain.
+* `CTX_PRIMARY`: Replace `_<primary_cluster_context_name>_` with the namespace of the cluster that you are specifying as primary.
+* `KUBECONFIG`: Adjust the path to your config directy as needed.
+* `PRIMARY_CLUSTER_NAME`: Replace `_<primary_cluster_name>_` with the name of the cluster that you are specifying as primary.
+* `ONPREM_DOMAIN`: Replace `_<onprem-domain>_` with your actual root domain.
+*` KUADRANT_SUBDOMAIN`: List the subdomain to delegate.
 
 . Extract the CoreDNS manifests from the `dns-operator` bundle by running the following commands:
 +
@@ -100,14 +103,14 @@ data:
 For production or exact GeoIP routing, mount your licensed MaxMind GeoIP database into the CoreDNS pod and update the filename in the `data.Corefile.geoip` parameter.
 ====
 
-. Update the CoreDNS deployment to use the new configuration:
+. Update the CoreDNS deployment to use the new configuration by running the following command:
 +
 [source,terminal]
 ----
 $ oc --context $CTX_PRIMARY -n kuadrant-system patch deployment kuadrant-coredns --patch '{"spec":{"template":{"spec":{"volumes":[{"name":"config-volume","configMap":{"name":"coredns-kuadrant-config","items":[{"key":"Corefile","path":"Corefile"}]}}]}}}}'
 ----
 
-. Set a watch-and-wait command for the deployment rollout to complete:
+. Set a watch-and-wait command for the deployment rollout to complete by running the following command:
 +
 [source,terminal]
 ----
@@ -166,12 +169,12 @@ After configuring delegation, you can test that the DNS resolution for the deleg
 
 . Launch a temporary pod for testing by running the following command:
 +
-[source,terminal]
+[source,terminal,subs="+quotes"]
 ----
-$ oc debug node/<node-name>
+$ oc debug node/_<node-name>_
 ----
 +
-Replace `<node-name>` with the node you are testing on.
+Replace `_<node-name>_` with the node you are testing on.
 
 . Add `transfer` to your Corefile by running the following command:
 +
