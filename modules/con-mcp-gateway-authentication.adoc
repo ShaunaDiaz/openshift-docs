@@ -1,0 +1,25 @@
+
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-authentication.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="con-mcp-gateway-authentication_{context}"]
+= Understanding {mcpg} authentication
+
+[role="_abstract"]
+When you enable authentication, the {mcpg} broker component exposes OAuth 2.0 Protected Resource Metadata, enabling MCP clients to discover your authorization server and complete the authentication flow.
+
+You can implement the following actions by using authentication:
+
+* Set up the {mcpg} to validate access tokens issued by your identity provider.
+* Return a `401` error message with authorization server discovery information.
+* Expose OAuth configuration at `/.well-known/oauth-protected-resource`.
+* Enable MCP clients to discover and use your identity provider's client registration.
+
+The following procedure uses a Kuadrant `AuthPolicy` with {keycloak} as an identity provider example. The {mcpg} supports any Istio or Gateway API compatible authentication mechanism.
+
+[role="_additional-resources"]
+.Additional resources
+
+* link:https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization[MCP Authorization specification]
