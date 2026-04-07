@@ -1,0 +1,12 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/attributes.adoc[]
+[id="mcp-gateway-authentication"]
+= Using authentication with {mcpg}
+:context: mcp-gateway-authentication
+
+[role="_abstract"]
+You can configure authentication for {mcpg} by using an `AuthPolicy` custom resource (CR) with an identity provider, or any Istio or Gateway API compatible mechanism.
+
+include::modules/con-mcp-gateway-authentication.adoc[leveloffset=+1]
+
+include::modules/proc-configure-mcp-gateway-authentication.adoc[leveloffset=+1]
