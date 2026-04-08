@@ -1,0 +1,110 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-observe.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-mcp-gateway-otel_{context}"]
+= Enabling {OTELName} for the {mcpg}
+
+[role="_abstract"]
+The MCP gateway uses {OTELName} throughout all components to give you consistent logging, {DTShortName}, and metrics. By using observability, you can achieve the following goals:
+
+* Discover which component generated an error, such as Envoy, an MCP gateway component, or a backend MCP server.
+* Understand how requests flow through the system components.
+* See which tools were called and which MCP servers executed those tools.
+* Understand where to find relevant logs for each component.
+* Examine metrics about tool call patterns, success rates, and error rates.
+* Examine {DTShortName} across the request path.
+
+.Prerequisites
+
+* You installed {mcpg}.
+* You installed {prodname}.
+* You configured a `Gateway` object.
+* You are logged into a running {ocp} cluster with an `admin` role.
+* You installed {OTELName}.
+* You configured the {TempoName} for traces.
+* You installed the OpenShift Logging Operator (Loki).
+* You configured an S3-compatible persistent storage volume for Loki to store long-term MCP tool call logs.
+
+.Procedure
+
+. Use the following example YAML to create a collector in your MCP gateway deployment namespace:
++
+.Example OpenTelemetryCollector custom resource (CR)
+[source,yaml,subs="+quotes"]
+----
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: _<mcp_otel_collector>_
+  namespace: _<mcp_gateway_system>_
+spec:
+  mode: deployment
+  config:
+    receivers:
+      otlp:
+        protocols:
+          http:
+            endpoint: 0.0.0.0:4318
+          grpc:
+            endpoint: 0.0.0.0:4317
+    exporters:
+      otlp/tempo:
+        endpoint: tempo-gateway-http.openshift-tracing.svc.cluster.local:4317
+        tls:
+          insecure: true
+      debug:
+        verbosity: basic
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [otlp/tempo, debug]
+        logs:
+          receivers: [otlp]
+          exporters: [debug]
+----
++
+* Replace the value of `metadata.name:` with the name you want to assign to this collector.
+* Replace the value of `metadata.namespace:` with the namespace of your MCP gateway deployment.
+* The `spec.config.exporters:` field value points to {DTShortName}.
+* The setting, `spec.config.exporters.otlp/tempo.tls.insecure: true` is for internal cluster communication without TLS.
+
+. Apply the following environment variables to your {ocp} cluster by running the following command:
++
+[source,terminal]
+----
+$ oc set env deployment/mcp-gateway \
+  OTEL_EXPORTER_OTLP_ENDPOINT="http://mcp-otel-collector-collector.mcp-gateway-system.svc.cluster.local:4318" \
+  OTEL_EXPORTER_OTLP_INSECURE="true" \
+  OTEL_SERVICE_NAME="mcp-gateway"
+----
++
+When {OTELName} creates a collector, the service name is `[metadata.name]-collector`.
+
+. Optional. If you want to send traces to one collector and logs to a different one, set the following additional environment variables:
++
+[source,terminal]
+----
+$ oc set env deployment/mcp-gateway \
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="http://trace-collector.tracing-namespace.svc:4317" \
+  OTEL_EXPORTER_OTLP_LOGS_ENDPOINT="http://log-collector.logging-namespace.svc:4317"
+----
++
+* Set `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` to override the endpoint for traces.
+* Set `OTEL_EXPORTER_OTLP_LOGS_ENDPOINT` to override the endpoint for logs.
+
+. If you are using {TempoName}, select your stack name as the data source in the OpenShift Web Console *Observe > Traces* dashboard. For example, `tempo-mcp`.
+
+. After you select the stack name, you can consult an attribute in your OpenShift Web Console *OpenShift Observe > Traces* dashboard to find where errors have occurred or to gather information for trend identification.
+
+* You can also filter by `service.name="mcp-gateway"`.
+
+. When using Loki, use the *Observe > Logs* view and toggle the *Structured* view to filter by `mcp.session.id`.
+
+. When using Loki, use the *Trace timeline* view, look for the `Log` icon next to `spans` to jump directly to the relevant logs.
+
+.Troubleshooting
+
+* If you do not see any traces, check if the `NetworkPolicy` CR in your namespace allows traffic from the MCP gateway to the {OTELName} collector service.
