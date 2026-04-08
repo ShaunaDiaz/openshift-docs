@@ -69,7 +69,7 @@ Topics:
 - Name: Using on-premise DNS with CoreDNS
   File: coredns
 ---
-Name: Configuring the MCP gateway, register servers, and create policies
+Name: Registering MCP servers and creating policies
 Dir: mcp_gateway_config
 Distros: rhcl
 Topics:
@@ -78,9 +78,9 @@ Topics:
 - Name: Registering external MCP servers
   File: mcp-gateway-register-ext-mcp-servers
 - Name: Configuring authentication for the MCP gateway
-  File: mcp-gateway-authz
-- Name: Configuring authentication for the MCP gateway
   File: mcp-gateway-authentication
+- Name: Configuring authorization for the MCP gateway
+  File: mcp-gateway-authorization
 - Name: Using credentials to access external APIs
   File: mcp-gateway-vault
 ---
@@ -94,8 +94,8 @@ Topics:
   File: mcp-gateway-observe
 - Name: Troubleshooting MCP gateway
   File: mcp-gateway-troubleshooting
-#- Name: Troubleshooting Connectivity Link
-#  File: rhcl-troubleshooting
+- Name: Troubleshooting Connectivity Link
+  File: rhcl-troubleshooting
 ---
 Name: Updating Red Hat Connectivity Link
 Dir: updating
