@@ -1,0 +1,17 @@
+// Module used in the following assemblies
+//
+// *release_notes/release-notes.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="rhcl-relnotes-1.3.1-z-stream_{context}"]
+= {product-title} 1.3.1 bug fix and security update
+
+Issued: 18 March 2026
+
+[role="_abstract"]
+{product-title} release 1.3.1 is now available. A description is available in the link:https://access.redhat.com/errata/RHBA-2026:4903[RHBA-2026:4903] advisory. {product-title} uses the `stable` update channel to track and receive updates for the {product-title} Operator. You can manage how your updates are applied through your Operator Lifecycle Manager (OLM) subscription resource. For more information, see xref:../updating/updating-rhcl.adoc#proc-update-rhcl-with-web-console_updating-rhcl[Updating Red Hat Connectivity Link].
+
+[id="rhcl-relnotes-1.3.1-z-stream-bug-fixes_{context}"]
+== Bug fixes
+
+* Previously, the `wasm-shim` networking protcol incorrectly appended values to existing request headers instead of replacing them during the external authorization flow. This caused inconsistent behavior, leading to comma-separated header values that could disrupt upstream processing. With this release, the logic is updated to ensure that the headers provided in the `CheckResponse` object now correctly replace existing values. This fix restores predictable header management. (https://redhat.atlassian.net/browse/CONNLINK-867[CONNLINK-867])

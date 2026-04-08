@@ -12,19 +12,3 @@ Security, bug fix, and enhancement updates for {product-title} 1.3 are released 
 Red{nbsp}Hat Customer Portal users can enable update notifications in the account settings for Red{nbsp}Hat Subscription Management (RHSM). When notifications are enabled, you are notified through email whenever new updates relevant to your registered systems are released.
 
 This section is updated over time to provide notes on enhancements and bug fixes for future asynchronous releases of {product-title} 1.3. Versioned asynchronous releases, for example with the {product-title} 1.3.z, are detailed in the following subsections.
-
-{product-title} 1.3.1 bug fix and security update::
-
-Issued: 18 March 2026
-+
-{product-title} release 1.3.1 is now available. A description is available in the link:https://access.redhat.com/errata/RHBA-2026:4903[RHBA-2026:4903] advisory. {product-title} uses the `stable` update channel to track and receive updates for the {product-title} Operator. You can manage how your updates are applied through your Operator Lifecycle Manager (OLM) subscription resource. For more information, see xref:../updating/updating-rhcl.adoc#proc-update-rhcl-with-web-console_updating-rhcl[Updating Red Hat Connectivity Link]
-
-* Previously, the `wasm-shim` networking protcol incorrectly appended values to existing request headers instead of replacing them during the external authorization flow. This caused inconsistent behavior, leading to comma-separated header values that could disrupt upstream processing. With this release, the logic is updated to ensure that the headers provided in the `CheckResponse` object now correctly replace existing values. This fix restores predictable header management. (https://redhat.atlassian.net/browse/CONNLINK-867[CONNLINK-867])
-
-{product-title} 1.3.2 bug fix and security update::
-
-Issued: 8 April 2026
-+
-{product-title} release 1.3.2 is now available. A description is available in the link:https://access.redhat.com/errata/RHBA-2026:7016[RHBA-2026:7016] advisory. {product-title} uses the `stable` update channel to track and receive updates for the {product-title} Operator. You can manage how your updates are applied through your Operator Lifecycle Manager (OLM) subscription resource. For more information, see xref:../updating/updating-rhcl.adoc#proc-update-rhcl-with-web-console_updating-rhcl[Updating Red Hat Connectivity Link]
-
-* Previously, the `wasm-shim` component processed protection policies, such as authentication or rate-limiting rules, out of sequence with the actual data forwarding. This created a race condition where the `Gateway` started sending the request to the upstream server at the same time it was asking the policy if the request was allowed. As a result, the upstream server had already received and potentially acted upon the request before the connection could be cut when the request was denied. Meanwhile, the downstream client correctly received a `Denied` message. With this release, the logic is updated to ensure that the policy check is a blocking operation that must complete before any data is dispatched to the upstream backend. This fix synchronizes the state machine so that the connection to the upstream is only opened after the protection policy returns a definitive `Allow` decision. Denied requests are strictly terminated at the Gateway, ensuring the upstream server never sees unauthorized or throttled traffic. (https://redhat.atlassian.net/browse/CONNLINK-912[CONNLINK-912])

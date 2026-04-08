@@ -1,0 +1,37 @@
+// Module used in the following assemblies
+//
+// *release_notes/release-notes.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="rhcl-relnotes-1.3.3-z-stream_{context}"]
+= {product-title} 1.3.3 new feature and enhancement update
+
+Issued: 30 April 2026
+
+[role="_abstract"]
+{product-title} release 1.3.3 is now available. {product-title} uses the `stable` update channel to track and receive updates for the {product-title} Operator. You can manage how your updates are applied through your Operator Lifecycle Manager (OLM) subscription resource. For more information, see xref:../updating/updating-rhcl.adoc#proc-update-rhcl-with-web-console_updating-rhcl[Updating Red Hat Connectivity Link].
+
+[id="rhcl-relnotes-1.3.3-z-stream-enhancements_{context}"]
+== New features and enhancements
+
+With this release, the Model Context Protocol (MCP) gateway is now available as a Technology Preview feature. This experimental feature is not intended for production use. Note the following scope of support on the Red Hat Customer Portal for this feature: link:https://access.redhat.com/support/offerings/techpreview[Technology Preview Features - Scope of Support].
+
+The MCP gateway aggregates in-cluster and remote MCP servers behind a single endpoint. The MCP gateway discovers every tool available to you on registered MCP servers. You can achieve the following goals by using the MCP gateway:
+
+* Focus on your agentic AI applications without building networking into your code by using the MCP gateway.
+* Standardize access and security governance of MCP servers by setting policies that span clusters.
+* Add and remove MCP servers without restarting your systems because the MCP gateway system state updates dynamically.
+* Curate your MCP server tools by creating virtual MCP servers.
+
+//For more information, see xref:../mcp_gateway_discover/mcp-gateway-introduction.adoc#mcp-gateway-introduction[Introduction to the MCP gateway]
+
+* With this release, elicitation support is available with the MCP gateway if your client supports them. MCP servers can implement interactive workflows by enabling user input requests. For more information, see the link:https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation[Elicitation documentation (MCP specification)].
+
+[id="rhcl-relnotes-1.3.3-z-stream-known-issues_{context}"]
+== Known issues
+
+When the default setting `httpRouteManagement: Enabled` is set on an `MCPGatewayExtension` custom resource, the MCP controller component `buildGatewayHTTPRoute()` only creates a single rule for `/mcp` endpoints. The `/.well-known/oauth-protected-resource` rule is missing.
+
+The workaround is to set `httpRouteManagement: Disabled` in the `MCPGatewayExtension` CR in the `config/mcp-gateway/` with a manually managed `HTTPRoute` CR.
+
+//See xref:../mcp_gateway_install/mcp-gateway-install.adoc#proc-mcp-gateway-custom-route_mcp-gateway-install[Applying a customized HTTPRoute object] for instructions.
