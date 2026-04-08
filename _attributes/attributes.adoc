@@ -20,7 +20,9 @@
 :ocp-min-version: 4.19
 :oc-first: pass:quotes[OpenShift CLI (`oc`)]
 
-:ossm: OpenShift Service Mesh
+:OTELName: Red{nbsp}Hat build of OpenTelemetry
+
+:service-mesh: OpenShift Service Mesh
 :service-mesh-version: 3.2
 
 :cert-manager: cert-manager Operator for Red Hat OpenShift
@@ -32,3 +34,4 @@
 :TempoShortName: Distributed Tracing Platform
 :TempoOperator: Tempo Operator
 :TempoVersion: 2.3.1
+:DTShortName: distributed tracing

@@ -5,4 +5,16 @@ include::_attributes/attributes.adoc[]
 :context: mcp-gateway-observe
 
 [role="_abstract"]
-FPO assembly
+You can use observability in {mcpg} to debug things such as silent failures, track destructive annotations, track latencies, and make an audit trail.
+
+include::modules/proc-mcp-gateway-otel.adoc[leveloffset=+1]
+
+include::modules/ref-mcp-gateway-router-spans.adoc[leveloffset=+2]
+
+[id="additional-resources_mcp-gateway-observe"]
+[role="_additional-resources"]
+== Additional resources
+
+* link:https://docs.redhat.com/en/documentation/red_hat_build_of_opentelemetry/3.9/html-single/configuring_the_collector/index[Chapter 1. Configuring the Collector (OpenTelemetry documentation)]
+
+* link:https://modelcontextprotocol.io/docs/tools/inspector[MCP Inspector (Model Context Protocol developer tools documentation)]
