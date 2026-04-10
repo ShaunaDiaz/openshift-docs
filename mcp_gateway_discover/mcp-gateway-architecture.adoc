@@ -1,8 +1,0 @@
-:_mod-docs-content-type: ASSEMBLY
-include::_attributes/attributes.adoc[]
-[id="mcp-gateway-architecture"]
-= {mcpg} architecture
-:context: mcp-gateway-architecture
-
-[role="_abstract"]
-FPO assembly
