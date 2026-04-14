@@ -93,6 +93,11 @@ spec:
 * Replace the `spec.targetRef.namespace:` field value with the namespace where your `HTTPRoute` CR is applied. In this example, `_<mcp_test>_` is used.
 * Replace the `credentialRef.name:` field value with the name of your `Secret` CR. In this example, `_<mcp_server_one_secret>_` is used. You can omit this parameter if your MCP server does not require authentication or authorization.
 * For more information about these parameters, see "Understanding the `MCPServerRegistration` custom resource."
++
+[IMPORTANT]
+====
+A `toolPrefix` value can only contain alphanumeric characters, hyphens (-), and underscores (_).
+====
 
 . Apply the CR by running the following command:
 +
