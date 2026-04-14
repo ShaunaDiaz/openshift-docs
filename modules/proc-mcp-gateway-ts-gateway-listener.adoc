@@ -1,0 +1,86 @@
+
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-troubleshooting.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-mcp-gateway-ts-gateway-listener_{context}"]
+= Troubleshooting the gateway listener
+
+[role="_abstract"]
+If your {mcpg} cannot reach an MCP endpoint at the configured hostname, the `Listener` custom resource (CR) you configured might not be working. You can troubleshoot this situation by using a few commands and some insight.
+
+Use the following concepts with the commands that follow to solve a non-functioning `Listener` CR:
+
+* Ensure that your `Gateway` object has `Accepted` and `Programmed` conditions set to `True`.
+* Verify that the `hostname` parameter value in the `Listener` CR matches your DNS or hosts configuration.
+
+.Prerequisites
+
+* You installed {mcpg}.
+* You installed the {oc-first}.
+* You configured a `Gateway` object.
+* You configured an `HTTPRoute` object for the gateway.
+
+.Procedure
+
+. Check the general `Gateway` object configuration by running the following command:
++
+[source,terminal]
+----
+$ oc get gateway -A
+----
++
+This command returns general information about all `Gateway` objects in the cluster. If the `Gateway` object you are troubleshooting exists, the command returns the following information:
++
+* The `gatewayClassName` is it using, whether or not it has an IP address or hostname assigned
+* The `status`, such as `Ready`, `Programmed`, or `Pending`
+
+. Check the full metadata and status history for a specific `Gateway` object that is stuck in `Pending` by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc describe gateway _<gateway_name>_ -n _<gateway_system>_
+----
++
+* Replace `_<gateway_name>_` with the name of the `Gateway` object.
+* Replace `_<gateway_system>_` with the namespace where the `Gateway` object is applied.
+
+. Check for port conflicts and verify that the `SSL/TLS` certificates are correctly attached to `Listener` CRs.
+
+. Verify the `Listener` CR configuration by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get gateway _<gateway_name>_ -n _<gateway_system>_ -o yaml | grep -A 10 listeners
+----
++
+* Replace `_<gateway_name>_` with the name of the `Gateway` object.
+* Replace `_<gateway_system>_` with the namespace where the `Gateway` object is applied.
+
+. Check all of your `Listener` CR configurations at the same time by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get gateway _<gateway_name>_ -n _<gateway_system>_ -o jsonpath='{range .spec.listeners[*]}{.name}{"\t"}{.hostname}{"\t"}{.port}{"\n"}{end}'
+----
++
+* Replace `_<gateway_name>_` with the name of the `Gateway` object.
+* Replace `_<gateway_system>_` with the namespace where the `Gateway` object is applied.
+
+. Check that the Istio gateway pod is running by using the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get pods -n _<gateway_system>_ -l gateway.istio.io/managed=istio.io-gateway-controller
+----
++
+* Replace `_<gateway_system>_` with the name of your `Gateway` object deployment.
+* This command checks the status of Envoy-proxy pods and returns pod, traffic flow, and policy errors.
+
+. Verify that the port you are trying to use is not already in use by running the following command:
++
+[source,terminal]
+----
+$ oc get gateway -A -o yaml | grep "port:"
+----

@@ -48,6 +48,11 @@ spec:
 * Replace the `spec.targetRef.name:` field value with the name of the `HTTPRoute` CR you applied.
 * Replace the value of `spec.targetRef.namespace:` with the namespace where your `HTTPRoute` CR is applied.
 * The `spec.credentialRef:` field points to the `Secret` CR that has credentials for the external MCP server.
++
+[IMPORTANT]
+====
+A `toolPrefix` value cannot include spaces or special characters.
+====
 
 . Apply the CR by running the following command:
 +
