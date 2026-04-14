@@ -1,0 +1,54 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-register-ext-mcp-servers.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-register-ext-mcp-server-serviceentry_{context}"]
+= Creating a ServiceEntry for an external MCP server
+
+[role="_abstract"]
+To register an external MCP server, you must first make sure that it has an ingress pathway by creating a `ServiceEntry` custom resource (CR) in your Istio deployment. {ocp} 4.19 and newer provides Istio through the Gateway API.
+
+.Prerequisites
+
+* You completed all of the installation and configuration steps for {mcpg}.
+* You have the information for the external MCP server you want to connect to.
+* You installed the {oc-first}.
+* You are using Istio for ingress control.
+
+.Procedure
+
+. Create a `ServiceEntry` CR that registers the external server in the Istio service registry by using the following template:
++
+.Example ServiceEntry CR
+[source,yaml,subs="+quotes"]
+----
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: _<mcp_external_server>_
+  namespace: _<mcp_test>_
+spec:
+  hosts:
+  - _<api.githubcopilot.com>_
+  ports:
+  - number: 443
+    name: https
+    protocol: HTTPS
+  location: MESH_EXTERNAL
+  resolution: DNS
+----
++
+* Replace `_<mcp_external_server>_` with the name of your external MCP server.
+* Replace `_<mcp_test>_` with the namespace that the MCP server is in.
+* Replace `_<api.githubcopilot.com>_` with the host URL of the MCP server.
+* Replace any other values as required.
+
+. Apply the CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<mcp_external_server_se.yaml>_
+----
++
+Replace `_<mcp_external_server_se.yaml>_` with the name of your CR.

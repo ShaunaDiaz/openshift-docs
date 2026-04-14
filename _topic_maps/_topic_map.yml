@@ -75,6 +75,8 @@ Distros: rhcl
 Topics:
 - Name: Registering on-premise MCP servers
   File: mcp-gateway-register-on-prem-mcp-servers
+- Name: Registering external MCP servers
+  File: mcp-gateway-register-ext-mcp-servers
 - Name: Configuring authentication for the MCP gateway
   File: mcp-gateway-authz
 - Name: Configuring authorization for the MCP gateway
