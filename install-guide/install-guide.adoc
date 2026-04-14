@@ -15,8 +15,6 @@ include::modules/con-connectivity-link-supported-configs.adoc[leveloffset=+2]
 
 include::modules/proc-install-in-openshift-web-console.adoc[leveloffset=+1]
 
-include::modules/proc-using-istio-gateway-controller-web-console.adoc[leveloffset=+2]
-
 include::modules/proc-install-on-openshift-cli-cio.adoc[leveloffset=+1]
 
 include::modules/proc-install-on-ocp-cli-istio.adoc[leveloffset=+1]
