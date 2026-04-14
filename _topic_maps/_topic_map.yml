@@ -73,10 +73,8 @@ Name: Configuring the MCP gateway, register servers, and create policies
 Dir: mcp_gateway_config
 Distros: rhcl
 Topics:
-- Name: Configuring the MCP gateway
-  File: mcp-gateway-config-listener-route
-- Name: Register MCP servers
-  File: mcp-gateway-register-servers
+- Name: Registering on-premise MCP servers
+  File: mcp-gateway-register-on-prem-mcp-servers
 - Name: Configuring authentication for the MCP gateway
   File: mcp-gateway-authz
 - Name: Configuring authorization for the MCP gateway
