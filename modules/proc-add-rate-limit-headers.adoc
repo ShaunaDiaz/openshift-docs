@@ -1,0 +1,60 @@
+// Module included in the following assemblies:
+//
+// *deployment/deployment.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-add-rate-limit-headers_{context}"]
+= Adding rate-limit headers to an API response
+
+[role="_abstract"]
+When you need to ensure that your traffic remains stable under heavy load, you can add rate-limit headers to your API responses.
+
+By adding `x-ratelimit-*` headers, you can turn your APIs into self-documenting systems that can proactively throttle their own request frequency and time their retries. You can simplify debugging for developers and reduce unnecessary traffic spikes.
+
+.Prerequisites
+
+* You installed {prodname} on one or more clusters.
+* If you plan to use rate-limiting in a multicluster environment, you have a shared Redis-based datastore.
+* You installed the {oc-first}.
+* You have write access to the {ocp} namespaces you need to work with.
+* You have access to external or on-premise DNS.
+* You created a `Gateway` object.
+* You configured your gateway policies and `HTTP` routes.
+* You applied a default `RateLimitPolicy` CR to your deployment.
+* You have write access to the namespace where {prodname} is installed.
+
+.Procedure
+
+. Find the name of the `Limitador` CR in your cluster by running the following command:
++
+[source,terminal]
+----
+$ oc get limitador -A
+----
+
+. Apply a patch to add headers to the CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc patch limitador limitador -n KUADRANT-NAMESPACE --type=merge -p '{"spec": {"rateLimitHeaders": "DRAFT_VERSION_03"}}'
+----
+
+.Verification
+
+* Test for the presence of headers by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ curl -i -X GET http://_<gateway_url>_/path
+----
++
+Replace `_<gateway_url>_` with the URL of your `Gateway` object.
++
+.Example output
+[source,text]
+----
+HTTP/1.1 200 OK
+x-ratelimit-limit: 5, 5;w=60
+x-ratelimit-remaining: 4
+x-ratelimit-reset: 58
+----
