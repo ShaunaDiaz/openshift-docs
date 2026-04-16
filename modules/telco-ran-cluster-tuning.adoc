@@ -50,6 +50,10 @@ The {rh-rhacm} hub cluster aggregates managed cluster metrics.
 |Configure the cluster to use a single catalog source that contains only the Operators required for a RAN DU deployment.
 Each catalog source increases the CPU use on the cluster.
 Using a single `CatalogSource` fits within the platform CPU budget.
+
+|Disable the Console Operator
+|If the cluster was deployed with the console disabled, the `Console` CR (`ConsoleOperatorDisable.yaml`) is not needed.
+If the cluster was deployed with the console enabled, you must apply the `Console` CR.
 |====
 
 Engineering considerations::
