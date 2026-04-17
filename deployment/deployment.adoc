@@ -27,6 +27,8 @@ include::modules/proc-set-default-auth-policy.adoc[leveloffset=+2]
 
 include::modules/proc-set-default-rate-limit-policy.adoc[leveloffset=+2]
 
+include::modules/proc-add-rate-limit-headers.adoc[leveloffset=+2]
+
 include::modules/con-about-token-based-rate-limiting.adoc[leveloffset=+1]
 
 include::modules/proc-configure-token-based-rate-limiting.adoc[leveloffset=+2]
