@@ -79,8 +79,8 @@ Topics:
   File: mcp-gateway-register-ext-mcp-servers
 - Name: Configuring authentication for the MCP gateway
   File: mcp-gateway-authz
-- Name: Configuring authorization for the MCP gateway
-  File: mcp-gateway-authn
+- Name: Configuring authentication for the MCP gateway
+  File: mcp-gateway-authentication
 - Name: Using credentials to access external APIs
   File: mcp-gateway-vault
 ---

@@ -1,0 +1,192 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-authentication.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-configure-mcp-gateway-authentication_{context}"]
+= Configuring {mcpg} authentication with an AuthPolicy
+
+[role="_abstract"]
+Configure authentication for your {mcpg} by using a Kuadrant `AuthPolicy` custom resource (CR) and an identity provider such as {keycloak}.
+
+[NOTE]
+====
+The {mcpg} supports any Istio or Gateway API compatible authentication mechanism. Use the best solution for your {ocp} clusters.
+====
+
+.Prerequisites
+
+* You installed {mcpg}.
+* You installed {prodname}.
+* You configured a `Gateway` object.
+* You installed and have ready an identity provider supporting OAuth 2.0 or 2.1, for example, {keycloak}.
+
+.Procedure
+
+. Add a listener to the `Gateway` object for your identity provider by using the following command as an example:
++
+[source,json,subs="+quotes"]
+----
+$ oc patch gateway _<mcp_gateway>_ -n _<gateway_system>_ --type json -p '[
+  {
+    "op": "add",
+    "path": "/spec/listeners/-",
+    "value": {
+      "name": "keycloak",
+      "hostname": "keycloak.example.com",
+      "port": 8002,
+      "protocol": "HTTP",
+      "allowedRoutes": {
+        "namespaces": {
+          "from": "Selector",
+          "selector": {
+            "matchLabels": {
+              "kubernetes.io/metadata.name": "keycloak"
+            }
+          }
+        }
+      }
+    }
+  }
+]'
+----
++
+* Replace `_<mcp_gateway>_` with the name of your MCP gateway.
+* Replace `_<gateway_system>_` with the namespace of your `Gateway` object.
+* Replace the {keycloak} `_<name>_`, `_<hostname>_`, and `_<kubernetes.io/metadata.name>_` with your identity provider information.
+
+. Configure the {mcpg} broker component to respond with OAuth discovery information by setting the following environment variables:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc set env deployment/_<mcp_gateway>_ \
+  OAUTH_RESOURCE_NAME="MCP Server" \
+  OAUTH_RESOURCE="http://mcp.example.com:8001/mcp" \
+  OAUTH_AUTHORIZATION_SERVERS="http://keycloak.example.com:8002/realms/mcp" \
+  OAUTH_BEARER_METHODS_SUPPORTED="header" \
+  OAUTH_SCOPES_SUPPORTED="basic,groups,roles,profile" \
+  -n _<mcp_system>_
+----
++
+* Replace `_<mcp_gateway>_` with the name of your MCP gateway.
+* Replace `_<mcp_system>_` with the namespace of your MCP gateway.
+* `OAUTH_RESOURCE_NAME`: Human-readable name for the MCP server.
+* `OAUTH_RESOURCE`: Canonical URI of the MCP server that is used for token audience validation.
+* `OAUTH_AUTHORIZATION_SERVERS`: Authorization server URL for client discovery.
+* `OAUTH_BEARER_METHODS_SUPPORTED`: Supported bearer token methods. Valid values are usually `header`, `body`, or `query`.
+* `OAUTH_SCOPES_SUPPORTED`: The OAuth scopes this MCP server supports.
+
+. Create an AuthPolicy CR that validates JWT tokens:
++
+.Example AuthPolicy CR
+[source,yaml,subs="+quotes"]
+----
+apiVersion: kuadrant.io/v1
+kind: AuthPolicy
+metadata:
+  name: _<mcp_jwt_auth_policy>_
+  namespace: _<gateway_system>_
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: _<mcp_gateway>_
+    sectionName: _<mcp>_
+  defaults:
+    when:
+      - predicate: "!request.path.contains('/.well-known')"
+    rules:
+      authentication:
+        'keycloak':
+          jwt:
+            issuerUrl: http://keycloak.example.com:8002/realms/mcp
+      response:
+        unauthenticated:
+          code: 401
+          headers:
+            'WWW-Authenticate':
+              value: Bearer resource_metadata=http://mcp.example.com:8001/.well-known/oauth-protected-resource/mcp
+          body:
+            value: |
+              {
+                "error": "Unauthorized",
+                "message": "Authentication required."
+              }
+----
++
+* The `metadata.name:` parameter value is the name of the `AuthPolicy` CR. Replace `_<mcp_jwt_auth_policy>_` as needed.
+* The `metadata.namespace:` parameter value is the gateway namespace. Replace `_<gateway_system>_` with the namespace where you created your `Gateway` object to apply the `AuthPolicy` CR to the namespace.
+* The `spec.targetRef.name:` parameter value is the name of your MCP gateway. Replace `_<mcp_gateway>_` as needed.
+* The `spec.targetRef.sectionName:` parameter value is the target gateway listener. In this example, `mcp` is used.
+* The `spec.defaults.when` parameter value in this example allows unauthenticated access to `/.well-known` endpoints.
+* The `spec.defaults.rules.authentication:` parameter defines which tokens to validate and how. In this case, JWT validation validates tokens against Keycloak's OIDC issuer.
+* The `spec.defaults.rules.response.unauthenticated.headers.'WWW-Authenticate':` parameter points clients to OAuth discovery metadata. Replace the `resource_metadata=` information as required.
+* The `spec.defaults.rules.response.unauthenticated.body.value:` parameter is set with a standard response. This configuration returns a `401` error in an OAuth error format.
+
+. Apply the AuthPolicy CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<mcp_jwt_authpolicy.yaml>_
+----
++
+Replace `_<mcp_jwt_authpolicy.yaml>_` with the name of your CR.
+
+.Verification
+
+. Test that the broker now serves OAuth discovery information by checking the protected resource metadata endpoint with the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ curl http://_<mcp.example.com:8001/.well_known/oauth_protected_resource>_
+----
++
+* Replace the URL with your protected resource information.
++
+.Example output
+[source,text]
+----
+{
+  "resource_name": "MCP Server",
+  "resource": "http://example.com:8001/mcp",
+  "authorization_servers": [
+    "http://keycloak.example.com:8002/realms/mcp"
+  ],
+  "bearer_methods_supported": [
+    "header"
+  ],
+  "scopes_supported": [
+    "basic",
+    "groups",
+    "roles",
+    "profile"
+  ]
+}
+----
+
+. Test that protected endpoints now require authentication by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ curl -v http://_<mcp.example.com:8001/mcp>_ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc": "2.0", "id": 1, "method": "tools/list"}'
+----
++
+Replace `_<mcp.example.com:8001/mcp>_` with your endpoint.
++
+.Example output
+[source,text]
+----
+{
+  "error": "Unauthorized",
+  "message": "Authentication required."
+}
+----
++
+A `401` error with `WWW-Authenticate` header is expected.
+
+.Next steps
+
+* Control which users can access specific tools by configuring authorization policies.
+* Connect authenticated external MCP services.
