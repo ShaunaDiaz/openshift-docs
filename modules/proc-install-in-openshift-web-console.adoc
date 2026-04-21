@@ -49,6 +49,11 @@ An `OperatorGroup` custom resource (CR) is created automatically when you use th
 . In the *Configure via* field, click *YAML view* to edit the definition, for example, the Kuadrant CR name.
 
 . Click *Create* and wait for the deployment to be displayed in the list.
++
+[NOTE]
+====
+If you are using {service-mesh}, no additional configuration is required. {prodname} automatically detects and uses {service-mesh} as your Gateway object controller.
+====
 
 .Verification
 
