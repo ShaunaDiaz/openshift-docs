@@ -1,0 +1,209 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-revoke-tool-access.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-mcp-gateway-filter-revoked-tools-display_{context}"]
+= Filtering revoked tools from tools/list display
+
+[role="_abstract"]
+After you revoke a tool by using your identity provider, `tools/call` requests are blocked. However, the revoked tool is still displayed in `tools/list` responses. To filter revoked tools from the displayed list, you must give the MCP broker component a signed header that carries the user's authorized tools.
+
+You can remove blocked tools from responses by configuring the Authorino Operator to generate the header by using a wristband JWT signed with an ECDSA key pair.
+
+.Prerequisites
+
+* You installed {mcpg}.
+* You configured a `Gateway` object with both `mcp` and `mcps` listeners.
+* You are logged into a running {ocp} cluster with an `admin` role.
+* You configured an `HTTPRoute` object for the gateway.
+* You registered an MCP server.
+* You configured authentication with an `AuthPolicy` CR on the `mcp` listener.
+* You configured authorization with a tool-level `AuthPolicy` CR on the `mcps` listener.
+
+.Procedure
+
+. Generate an ECDSA key pair by running the following commands:
+
+.. Generate the private key and save it to a file by running the following command:
++
+[source,terminal]
+----
+$ openssl ecparam -name prime256v1 -genkey -noout -out private-key.pem
+----
+
+.. Generate the public key and save it to a file by running the following command:
++
+[source,terminal]
+----
+$ openssl ec -in private-key.pem -pubout -out public-key.pem
+----
+
+. Create a Kubernetes `Secret` object in the Authorino Operator namespace by adding the private key with the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc create secret generic trusted-headers-private-key \
+  --from-file=key.pem=private-key.pem \
+  -n _<kuadrant_system>_ \
+  --dry-run=client -o yaml | oc apply -f -
+----
++
+Replace `_<kuadrant_system>_` with the namespace where {prodname} is installed.
+
+. Create a Kubernetes `Secret` object in the MCP broker component namespace by adding the public key with the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc create secret generic trusted-headers-public-key \
+  --from-file=key=public-key.pem \
+  -n _<mcp_system>_ \
+  --dry-run=client -o yaml | oc apply -f -
+----
++
+Replace `_<mcp_system>_` with the namespace where {mcpg} is installed.
+
+. Delete only the existing `AuthPolicy` CR on the `mcp` listener by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc delete authpolicy _<mcp_authn_policy>_ -n _<authn_namespace>_ --ignore-not-found
+----
++
+* Replace `_<mcp_authn_policy>_` with the name of your `AuthPolicy` CR.
+* Replace `_<authn_namespace>_` with the namespace where your `AuthPolicy` CR is applied.
++
+[IMPORTANT]
+====
+You must delete the `AuthPolicy` CR and create a new one. Using `$ oc apply` merges both the new and old policies.
+====
+
+. Generate a new `x-authorized-tools` header by creating and applying a new `AuthPolicy` CR. Use the following example:
++
+.Example AuthPolicy CR
+[source,yaml]
+----
+$ oc create -f - <<EOF
+apiVersion: kuadrant.io/v1
+kind: AuthPolicy
+metadata:
+  name: _<mcp_auth_policy>_
+  namespace: _<authn_namespace>_
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: _<mcp_gateway>_
+    sectionName: mcp
+  when:
+    - predicate: "!request.path.contains('/.well-known')"
+  rules:
+    authentication:
+      'keycloak':
+        jwt:
+          issuerUrl: https://keycloak.example.com:port/realms/mcp
+    authorization:
+      'allow-mcp-method':
+        patternMatching:
+          patterns:
+          - predicate: |
+              !request.headers.exists(h, h == 'x-mcp-method') || (request.headers['x-mcp-method'] in ["tools/list","initialize","notifications/initialized"])
+      'authorized-tools':
+        opa:
+          rego: |
+            allow = true
+            tools = { server: roles | server := object.keys(input.auth.identity.resource_access)[_]; roles := object.get(input.auth.identity.resource_access, server, {}).roles }
+          allValues: true
+    response:
+      success:
+        headers:
+          x-authorized-tools:
+            wristband:
+              issuer: 'authorino'
+              customClaims:
+                'allowed-tools':
+                  selector: auth.authorization.authorized-tools.tools.@tostr
+              tokenDuration: 300
+              signingKeyRefs:
+                - name: trusted-headers-private-key
+                  algorithm: ES256
+      unauthenticated:
+        headers:
+          'WWW-Authenticate':
+            value: Bearer resource_metadata=https://mcp.example.com:port/.well-known/oauth-protected-resource
+        body:
+          value: |
+            {
+              "error": "Unauthorized",
+              "message": "Access denied: Authentication required."
+            }
+      unauthorized:
+        code: 401
+        headers:
+          'WWW-Authenticate':
+            value: Bearer resource_metadata=https://mcp.example.com:port/.well-known/oauth-protected-resource
+        body:
+          value: |
+            {
+              "error": "Forbidden",
+              "message": "Access denied: Unsupported method. New authentication required (401)."
+            }
+EOF
+----
++
+* Replace `_<mcp_auth_policy>_` with the name of your new `AuthPolicy` CR.
+* Replace `_<authn_namespace>_` with the namespace where you removed the `AuthPolicy CR` that was on the `mcp` listener.
+* Replace `_<mcp_gateway>_` with the name of your {mcpg} deployment.
+
+. Configure the MCP broker component to validate the signed header by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc patch mcpgatewayextension _<mcp_gateway_extension>_ -n _<mcp_system>_ --type='merge' \
+  -p='{"spec":{"trustedHeadersKey":{"secretName":"trusted-headers-public-key"}}}'
+----
++
+* Replace `_<mcp_gateway_extension>_` with the name of your `MCPGatewayExtension` CR.
+* Replace `_<mcp_system>_` with the namespace where {mcpg} is installed.
+
+. Wait for the automatic MCP broker component redeployment to load the public key from the `Secret` CR created in the earlier step by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc rollout status deployment/_<mcp_gateway>_ -n _<mcp_system>_ --timeout=60s
+----
++
+* Replace `_<mcp_gateway>_` with the name of your {mcpg} deployment.
+* Replace `_<mcp_system>_` with the namespace where your {mcpg} deployment is applied.
+
+. If the redeployment does not start, force it by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc rollout restart deployment/_<mcp_gateway>_ -n _<mcp_system>_
+----
++
+* Replace `_<mcp_gateway>_` with the name of your {mcpg} deployment.
+* Replace `_<mcp_system>_` with the namespace where your {mcpg} deployment is applied.
+
+.Verification
+
+. Verify that the new `AuthPolicy` CR is enforced by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get authpolicy _<mcp_auth_policy>_ -n _<authn_namespace>_ -o jsonpath='{.status.conditions[?(@.type=="Enforced")].status}'
+----
++
+* Replace `_<mcp_auth_policy>_` with the name of your new `AuthPolicy` CR.
+* Replace `_<authn_namespace>_` with the namespace where your `AuthPolicy` CR is applied.
++
+.Example output
+[source,text]
+----
+True
+----
+
+. Log out and log back in with the user credentials that you changed access for to get a fresh token.
+
+. Request all available tools from your MCP servers for the user or group whose access you revoked. The expected response is a list of all tools that the user or group can access from all registered MCP servers.
