@@ -81,8 +81,10 @@ Topics:
   File: mcp-gateway-authentication
 - Name: Configuring authorization for the MCP gateway
   File: mcp-gateway-authorization
-- Name: Using credentials to access external APIs
-  File: mcp-gateway-vault
+- Name: Revoking MCP server tool access
+  File: mcp-gateway-revoke-tool-access
+#- Name: Using credentials to access external APIs
+#  File: mcp-gateway-vault
 ---
 Name: Observability and Troubleshooting
 Dir: observe_troubleshoot
