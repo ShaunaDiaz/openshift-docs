@@ -1,4 +1,3 @@
-
 // Module included in the following assemblies:
 //
 // *mcp_gateway_config/mcp-gateway-authorization.adoc
@@ -14,9 +13,10 @@ The following example demonstrates using a Kuadrant `AuthPolicy` custom resource
 
 * You installed {mcpg}.
 * You installed {prodname}.
-* You configured a `Gateway` object.
-* You completed authentication procedures.
+* You configured a `Gateway` object with an `mcp` listener and an `mcps` listener. The `mcps` listener is required for internal `tools/call` routing and authorization.
+* You completed authentication procedures, including creating an `AuthPolicy` CR on the `mcp` listener.
 * You configured your identity provider to include `group` and `role` claims in JSON Web Tokens (JWT).
+* The identity provider client IDs match the namespaced `MCPServerRegistration` name in the format `_<namespace>_/_<mcpserverregistration_name>_`.
 
 .Procedure
 
@@ -37,10 +37,15 @@ The following example demonstrates using a Kuadrant `AuthPolicy` custom resource
 }
 ----
 +
-* The `"mcp-ns/arithmetic-mcp-server"` specification must match the namespaced name of the `MCPServerRegistration` CR.
+* The `"mcp-ns/arithmetic-mcp-server"` specification must match the namespaced name of the `MCPServerRegistration` CR in the format `{namespace}/{name}`. For example, if your `MCPServerRegistration` CR is named `arithmetic-mcp-server` and is applied in the `mcp-ns` namespace, the {keycloak} client ID must be `mcp-ns/arithmetic-mcp-server`.
 * The `"roles": ["add", "sum", "multiply", "divide"]` parameter and values specify the roles representing the allowed tools.
 
-. Configure tool-level authorization by creating an `AuthPolicy` CR that enforces tool-level access control, as shown in the following example:
+. Configure tool-level authorization by creating an `AuthPolicy` CR that enforces tool-level access control on the `mcps` listener, as shown in the following example:
++
+[IMPORTANT]
+====
+The authorization `AuthPolicy` CR must target the `mcps` listener, not the `mcp` listener. The `mcp` listener only handles public traffic and has an authentication-only `AuthPolicy` CR.
+====
 +
 .Example tool-level access control AuthPolicy
 [source,yaml,subs="+quotes"]
@@ -60,7 +65,7 @@ spec:
     authentication:
       'sso-server':
         jwt:
-          issuerUrl: http://keycloak.example.com:8002/realms/mcp
+          issuerUrl: https://_<keycloak.example.com>_/realms/mcp
     authorization:
       'tool-access-check':
         patternMatching:
@@ -71,7 +76,7 @@ spec:
       unauthenticated:
         headers:
           'WWW-Authenticate':
-            value: Bearer resource_metadata=http://mcp.example.com:8001/.well-known/oauth-protected-resource/mcp
+            value: Bearer resource_metadata=http://_<mcp.example.com:8001>_/.well-known/oauth-protected-resource
         body:
           value: |
             {
@@ -90,8 +95,8 @@ spec:
 * Replace `metadata.name:` with the name of the `AuthPolicy`.
 * Replace `metadata.namespace:` with the namespace where the `AuthPolicy` CR is applied.
 * Replace `spec.targetRef.name:` with the name of the `Gateway` CR.
-* The `spec.targetRef.sectionName:` value targets the MCP server listener.
-* Authentication: Validates the JWT token using the configured issuer URL
+* The `spec.targetRef.sectionName:` value must be `mcps`, which is the internal listener for `tool/call` authorization. This listener must exist on your `Gateway` object.
+* Authentication: Validates the JWT token using the configured issuer URL. Replace `_<keycloak.example.com>_` with your identity provider hostname.
 * Authorization Logic: CEL expression checks if user's roles allow access to the requested tool
 * CEL Breakdown:
 ** `request.headers['x-mcp-toolname']`: The name of the requested MCP tool, stripped from prefix.
@@ -111,16 +116,15 @@ $ oc apply -f _<mcp_tool_auth_policy.yaml>_
 
 . Monitor authorization decisions by checking the `AuthPolicy` CR `status` with the following command:
 +
-[source,terminal]
+[source,terminal,subs="+quotes"]
 ----
-$ oc get authpolicy -A
+$ oc get authpolicy _<mcp_tool_auth_policy>_ -n _<gateway_system>_ -o jsonpath='{.status.conditions[?(@.type=="Enforced")].status}'
 ----
 +
 .Example output
 [source,text]
 ----
-NAMESPACE        NAME                    STATUS
-gateway-system   mcp-tool-auth-policy    Enforced
+True
 ----
 
 . Check the authorization logs by running the following command:

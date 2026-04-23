@@ -18,7 +18,7 @@ The {mcpg} supports any Istio or Gateway API compatible authentication mechanism
 
 * You installed {mcpg}.
 * You installed {prodname}.
-* You configured a `Gateway` object.
+* You configured a `Gateway` object with an `mcp` listener.
 * You installed and have ready an identity provider supporting OAuth 2.0 or 2.1, for example, {keycloak}.
 
 .Procedure
@@ -105,7 +105,7 @@ spec:
           code: 401
           headers:
             'WWW-Authenticate':
-              value: Bearer resource_metadata=http://mcp.example.com:8001/.well-known/oauth-protected-resource/mcp
+              value: Bearer resource_metadata=http://mcp.example.com:8001/.well-known/oauth-protected-resource
           body:
             value: |
               {
@@ -127,10 +127,10 @@ spec:
 +
 [source,terminal,subs="+quotes"]
 ----
-$ oc apply -f _<mcp_jwt_authpolicy.yaml>_
+$ oc apply -f _<mcp_jwt_auth_policy.yaml>_
 ----
 +
-Replace `_<mcp_jwt_authpolicy.yaml>_` with the name of your CR.
+Replace `_<mcp_jwt_auth_policy.yaml>_` with the name of your CR.
 
 .Verification
 
@@ -138,7 +138,7 @@ Replace `_<mcp_jwt_authpolicy.yaml>_` with the name of your CR.
 +
 [source,terminal,subs="+quotes"]
 ----
-$ curl http://_<mcp.example.com:8001/.well_known/oauth_protected_resource>_
+$ curl http://_<mcp.example.com:8001>_/.well-known/oauth-protected-resource
 ----
 +
 * Replace the URL with your protected resource information.
