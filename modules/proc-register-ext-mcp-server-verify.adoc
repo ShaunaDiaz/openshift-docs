@@ -7,7 +7,7 @@
 = Verifying that your external MCP server is ready to use
 
 [role="_abstract"]
-To verify that your an external MCP server is ready to use, check the status of your `MCPServerRegistration` custom resource (CR).
+To verify that an external MCP server is ready to use, check the status of your `MCPServerRegistration` custom resource (CR).
 
 .Prerequisites
 
@@ -29,9 +29,9 @@ $ oc get mcpsr -A
 .Example output
 [source,text]
 ----
-NAMESPACE    NAME               READY   TARGET-ROUTE           PREFIX       AGE
-mcp-test     mcp-server-ext     True    external-mcp-server    extserver    14m
-mcp-test     mcp-server-one     True    mcp-api-key-server     serverone    1d
-mcp-test     mcp-server-two     True    mcp-generic-route      servertwo    2d
-mcp-prod     analytics-tools    True    analytics-route        stats        5h
+NAMESPACE   NAME              PREFIX      TARGET                  PATH   READY   TOOLS   CREDENTIALS          AGE
+mcp-test    mcp-server-ext    extserver   external-mcp-server     /mcp   True    5       ext-server-secret    14m
+mcp-test    mcp-server-one    serverone   mcp-api-key-server      /mcp   True    4                            1d
+mcp-test    mcp-server-two    servertwo   mcp-generic-route       /mcp   True    7                            2d
+mcp-prod    analytics-tools   stats       analytics-route         /mcp   True    3       analytics-secret     5h
 ----
