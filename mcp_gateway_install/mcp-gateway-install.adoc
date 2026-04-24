@@ -1,8 +1,32 @@
 :_mod-docs-content-type: ASSEMBLY
 include::_attributes/attributes.adoc[]
 [id="mcp-gateway-install"]
-= Installing {mcpg}
+= Installing and configuring {mcpg}
 :context: mcp-gateway-get-install
 
 [role="_abstract"]
-FPO assembly
+You can get started with the MCP gateway by installing the Operator by using Operator Lifecycle Manager (OLM), and then continuing to set up connections by applying the custom resources that you require.
+
+:FeatureName: {mcpg}
+
+include::snippets/technology-preview.adoc[leveloffset=+1]
+
+include::modules/proc-mcp-gateway-install-olm.adoc[leveloffset=+1]
+
+include::modules/proc-config-mcp-gateway-gateway.adoc[leveloffset=+1]
+
+include::modules/proc-config-mcp-gateway-listener.adoc[leveloffset=+1]
+
+include::modules/con-mcp-gateway-install-olm-ext-cr.adoc[leveloffset=+1]
+
+include::modules/ref-mcp-gateway-auto-route.adoc[leveloffset=+2]
+
+include::modules/proc-mcp-gateway-referencegrant.adoc[leveloffset=+1]
+
+include::modules/proc-mcp-gateway-install-olm-ext-cr.adoc[leveloffset=+1]
+
+include::modules/con-mcp-gateway-dns-management.adoc[leveloffset=+1]
+
+include::modules/proc-mcp-gateway-custom-route.adoc[leveloffset=+1]
+
+include::modules/proc-mcp-gateway-config-verify.adoc[leveloffset=+1]

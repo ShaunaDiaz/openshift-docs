@@ -55,8 +55,6 @@ Name: Installing the MCP gateway
 Dir: mcp_gateway_install
 Distros: rhcl
 Topics:
-- Name: Getting started with the MCP gateway
-  File: mcp-gateway-get-started
 - Name: Installing MCP gateway
   File: mcp-gateway-install
 ---

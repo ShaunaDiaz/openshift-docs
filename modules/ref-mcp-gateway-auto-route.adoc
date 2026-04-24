@@ -1,0 +1,39 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_install/mcp-gateway-install.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="ref-mcp-gateway-auto-route_{context}"]
+= Automatically created HTTPRoute example
+
+[role="_abstract"]
+Applying the `MCPGatewayExtension` custom resources (CR) generates an automatic `HTTPRoute` CR. The following is an example of the route.
+
+.Example automatically generated HTTPRoute CR
+[source,yaml]
+----
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: mcp-gateway-route
+  namespace: mcp-gateway-namespace
+spec:
+  parentRefs:
+  - name: mcp-gateway
+    namespace: istio-system
+    sectionName: mcp
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /mcp
+    backendRefs:
+    - name: mcp-gateway
+      port: 8080
+----
+
+* The value of the `spec.parentRefs.name:` parameter matches your `Gateway` CR name.
+* The value of the `spec.parentRefs.namespace:` parameter matches your `Gateway` namespace.
+* The value of the `spec.parentRefs.sectionName:` parameter matches the `spec.listeners[*].name` value of your `Gateway` object listener.
+* The value of the `spec.rules.backendRefs.name:` is the Kubernetes service for your MCP gateway.
+* The value of the `spec.rules.backendRefs.port:` is the port that the MCP gateway is listening on.
