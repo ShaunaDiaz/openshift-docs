@@ -34,7 +34,7 @@ The MCP gateway uses {OTELName} throughout all components to give you consistent
 .Example OpenTelemetryCollector custom resource (CR)
 [source,yaml,subs="+quotes"]
 ----
-apiVersion: opentelemetry.io/v1alpha1
+apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
   name: _<mcp_otel_collector>_
@@ -73,15 +73,16 @@ spec:
 
 . Apply the following environment variables to your {ocp} cluster by running the following command:
 +
-[source,terminal]
+[source,terminal,subs="+quotes"]
 ----
 $ oc set env deployment/mcp-gateway \
-  OTEL_EXPORTER_OTLP_ENDPOINT="http://mcp-otel-collector-collector.mcp-gateway-system.svc.cluster.local:4318" \
+  OTEL_EXPORTER_OTLP_ENDPOINT="http://_<mcp_otel_collector>_-collector._<mcp_gateway_system>_.svc.cluster.local:4318" \
   OTEL_EXPORTER_OTLP_INSECURE="true" \
   OTEL_SERVICE_NAME="mcp-gateway"
 ----
 +
-When {OTELName} creates a collector, the service name is `[metadata.name]-collector`.
+* Replace `_<mcp_otel_collector>_` with the name you used in your `OpenTelemetryCollector` CR. When {OTELName} creates a collector, the service name is `[metadata.name]-collector`.
+* Replace `_<mcp_gateway_system>_` with the namespace of your MCP gateway deployment.
 
 . Optional. If you want to send traces to one collector and logs to a different one, set the following additional environment variables:
 +

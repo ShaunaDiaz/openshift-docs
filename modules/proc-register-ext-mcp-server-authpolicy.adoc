@@ -46,15 +46,12 @@ spec:
           authorization:
             plain:
               expression: 'request.headers["authorization"]'
-          x-mcp-api-key:
-            plain:
-              expression: 'request.headers["authorization"].split(" ")[1]'
 ----
 +
 * Replace the `metadata.name:` field value with the name you want to use. This approach uses service naming.
 * Replace the `metadata.namespace:` field value with the namespace you used in your `ServiceEntry` object.
 * Replace the `spec.name:` value with the name of your external MCP server route.
-* This `AuthPolicy` CR extracts the API key from the OAuth token and sets it as the `x-mcp-api-key` header.
+* This `AuthPolicy` CR passes through the `Authorization` header from the original request.
 
 . Apply the CR by running the following command:
 +
