@@ -129,10 +129,10 @@ $ oc get mcpsr -A
 .Example output
 [source,text]
 ----
-NAMESPACE    NAME               READY   TARGET-ROUTE           PREFIX       AGE
-mcp-test     mcp-server-one     True    mcp-api-key-server     serverone    14m
-mcp-test     mcp-server-two     True    mcp-generic-route      servertwo    2d
-mcp-prod     analytics-tools    True    analytics-route        stats        5h
+NAMESPACE   NAME              PREFIX      TARGET                  PATH   READY   TOOLS   CREDENTIALS   AGE
+mcp-test    mcp-server-one    serverone   mcp-api-key-server      /mcp   True    4                     14m
+mcp-test    mcp-server-two    servertwo   mcp-generic-route       /mcp   True    7                     2d
+mcp-prod    analytics-tools   stats       analytics-route         /mcp   True    3                     5h
 ----
 
 . Check on tool discovery status by running the following command:
