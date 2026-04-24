@@ -39,7 +39,7 @@ spec:
 +
 * Replace `_<mcp_external_server>_` with the name of your external MCP server.
 * Replace `_<mcp_test>_` with the namespace that the MCP server is in.
-* Replace `_<tls_mode>` with the TLS traffic policy that you need according to your requirements. `SIMPLE` is the default value. Use `MUTUAL` in high-security environments or use `ISTIO_MUTUAL` with {service-mesh}. A value of `DISABLE` means that TLS is not used.
+* The default TLS mode is `SIMPLE`. Change it to `MUTUAL` in high-security environments or use `ISTIO_MUTUAL` with {service-mesh}. A value of `DISABLE` means that TLS is not used.
 * Replace `_<api.githubcopilot.com>_` with the host URL of the MCP server.
 
 . Apply the CR by running the following command:

@@ -14,6 +14,7 @@ After you create your virtual MCP servers, you can check that they are returning
 * You completed all of the installation and configuration steps for {mcpg}.
 * You registered your MCP servers.
 * You installed the {oc-first}.
+* You installed the `jq` command-line JSON processor.
 * You applied `MCPVirtualServer` custom resource (CRs) for your virtual servers.
 
 .Procedure
@@ -47,13 +48,13 @@ $ curl -s -D /tmp/mcp_headers -X POST _<http:example.com:port/mcp>_ \
   "result": {
     "protocolVersion": "2025-11-25",
     "capabilities": {
-      "tools": {},
-      "prompts": {},
-      "resources": {}
+      "tools": {
+        "listChanged": true
+      }
     },
     "serverInfo": {
-      "name": "mcp-gateway-server",
-      "version": "1.0.0"
+      "name": "Kuadrant MCP Gateway",
+      "version": "0.0.1"
     }
   }
 }
@@ -66,10 +67,11 @@ $ curl -s -D /tmp/mcp_headers -X POST _<http:example.com:port/mcp>_ \
 $ SESSION_ID=$(grep -i "mcp-session-id:" /tmp/mcp_headers | cut -d' ' -f2 | tr -d '\r')
 ----
 +
-.Expected output
-[source,text]
+Verify that the session ID was extracted by running the following command:
++
+[source,terminal]
 ----
-echo "MCP Session ID: $SESSION_ID"
+$ echo "MCP Session ID: $SESSION_ID"
 ----
 
 . Request the tools from the `dev_tools` virtual MCP server by running the following command:
@@ -92,7 +94,7 @@ $ curl -X POST _<http:example.com:port/mcp>_ \
 +
 [source,terminal,subs="+quotes"]
 ----
-$ curl -X POST _<http:example.com:port>_/mcp \
+$ curl -X POST _<http:example.com:port/mcp>_ \
   -H "Content-Type: application/json" \
   -H "mcp-session-id: $SESSION_ID" \
   -H "X-Mcp-Virtualserver: _<mcp_system>_/_<data_tools>_" \
@@ -108,7 +110,7 @@ $ curl -X POST _<http:example.com:port>_/mcp \
 +
 [source,terminal,subs="+quotes"]
 ----
-$ curl -X POST _<http:example.com:port>_/mcp \
+$ curl -X POST _<http:example.com:port/mcp>_ \
   -H "mcp-session-id: $SESSION_ID" \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc": "2.0", "id": 1, "method": "tools/list"}' | jq '.result.tools[].name'
