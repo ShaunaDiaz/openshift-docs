@@ -21,7 +21,8 @@ Control plane traces appear under the service name `kuadrant-operator` in the Gr
 
 - `rpc://host:port` → gRPC OTLP
 - Insecure: `http://host:port` → HTTP OTLP
-- Secure: `https://host:port` → HTTP OTLP
+- Secure: `https://host:port` → HTTPS OTLP
+
 |Tracing disabled
 
 |`OTEL_EXPORTER_OTLP_TRACES_ENDPOINT`
