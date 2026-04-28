@@ -1,0 +1,71 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-troubleshooting.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-mcp-gateway-ts-traffic-not-reaching-backend-server_{context}"]
+= Troubleshooting traffic not reaching the backend MCP server
+
+[role="_abstract"]
+When you are certain that an `HTTPRoute` custom resource (CR) exists for your application, but traffic is not reaching your backend MCP servers, you can take several steps to troubleshoot the problem.
+
+On the client side, errors such as `401`, `403`, and `404` can indicate this situation.
+
+.Prerequisites
+
+* You installed {mcpg}.
+* You installed the {oc-first}.
+* You configured a `Gateway` object.
+* You configured an `HTTPRoute` object for the gateway.
+* You registered an MCP server.
+
+.Procedure
+
+. Check the `HTTPRoute` general custom resource (CR) status by running the following command:
++
+[source,terminal]
+----
+$ oc get httproute -A
+----
++
+* This command returns general information about all `HTTPRoute` objects in the cluster.
+
+. Check for the `Accepted` condition in the `HTTPRoute` CR `status` fields.
+
+. Check the full metadata and status history for one specific `HTTPRoute` object by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc describe httproute _<route_name>_ -n _<namespace>_
+----
++
+* Replace `_<route_name>_` with the name of the `HTTPRoute` object.
+* Replace `_<namespace>_` with the namespace where the `HTTPRoute` object is applied.
+
+. Verify that the `hostnames` value in the `HTTPRoute` CR matches the gateway `Listener` CR `hostname`.
+
+. If the `HTTPRoute` status shows `Accepted: False`, then the `Gateway` object is not using the route.
+
+. If the condition is `ResolvedRefs: False:`, the route is accepted through the `Gateway` object, but it cannot find the backend MCP service. There might be either a mismatch in the CR `metadata.name:` field, or the MCP service is in a namespace the `Gateway` object cannot access.
+
+. Verify the parent reference by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get httproute _<route_name>_ -n _<namespace>_ -o yaml | grep -A 5 parentRefs
+----
++
+* Replace `_<route_name>_` with the name of the `HTTPRoute` object.
+* Replace `_<namespace>_` with the namespace where the `HTTPRoute` object is applied.
+
+. Ensure that the retrieved `parentRefs` value matches your `Gateway` CR name and namespace exactly.
+
+. Check that the `allowedRoutes.namespaces` value in the `Gateway` CR allows the `HTTPRoute` namespace by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get gateway _<gateway_name>_ -n _<gateway_namespace>_ -o jsonpath='{range .spec.listeners[*]}{.name}{": "}{.allowedRoutes.namespaces.from}{"\n"}{end}'
+----
++
+* Replace `_<gateway_name>_` with the name of the `Gateway` object.
+* Replace `_<gateway_namespace>_` with the namespace where the `Gateway` object is applied.

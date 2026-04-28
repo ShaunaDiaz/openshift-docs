@@ -1,0 +1,135 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-authorization.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-mcp-gateway-authorization_{context}"]
+= Configuring {mcpg} authorization with an AuthPolicy
+
+[role="_abstract"]
+The following example demonstrates using a Kuadrant `AuthPolicy` custom resource (CR) with Common Expression Language (CEL) to implement role-based access control. You can use this procedure as a general pattern for applying the authorization specific to your use case. The {mcpg} supports Istio or Gateway API compatible authorization mechanisms.
+
+.Prerequisites
+
+* You installed {mcpg}.
+* You installed {prodname}.
+* You configured a `Gateway` object with an `mcp` listener and an `mcps` listener. The `mcps` listener is required for internal `tools/call` routing and authorization.
+* You completed authentication procedures, including creating an `AuthPolicy` CR on the `mcp` listener.
+* You configured your identity provider to include `group` and `role` claims in JSON Web Tokens (JWT).
+* The identity provider client IDs match the namespaced `MCPServerRegistration` name in the format `_<namespace>_/_<mcpserverregistration_name>_`.
+
+.Procedure
+
+. Ensure that your identity provider includes the required `group` and `role` claims in the issued JWTs. In the following example, {keycloak} is used:
++
+.Example issued OAuth token claims:
+[source,json]
+----
+{
+  "resource_access": {
+    "mcp-ns/arithmetic-mcp-server": {
+      "roles": ["add", "sum", "multiply", "divide"]
+    },
+    "mcp-ns/geometry-mcp-server": {
+      "roles": ["area", "distance", "volume"]
+    }
+  }
+}
+----
++
+* The `"mcp-ns/arithmetic-mcp-server"` specification must match the namespaced name of the `MCPServerRegistration` CR in the format `{namespace}/{name}`. For example, if your `MCPServerRegistration` CR is named `arithmetic-mcp-server` and is applied in the `mcp-ns` namespace, the {keycloak} client ID must be `mcp-ns/arithmetic-mcp-server`.
+* The `"roles": ["add", "sum", "multiply", "divide"]` parameter and values specify the roles representing the allowed tools.
+
+. Configure tool-level authorization by creating an `AuthPolicy` CR that enforces tool-level access control on the `mcps` listener, as shown in the following example:
++
+[IMPORTANT]
+====
+The authorization `AuthPolicy` CR must target the `mcps` listener, not the `mcp` listener. The `mcp` listener only handles public traffic and has an authentication-only `AuthPolicy` CR.
+====
++
+.Example tool-level access control AuthPolicy
+[source,yaml,subs="+quotes"]
+----
+apiVersion: kuadrant.io/v1
+kind: AuthPolicy
+metadata:
+  name: _<mcp_tool_auth_policy>_
+  namespace: _<gateway_system>_
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: _<mcp_gateway>_
+    sectionName: _<mcps>_
+  rules:
+    authentication:
+      'sso-server':
+        jwt:
+          issuerUrl: https://_<keycloak.example.com>_/realms/mcp
+    authorization:
+      'tool-access-check':
+        patternMatching:
+          patterns:
+            - predicate: |
+                request.headers['x-mcp-toolname'] in (has(auth.identity.resource_access) && auth.identity.resource_access.exists(p, p == request.headers['x-mcp-servername']) ? auth.identity.resource_access[request.headers['x-mcp-servername']].roles : [])
+    response:
+      unauthenticated:
+        headers:
+          'WWW-Authenticate':
+            value: Bearer resource_metadata=http://_<mcp.example.com:8001>_/.well-known/oauth-protected-resource
+        body:
+          value: |
+            {
+              "error": "Unauthorized",
+              "message": "MCP Tool Access denied: Authentication required."
+            }
+      unauthorized:
+        body:
+          value: |
+            {
+              "error": "Forbidden",
+              "message": "MCP Tool Access denied: Insufficient permissions for this tool."
+            }
+----
++
+* Replace `metadata.name:` with the name of the `AuthPolicy`.
+* Replace `metadata.namespace:` with the namespace where the `AuthPolicy` CR is applied.
+* Replace `spec.targetRef.name:` with the name of the `Gateway` CR.
+* The `spec.targetRef.sectionName:` value must be `mcps`, which is the internal listener for `tool/call` authorization. This listener must exist on your `Gateway` object.
+* Authentication: Validates the JWT token using the configured issuer URL. Replace `_<keycloak.example.com>_` with your identity provider hostname.
+* Authorization Logic: CEL expression checks if user's roles allow access to the requested tool
+* CEL Breakdown:
+** `request.headers['x-mcp-toolname']`: The name of the requested MCP tool, stripped from prefix.
+** `request.headers['x-mcp-servername']`: The namespaced name of the MCP server matching the `MCPServerRegistration` CR.
+** `auth.identity.resource_access`: The JWT claim containing all roles representing each allowed tool the user can access, grouped by MCP server.
+* Response handling: Custom `401` and `403` responses for unauthenticated and unauthorized access attempts.
+
+. Apply the AuthPolicy CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<mcp_tool_auth_policy.yaml>_
+----
+* Replace `_<mcp_tool_auth_policy.yaml>_` with the name of the `AuthPolicy` YAML filename.
+
+.Verification
+
+. Monitor authorization decisions by checking the `AuthPolicy` CR `status` with the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get authpolicy _<mcp_tool_auth_policy>_ -n _<gateway_system>_ -o jsonpath='{.status.conditions[?(@.type=="Enforced")].status}'
+----
++
+.Example output
+[source,text]
+----
+True
+----
+
+. Check the authorization logs by running the following command:
++
+[source,terminal]
+----
+$ oc logs -n mcp-system -l app.kubernetes.io/name=mcp-gateway
+----

@@ -1,0 +1,33 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_install/mcp-gateway-install.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="con-mcp-gateway-install-olm-ext-cr_{context}"]
+= Understanding the MCPGatewayExtension custom resource
+
+[role="_abstract"]
+You can deploy multiple MCP gateway instances within a single cluster by using more than one `Gateway` object, and an `MCPGatewayExtension` custom resource (CR) for each defined gateway. Each deployment of the MCP gateway manages its associated MCP servers by using the `MCPGatewayExtension` controller in the following ways:
+
+* Defines which `Gateway` object the MCP gateway instance is responsible for.
+* Determines where configuration `Secret` objects are created.
+* Enables isolation by allowing multiple MCP gateway instances in different namespaces to target different `Gateway` objects.
+
+[IMPORTANT]
+====
+Each namespace can only have one `MCPGatewayExtension` CR.
+Each `Gateway` object can have only one `MCPGatewayExtension` CR. If more than one `MCPGatewayExtension` CR targets the same `Gateway` object, the controller marks newer ones as conflicted. The oldest `MCPGatewayExtension` CR wins.
+====
+
+Automatic route creation::
+
+The `MCPGatewayExtension` controller automatically creates an `HTTPRoute` CR named `mcp-gateway-route`. The automatically created `HTTPRoute` CR has the following characteristics:
+
+* Routes `/mcp` traffic to the `mcp-gateway` broker service on port `8080`
+* Uses the `hostname` from the `Gateway` listener. Wildcards such as `*.example.com` become `mcp.example.com`
+* References the target gateway with the correct `sectionName`
+* Is owned by the `MCPGatewayExtension` controller and is cleaned up automatically if the controller is deleted
+
+Custom route creation::
+
+If you require custom route, you can disable automatic `HTTPRoute` CR creation by setting the `spec.httpRouteManagement:` parameter to `Disabled` in your `MCPGatewayExtension` CR. After you create the `MCPGatewayExtension` CR, you can create a custom `HTTPRoute` CR.
