@@ -69,7 +69,7 @@ spec:
 +
 [IMPORTANT]
 ====
-If you are setting the controller manually, you must set the OpenTelemetry Collector protocol in the `Service` CR port `name` and `appProtocol` fields. For example, when using gRPC, the port name should begin with `grpc-` or the `appProtocol` should be `grpc`:
+If you are setting the controller manually, you must set the OpenTelemetry protocol (OTLP) in the `Service` CR port `name` and `appProtocol` fields. For example, when using gRPC, the port name should begin with `grpc-` or the `appProtocol` should be `grpc`:
 [source,yaml]
 ----
 kind: Service
@@ -166,19 +166,16 @@ spec:
   observability:
     dataPlane:
       defaultLevels:
-        - debug: "true" # Enable DEBUG level trace filtering
+        - debug: "true"
       httpHeaderIdentifier: x-request-id
     tracing:
       defaultEndpoint: rpc://tempo.tempo.svc.cluster.local:4317
       insecure: true
 ----
 +
-where:
-+
-* `spec.observability.tracing.defaultEndpoint`:: The URL of the tracing collector backend. That is, the OpenTelemetry endpoint. The following are supported protocols:
-** `rpc://` for gRPC OTLP, port 4317
-** `http://` for HTTP OTLP, port 4318
-* ``spec.observability.tracing.insecure`:: Set to `true` to skip TLS certificate verification in development environments. Set to `false` for production environments.
+* `spec.observability.dataPlane.defaultLevels`: Set this value to enable trace filtering at the required level, for example `debug: "true"` for debug-level trace filtering.
+* `spec.observability.tracing.defaultEndpoint`: The URL of the tracing collector backend, such as the OTLP endpoint. Use `rpc://`, `gRPC OTLP`, `port 4317`, for full compatibility across all components.
+* `spec.observability.tracing.insecure`: Set to `true` to skip TLS certificate verification in development environments. Set to `false` for production environments.
 +
 [IMPORTANT]
 ====
