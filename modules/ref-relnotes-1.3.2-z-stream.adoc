@@ -1,0 +1,17 @@
+// Module used in the following assemblies
+//
+// *release_notes/release-notes.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="rhcl-relnotes-1.3.2-z-stream_{context}"]
+= {product-title} 1.3.2 bug fix and security update
+
+Issued: 8 April 2026
+
+[role="_abstract"]
+{product-title} release 1.3.2 is now available. A description is available in the link:https://access.redhat.com/errata/RHBA-2026:7016[RHBA-2026:7016] advisory. {product-title} uses the `stable` update channel to track and receive updates for the {product-title} Operator. You can manage how your updates are applied through your Operator Lifecycle Manager (OLM) subscription resource. For more information, see xref:../updating/updating-rhcl.adoc#proc-update-rhcl-with-web-console_updating-rhcl[Updating Red Hat Connectivity Link].
+
+[id="rhcl-relnotes-1.3.2-z-stream-bug-fixes_{context}"]
+== Bug fixes
+
+* Previously, the `wasm-shim` component processed protection policies, such as authentication or rate-limiting rules, out of sequence with the actual data forwarding. This created a race condition where the `Gateway` started sending the request to the upstream server at the same time it was asking the policy if the request was allowed. As a result, the upstream server had already received and potentially acted upon the request before the connection could be cut when the request was denied. Meanwhile, the downstream client correctly received a `Denied` message. With this release, the logic is updated to ensure that the policy check is a blocking operation that must complete before any data is dispatched to the upstream backend. This fix synchronizes the state machine so that the connection to the upstream is only opened after the protection policy returns a definitive `Allow` decision. Denied requests are strictly terminated at the Gateway, ensuring the upstream server never sees unauthorized or throttled traffic. (https://redhat.atlassian.net/browse/CONNLINK-912[CONNLINK-912])
