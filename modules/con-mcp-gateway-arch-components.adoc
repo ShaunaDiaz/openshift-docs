@@ -1,0 +1,41 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_discover/about-mcp-gateway.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="con-mcp-gateway-arch-components_{context}"]
+= {mcpg} architectural components
+
+[role="_abstract"]
+The MCP gateway architecture consists of three components that manage connectivity: the router, broker, and controller.
+
+MCP router::
+The MCP router is an Envoy-focused `ext_proc` component that is capable of parsing the MCP protocol. When `ext_proc` parses the MCP Protocol, the router uses the protocol to set headers to force the correct routing of the request to the correct MCP server.
++
+The MCP router component is responsible for the following activities:
+
+* Parsing and validating the `JSON-RPC` request object, which is the MCP message body
+* Setting the key request headers, `:authority`, `:path`, `x-mcp-method`, `x-mcp-servername`, `x-mcp-toolname`, and `mcp-session-id`
+* Watching for `404` responses from MCP servers and invalidating the session store
+* Handling session initialization and storage on behalf of a requesting MCP client during a tools call request
+
+MCP broker::
+The MCP broker manages the complexity of connecting to multiple AI services simultaneously for you. The broker component aggregates multiple backend MCP servers and presents them as a unified MCP server to clients. This means that your MCP clients or applications do not have to manage a large set of MCP servers and configurations for each server.
++
+The MCP broker component is a backend service that acts as a default MCP server backend for the `/mcp` endpoint. For example, the broker does the following activities:
+
+* Handles the handshake, `init`.
+* Discovers tools from connected MCP servers and aggregates them into a unified list. Validates that discovered MCP servers meet minimum protocol version and capabilities before including their tools in the list.
+* Listens for updates and can change its state so that the agentic AI always has the latest information.
+* Handles notifications sent through whichever backend MCP server it is connected to, for example, `notifications/tools/list_changed`.
+* Handles notification requests from clients and MCP servers by proxying from the MCP server notification to registered clients.
+
+MCP discovery controller::
+The MCP discovery controller is a Kubernetes-based controller that watches for changes to custom resources (CRs). The MCP discovery controller uses CRs to configure the MCP gateway and register MCP servers. The CRs are then turned into a configuration that is consumed by the MCP gateway so that it can route and present the tools from the registered MCP server to the client.
++
+The MCP discovery controller component is responsible for the following activities:
+
+* Watching `MCPServerRegistration` CRs
+* Maintaining a configuration from both `HTTPRoute` and `MCPServerRegistration` CRs
+* Updating the MCP broker and MCP router config secret based on discovered `MCPServerRegistration` CRs and the `HTTPRoutes` they target
+* Reporting the status of `MCPServerRegistrations` CRs

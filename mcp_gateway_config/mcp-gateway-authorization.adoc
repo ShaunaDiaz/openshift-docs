@@ -1,0 +1,12 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/attributes.adoc[]
+[id="mcp-gateway-authorization"]
+= Using authorization with {mcpg}
+:context: mcp-gateway-authorization
+
+[role="_abstract"]
+You can configure authorization for the {mcpg} by using an additional `AuthPolicy` custom resource (CR) that adds access control for servers, data, and tools.
+
+include::modules/con-understanding-mcp-gateway-authorization.adoc[leveloffset=+1]
+
+include::modules/proc-mcp-gateway-authorization.adoc[leveloffset=+1]
