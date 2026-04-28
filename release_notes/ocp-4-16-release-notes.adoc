@@ -3369,9 +3369,12 @@ metadata:
   name: mtu
   namespace: openshift-network-operator
 data:
-  mtu: "1500" <1>
+  mtu: "1500"
 ----
-<1> The `mtu` value must be aligned with the MTU of the node interface.
++
+where
+
+`metadata.data.mtu`:: Specifies that the `mtu` value must be aligned with the MTU of the node interface.
 +
 (link:https://issues.redhat.com//browse/OCPBUGS-35316[OCPBUGS-35316])
 
@@ -3384,6 +3387,10 @@ Testing has shown that wake up latencies are under 20μs for over 99.99999% of t
 
 // 4.16 about async
 include::modules/rn-async-errata.adoc[leveloffset=+1]
+
+// 4.16.60 Rns and updating
+include::modules/zstream-4-16-60.adoc[leveloffset=+2]
+
 
 // 4.16.59 Rns and updating
 include::modules/zstream-4-16-59.adoc[leveloffset=+2]
