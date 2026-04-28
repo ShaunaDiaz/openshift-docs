@@ -1,0 +1,143 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-troubleshooting.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-mcp-gateway-ts-requests-fail-or-bypass-router_{context}"]
+= Troubleshooting requests failing or bypassing the router
+
+[role="_abstract"]
+When you are certain that an `MCPGatewayExtension` custom resource (CR) exists for your MCP server, but requests either fail or bypass the router, it might mean that the `EnvoyFilter` CR is not applied properly. You can take several steps to troubleshoot the problem.
+
+The `EnvoyFilter` CR is automatically created in the `Gateway` CR namespace by the MCP gateway controller component when an `MCPGatewayExtension` CR is `Ready`.
+
+[IMPORTANT]
+====
+You can look closely at the `EnvoyFilter` CR during deep troubleshooting, but do not manually edit or delete the CR.
+====
+
+.Prerequisites
+
+* You installed {mcpg}.
+* You installed the {oc-first}.
+* You configured a `Gateway` object.
+* You configured an `HTTPRoute` object for the gateway.
+* You registered an MCP server.
+
+.Procedure
+
+. Ensure that the `Gateway` object exists and is in the expected namespace by checking the general `Gateway` object configuration by running the following command:
++
+[source,terminal]
+----
+$ oc get gateway -A
+----
++
+This command returns general information about all `Gateway` objects in the cluster. If the `Gateway` object you are troubleshooting exists, the command returns the `gatewayClassName` is it using, whether or not it has an IP address or hostname assigned, and a `status`, such as `Ready`, `Programmed`, or `Pending`.
+
+. Verify that the `MCPGatewayExtension` CR is `Ready` by running the following command:
++
+[source,terminal]
+----
+$ oc get mcpgatewayextension -A
+----
+
+. Verify that a `ReferenceGrant` CR exists if the `MCPGatewayExtension` CR is in a different namespace than the `Gateway` object by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get referencegrant _<referencegrant_name>_ -n _<gateway_system>_ -o yaml
+----
++
+* Replace `_<referencegrant_name>_` with the names of the `ReferenceGrant` CR.
+* Replace `_<gateway_system>_` with the namespace where the `Gateway` object is applied.
+
+. Check the `HTTPRoute` CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc describe httproute _<httproute_name>_ -n _<httproute_namespace>_
+----
++
+* Replace `_<httproute_namespace>_` with the namespace where the `HTTPRoute` CR is applied.
+* Replace `_<httproute_name>_` with the names of the `HTTPRoute` CR.
+* If the `HTTPRoute` CR is not `Accepted` by the `Gateway` object, the route is not programmed into Envoy, causing a `404`.
+* The conditions `Status.Parents.Conditions: Accepted: True` and `Programmed: True` show that the route is correct.
+
+. If any of the CRs you just checked are not `Ready`, check the controller logs for `EnvoyFilter` creation errors by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc logs -n _<mcp_system>_ deployment/mcp-gateway-controller
+----
++
+* Replace `_<mcp_system>_` with the name of your MCP gateway deployment.
+* This step verifies that the MCP controller is successfully generating the underlying Istio configurations.
+
+. Check that the `EnvoyFilter` exists in the `Gateway` namespace by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get envoyfilter -n _<gateway_namespace>_ -l app.kubernetes.io/managed-by=mcp-gateway-controller
+----
++
+* Replace `_<gateway_namespace>_` with the namespace where the `Gateway` object is applied.
+
+. Verify the `EnvoyFilter` configuration by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc describe envoyfilter -n _<gateway_namespace>_ -l app.kubernetes.io/managed-by=mcp-gateway-controller
+----
++
+* Replace `_<gateway_namespace>_` with the namespace where the `Gateway` object is applied.
+* The `workloadSelector` labels must match your `Gateway` pods, or your policies are bypassed.
+
+. Compare the `EnvoyFilter` labels against your pod labels by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get pods -n _<gateway_namespace>_ --show-labels
+----
++
+* Replace `_<gateway_namespace>_` with the namespace where the `Gateway` object is applied.
+
+. Identify the port that the `Gateway` object is configured to use by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get gateway _<gateway_name>_ -n _<gateway_namespace>_ -o jsonpath='{range .spec.listeners[*]}{.name}{": "}{.port}{"\n"}{end}'
+----
++
+* Replace `_<gateway_name>_` with the name of the `Gateway` object.
+* Replace `_<gateway_namespace>_` with the namespace where the `Gateway` object is applied.
+
+. Use the following commands to verify the `EnvoyFilter` chain binding:
+
+.. Create a secure tunnel between a port on your computer and a port on the pod by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc port-forward deploy/_<gateway_deployment_name>_ -n _<gateway_system>_ 15000:15000
+----
++
+* Replace `_<gateway_deployment_name>_` with the name of the Deployment related to the Gateway object. Typically this value is either `_<<gateway_name>_-istio` or `_<gateway_name>_-openshift-default`, depending on the ingress you used.
+* Replace `_<gateway_system>_` with the namespace where the Gateway object is applied.
+
+... From a different terminal window, access localhost:15000 by running the following command:
++
+[source,terminal]
+----
+$ curl -s localhost:15000/listeners
+----
++
+* If this command returns empty, the `EnvoyFilter` CR is not active on this pod. Traffic is bypassing your policies.
+
+. Restart the Istio gateway to force a configuration reload by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc rollout restart deployment/_<gateway_name>_-istio -n _<gateway_namespace>_
+----
+* Replace `_<gateway_namespace>_` with the namespace where the `Gateway` object is applied.
+* Replace `_<gateway_name>_` with the names of the `Gateway` object.

@@ -1,0 +1,14 @@
+:_mod-docs-content-type: ASSEMBLY
+[id="mcp-gateway-register-on-prem-mcp-servers"]
+= Registering on-prem MCP servers
+include::_attributes/attributes.adoc[]
+:context: mcp-gateway-register-on-prem-servers
+
+[role="_abstract"]
+To begin using MCP servers with your {mcpg}, you must register each server by creating an `HTTPRoute` custom resource (CR) and a corresponding `MCPServerRegistration` CR that references the route.
+
+include::modules/proc-mcp-gateway-register-mcp-server.adoc[leveloffset=+1]
+
+include::modules/ref-mcp-gateway-mcpserverregistration-cr.adoc[leveloffset=+2]
+
+include::modules/proc-mcp-gateway-verify-mcp-server-registration.adoc[leveloffset=+1]

@@ -1,0 +1,52 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-register-ext-mcp-servers.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-register-ext-mcp-server-tls_{context}"]
+= Creating TLS settings for an external MCP server
+
+[role="_abstract"]
+To register an external MCP server, after you create a `ServiceEntry` custom resource (CR) in your Istio deployment, you must configure your TLS settings with a `DestinationRule` CR.
+
+.Prerequisites
+
+* You completed all of the installation and configuration steps for {mcpg}.
+* You have the information for the external MCP server you want to connect to.
+* You installed the {oc-first}.
+* You are using Istio for ingress control.
+* You created a `ServiceEntry` object.
+
+.Procedure
+
+. Create a `DestinationRule` CR that configure your TLS settings by using the following template:
++
+.Example DestinationRule CR
+[source,yaml,subs="+quotes"]
+----
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: _<mcp_external_server>_
+  namespace: _<mcp_test>_
+spec:
+  host: _<api.githubcopilot.com>_
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+      sni: _<api.githubcopilot.com>_
+----
++
+* Replace `_<mcp_external_server>_` with the name of your external MCP server.
+* Replace `_<mcp_test>_` with the namespace that the MCP server is in.
+* The default TLS mode is `SIMPLE`. Change it to `MUTUAL` in high-security environments or use `ISTIO_MUTUAL` with {service-mesh}. A value of `DISABLE` means that TLS is not used.
+* Replace `_<api.githubcopilot.com>_` with the host URL of the MCP server.
+
+. Apply the CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<mcp_external_server_dr.yaml>_
+----
++
+Replace `_<mcp_external_server_dr.yaml>_` with the name of your CR.

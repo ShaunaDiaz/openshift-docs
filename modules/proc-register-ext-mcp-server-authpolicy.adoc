@@ -1,0 +1,63 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-register-ext-mcp-servers.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-register-ext-mcp-server-authpolicy_{context}"]
+= Creating an AuthPolicy for an external MCP server
+
+[role="_abstract"]
+To secure your use of an external MCP server, creating an `AuthPolicy` custom resource (CR) to authenticate your sessions is a best practice. The following example uses `Kuadrant/Authorino` for OAuth authentication and creates an `AuthPolicy` CR to handle authorization headers.
+
+[NOTE]
+====
+This step is required if you are using OAuth authentication for your external MCP server. If your external MCP server uses a simple API key, you can use a `credentialRef` in your `MCPServerRegistration` CR instead, and an `AuthPolicy` object is not needed.
+====
+
+.Prerequisites
+
+* You completed all of the installation and configuration steps for {mcpg}.
+* You have the information for the external MCP server you want to connect to.
+* You installed the {oc-first}.
+* You are using Istio for ingress control.
+* You created `ServiceEntry`, `DestinationRule`, and `HTTPRoute` objects.
+
+.Procedure
+
+. Create an `AuthPolicy` CR that handles authorization headers by using the following example:
++
+.Example AuthPolicy CR
+[source,yaml,subs="+quotes"]
+----
+apiVersion: kuadrant.io/v1
+kind: AuthPolicy
+metadata:
+  name: _<mcps_auth_policy>_
+  namespace: _<mcp_test>_
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: _<mcp_external_server>_
+  rules:
+    response:
+      success:
+        headers:
+          authorization:
+            plain:
+              expression: 'request.headers["authorization"]'
+----
++
+* Replace the `metadata.name:` field value with the name you want to use. This approach uses service naming.
+* Replace the `metadata.namespace:` field value with the namespace you used in your `ServiceEntry` object.
+* Replace the `spec.name:` value with the name of your external MCP server route.
+* This `AuthPolicy` CR passes through the `Authorization` header from the original request.
+
+. Apply the CR by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f _<mcp_external_server_authpolicy.yaml>_
+----
++
+Replace `_<mcp_external_server_authpolicy.yaml>_` with the name of your CR.

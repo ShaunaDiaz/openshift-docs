@@ -1,0 +1,18 @@
+:_mod-docs-content-type: ASSEMBLY
+[id="mcp-gateway-create-virtual-mcp-servers"]
+= Creating virtual MCP servers
+include::_attributes/attributes.adoc[]
+:context: mcp-gateway-register-virtual-mcp-servers
+
+[role="_abstract"]
+Create focused, curated tool collections from your aggregated internal and external MCP servers by creating virtual MCP servers from any of your registered MCP servers.
+
+include::modules/con-register-virt-mcp-server.adoc[leveloffset=+1]
+
+include::modules/con-virt-mcp-server-auth-tool-filtering.adoc[leveloffset=+1]
+
+include::modules/proc-mcp-gateway-create-virt-mcp-server.adoc[leveloffset=+1]
+
+include::modules/proc-verify-virt-mcp-server.adoc[leveloffset=+1]
+
+include::modules/proc-mcp-gateway-delete-virtual-server.adoc[leveloffset=+1]

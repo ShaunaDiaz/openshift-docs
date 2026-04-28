@@ -23,28 +23,42 @@
 # topic groups and topics on the main page.
 
 ---
-Name: Discover
+Name: Red Hat Connectivity Link
 Dir: introduction
 Distros: rhcl
 Topics:
 - Name: About Red Hat Connectivity Link
   File: introduction
 ---
-Name: What's New
+Name: MCP gateway
+Dir: mcp_gateway_discover
+Distros: rhcl
+Topics:
+- Name: About the MCP gateway
+  File: mcp-gateway-introduction
+---
+Name: Release notes
 Dir: release_notes
 Distros: rhcl
 Topics:
 - Name: Red Hat Connectivity Link Release Notes
   File: rhcl-release-notes
 ---
-Name: Installing on OpenShift Container Platform
+Name: Installing Connectivity Link
 Dir: install-guide
 Distros: rhcl
 Topics:
-- Name: Installing on OpenShift Container Platform
+- Name: Installing Connectivity Link
   File: install-guide
 ---
-Name: Configuring and deploying gateway policies
+Name: Installing the MCP gateway
+Dir: mcp_gateway_install
+Distros: rhcl
+Topics:
+- Name: Installing MCP gateway
+  File: mcp-gateway-install
+---
+Name: Red Hat Connectivity Link
 Dir: deployment
 Distros: rhcl
 Topics:
@@ -53,16 +67,41 @@ Topics:
 - Name: Using on-premise DNS with CoreDNS
   File: coredns
 ---
-Name: Observability
-Dir: observability
+Name: Registering MCP servers and creating policies
+Dir: mcp_gateway_config
 Distros: rhcl
 Topics:
-- Name: Observability
+- Name: Registering on-premise MCP servers
+  File: mcp-gateway-register-on-prem-mcp-servers
+- Name: Registering external MCP servers
+  File: mcp-gateway-register-ext-mcp-servers
+- Name: Creating virtual MCP servers
+  File: mcp-gateway-creating-virtual-mcp-servers
+- Name: Configuring authentication for the MCP gateway
+  File: mcp-gateway-authentication
+- Name: Configuring authorization for the MCP gateway
+  File: mcp-gateway-authorization
+- Name: Revoking MCP server tool access
+  File: mcp-gateway-revoke-tool-access
+#- Name: Using credentials to access external APIs
+#  File: mcp-gateway-vault
+---
+Name: Observability and Troubleshooting
+Dir: observe_troubleshoot
+Distros: rhcl
+Topics:
+- Name: Observing Connectivity Link
   File: observability
+- Name: Observing MCP gateway
+  File: mcp-gateway-observe
+- Name: Troubleshooting MCP gateway
+  File: mcp-gateway-troubleshooting
+- Name: Troubleshooting Connectivity Link
+  File: rhcl-troubleshooting
 ---
 Name: Updating Red Hat Connectivity Link
 Dir: updating
 Distros: rhcl
 Topics:
-- Name: Updating Red Hat Connectivity Link
+- Name: Updating Connectivity Link
   File: updating-rhcl
