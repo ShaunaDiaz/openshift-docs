@@ -1,0 +1,55 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-troubleshooting.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-mcp-gateway-ts-pods-not-starting_{context}"]
+= {mcpg} pods not starting
+
+[role="_abstract"]
+After installation, if your {mcpg} pods are stuck in one of several states that indicate that they are not starting as expected, you can take several steps to diagnose the problem.
+
+Common causes include the following states and indicate an associated action:
+
+* `ImagePullBackOff`: Check image repository access and credentials.
+* `CrashLoopBackOff`: Check the logs for application errors.
+* `Pending`: Check resource availability and node capacity.
+* `Init Container Failure`: Check RBAC permissions.
+
+.Prerequisites
+
+* You installed {mcpg}.
+* You installed the {oc-first}.
+* You configured a `Gateway` object.
+* You configured an `HTTPRoute` object for the gateway.
+
+.Procedure
+
+. Check the pod status by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get pods -n _<mcp_system>_
+----
++
+Replace `_<mcp_system>_` with the name of the {mcpg} deployment that you are checking.
+
+. Describe problem pods by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc describe pod -n _<mcp_system>_ _<pod_name>_
+----
++
+* Replace `_<mcp_system>_` with the name of the {mcpg} deployment that you are checking.
+* Replace `_<pod_name>_` with the name of the pod that you are checking.
+
+. Check the pod logs by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc logs -n _<mcp_system>_ _<pod_name>_
+----
++
+* Replace `_<mcp_system>_` with the name of the {mcpg} deployment that you are checking.
+* Replace `_<pod_name>_` with the name of the pod that you are checking.

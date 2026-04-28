@@ -1,0 +1,29 @@
+// Module included in the following assemblies:
+//
+// *mcp_gateway_config/mcp-gateway-troubleshooting.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="con-mcp-gateway-ts-gateway-routing_{context}"]
+= Gateway and routing troubleshooting
+
+[role="_abstract"]
+When traffic is not flowing after you installed {mcpg}, you can investigate each component of the gateway routing to check system health. Depending on the errors you are receiving, you can troubleshoot at several layers. Breaks can occur at the gateway, route, or policy levels.
+
+If you have a `Connection Refused/Timeout` error and your client cannot reach the IP address, the cause might be the
+listener. In this case, one of the following situations likely applies:
+
+* The port is not open.
+* The load balancer has not assigned an IP address.
+* The TLS handshake is failing.
+
+When you have this type of error, check the listener first.
+
+If you can connect to the `Gateway` object, but you get an `HTTP` error, such as `404`, the cause can be a problem with the `HTTPRoute` custom resource (CR). The route exists, but the `Gateway` object has rejected it or the connection has failed. When you get these types of codes, check the `HTTPRoute` CR first.
+
+If requests either fail with a `503` error or bypass the router, this means that the route is recognized, but the connection to the backend failed or was not authorized properly. In this case, start with API-level checks and narrow your investigation to Envoy filters as needed.
+
+If the `EnvoyFilter` CR is not present, it usually means one of the following situations has occurred:
+
+* The `Gateway` CR status is not `Programmed`.
+* There is a `labels` mismatch, and the `EnvoyFilter` CR is not injected into the pods.
+* The MCP controller component is crashing or stuck.

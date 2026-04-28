@@ -5,4 +5,15 @@ include::_attributes/attributes.adoc[]
 :context: mcp-gateway-troubleshooting
 
 [role="_abstract"]
-FPO assembly
+You can troubleshoot common issues with solutions when working with the {mcpg} across installation, configuration, and operation.
+
+//installation troubleshooting
+include::modules/proc-mcp-gateway-ts-pods-not-starting.adoc[leveloffset=+1]
+
+include::modules/con-mcp-gateway-ts-gateway-routing.adoc[leveloffset=+1]
+
+include::modules/proc-mcp-gateway-ts-gateway-listener.adoc[leveloffset=+2]
+
+include::modules/proc-mcp-gateway-ts-traffic-not-reaching-backend-server.adoc[leveloffset=+2]
+
+include::modules/proc-mcp-gateway-ts-requests-fail-or-bypass-router.adoc[leveloffset=+2]
