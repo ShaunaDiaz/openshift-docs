@@ -4,6 +4,8 @@ include::_attributes/attributes.adoc[]
 = Observing {mcpg} connections
 :context: mcp-gateway-observe
 
+toc::[]
+
 [role="_abstract"]
 You can use observability in {mcpg} to debug things such as silent failures, track destructive annotations, track latencies, and make an audit trail.
 

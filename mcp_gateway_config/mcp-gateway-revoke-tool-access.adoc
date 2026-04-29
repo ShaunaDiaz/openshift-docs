@@ -1,8 +1,10 @@
 :_mod-docs-content-type: ASSEMBLY
+include::_attributes/attributes.adoc[]
 [id="mcp-gateway-revoke-mcp-server-tool-access"]
 = Revoking MCP server tool access
-include::_attributes/attributes.adoc[]
 :context: mcp-gateway-revoke-mcp-server-tool-access
+
+toc::[]
 
 [role="_abstract"]
 You can revoke tool access for users and groups. Tool revocation prevents a user or group from calling specific MCP tools.

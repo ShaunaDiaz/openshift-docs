@@ -4,6 +4,8 @@ include::_attributes/attributes.adoc[]
 = Introduction to the {mcpg}
 :context: mcp-gateway-introduction
 
+toc::[]
+
 [role="_abstract"]
 You can centralize and manage the connectivity for your agentic AI applications that access your Model Context Protocol (MCP) servers by using the MCP gateway.
 
