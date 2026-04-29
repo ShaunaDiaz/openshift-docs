@@ -4,7 +4,7 @@ include::_attributes/attributes.adoc[]
 = {prodname} {version} release notes
 :context: rhcl-release-notes
 
-//toc:[]
+toc::[]
 
 [role="_abstract"]
 Welcome to the {product-title} release notes, where you can learn about what is new and what is fixed.
