@@ -4,10 +4,10 @@ include::_attributes/attributes.adoc[]
 = Installing on {ocp}
 :context: installing-rhcl-on-ocp
 
-//toc:[]
+toc::[]
 
 [role="_abstract"]
-As a platform engineer, you can install {prodname} on {ocp} clusters.
+You can install {prodname} on {ocp} clusters so that you can manage traffic and enforce policies in either a single cluster or across multiple clusters.
 
 include::modules/con-install-getting-ready.adoc[leveloffset=+1]
 
