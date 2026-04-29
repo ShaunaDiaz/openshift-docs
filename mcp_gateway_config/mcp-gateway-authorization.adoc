@@ -4,6 +4,8 @@ include::_attributes/attributes.adoc[]
 = Using authorization with {mcpg}
 :context: mcp-gateway-authorization
 
+toc::[]
+
 [role="_abstract"]
 You can configure authorization for the {mcpg} by using an additional `AuthPolicy` custom resource (CR) that adds access control for servers, data, and tools.
 
