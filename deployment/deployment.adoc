@@ -1,8 +1,10 @@
 :_mod-docs-content-type: ASSEMBLY
+include::_attributes/attributes.adoc[]
 [id="rhcl-config-deploy-gateway-policies"]
 = Configuring and deploying gateway policies
-include::_attributes/attributes.adoc[]
 :context: rhcl-config-deploy-gateway-policies
+
+toc::[]
 
 [role="_abstract"]
 You can use {prodname} to connect and secure an API exposed by a `Gateway` object.

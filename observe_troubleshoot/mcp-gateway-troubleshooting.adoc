@@ -4,6 +4,8 @@ include::_attributes/attributes.adoc[]
 = Troubleshooting and support for {mcpg}
 :context: mcp-gateway-troubleshooting
 
+toc::[]
+
 [role="_abstract"]
 You can troubleshoot common issues with solutions when working with the {mcpg} across installation, configuration, and operation.
 
