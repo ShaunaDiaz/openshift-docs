@@ -4,7 +4,7 @@ include::_attributes/attributes.adoc[]
 = {prodname} observability
 :context: rhcl-observatibility
 
-//toc:[]
+toc::[]
 
 [role="_abstract"]
 You can use the {prodname} observability features to observe and monitor your gateways, applications, and APIs on {ocp}.
