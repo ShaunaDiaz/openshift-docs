@@ -1,10 +1,10 @@
 :_mod-docs-content-type: ASSEMBLY
+include::_attributes/attributes.adoc[]
 [id="rhcl-config-deploy-gateway-policies"]
 = Configuring and deploying gateway policies
-include::_attributes/attributes.adoc[]
 :context: rhcl-config-deploy-gateway-policies
 
-//toc::[]
+toc::[]
 
 [role="_abstract"]
 As a platform engineer or application developer, you can secure, protect, and connect an API exposed by a gateway that uses Gateway API by using {prodname}.

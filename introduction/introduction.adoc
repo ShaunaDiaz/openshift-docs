@@ -3,7 +3,8 @@ include::_attributes/attributes.adoc[]
 [id="rhcl-introduction"]
 = Introduction to {prodname}
 :context: rhcl-introduction
-//toc:[]
+
+toc::[]
 
 [role="_abstract"]
 {product-title} is a control plane for configuring the Gateway API data plane in {ocp} clusters. You can use it to apply authentication, rate limiting, and DNS policies to gateway resources.
