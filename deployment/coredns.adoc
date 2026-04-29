@@ -1,10 +1,10 @@
 :_mod-docs-content-type: ASSEMBLY
+include::_attributes/attributes.adoc[]
 [id="rhcl-using-on-prem-dns-coredns"]
 = Using on-premise DNS with CoreDNS
-include::_attributes/attributes.adoc[]
 :context: rhcl-using-on-prem-dns-coredns
 
-//toc::[]
+toc::[]
 
 [role="_abstract"]
 You can secure, protect, and connect an API exposed by a gateway that uses Gateway API by using {prodname}.

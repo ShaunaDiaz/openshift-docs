@@ -4,6 +4,8 @@ include::_attributes/attributes.adoc[]
 = Using authentication with {mcpg}
 :context: mcp-gateway-authentication
 
+toc::[]
+
 [role="_abstract"]
 You can configure authentication for {mcpg} by using an `AuthPolicy` custom resource (CR) with an identity provider, or any Istio or Gateway API compatible mechanism.
 
