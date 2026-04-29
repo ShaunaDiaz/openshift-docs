@@ -1,8 +1,10 @@
 :_mod-docs-content-type: ASSEMBLY
+include::_attributes/attributes.adoc[]
 [id="mcp-gateway-register-ext-mcp-servers"]
 = Registering external MCP servers
-include::_attributes/attributes.adoc[]
 :context: mcp-gateway-register-ext-mcp-servers
+
+toc::[]
 
 [role="_abstract"]
 To use external MCP servers with your MCP gateway, you must configure ingress, create routing resources, and register the server with the MCP gateway. As a best practice, you must also configure security rules.

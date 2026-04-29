@@ -3,7 +3,8 @@ include::_attributes/attributes.adoc[]
 [id="updating-rhcl"]
 = Updating {prodname} {version}
 :context: updating-rhcl
-//toc:[]
+
+toc::[]
 
 [role="_abstract"]
 You can update your {product-title} from one version to the next if your supported configuration meets the requirements of the version you want to update to.
