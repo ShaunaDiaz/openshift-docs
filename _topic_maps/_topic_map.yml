@@ -58,7 +58,7 @@ Topics:
 - Name: Installing MCP gateway
   File: mcp-gateway-install
 ---
-Name: Red Hat Connectivity Link
+Name: Deploying Red Hat Connectivity Link
 Dir: deployment
 Distros: rhcl
 Topics:
@@ -96,8 +96,8 @@ Topics:
   File: mcp-gateway-observe
 - Name: Troubleshooting MCP gateway
   File: mcp-gateway-troubleshooting
-- Name: Troubleshooting Connectivity Link
-  File: rhcl-troubleshooting
+#- Name: Troubleshooting Connectivity Link
+#  File: rhcl-troubleshooting
 ---
 Name: Updating Red Hat Connectivity Link
 Dir: updating
