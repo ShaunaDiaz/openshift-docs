@@ -13,6 +13,13 @@
 include::snippets/ztp_example-sno.yaml[]
 ----
 
+[id="ztp-consoleoperatordisable-yaml"]
+.ConsoleOperatorDisable.yaml
+[source,yaml]
+----
+include::snippets/ztp_ConsoleOperatorDisable.yaml[]
+----
+
 [id="ztp-disablesnonetworkdiag-yaml"]
 .DisableSnoNetworkDiag.yaml
 [source,yaml]
