@@ -9,6 +9,12 @@
 [role="_abstract"]
 You can use the new features and enhancements that are available with {product-title} {version}.
 
+Disconnected installation documentation added::
+
+The {prodname} documentation now includes procedures for installing in a disconnected environment. You can apply cloud-like traffic management within your private, secure network.
+
+//For more information, see xref:../install-rhcl/rhcl-install-disconnected.adoc#rhcl-install-disconnected[Installing Connectivity Link in a disconnected environment]
+
 MCP gateway: MCP prompt federation is now available::
 
 {mcpg} adds support for federating MCP prompts through the `Gateway` object as a Generally Available feature. MCP prompt federation makes it much easier to supply your large language models (LLMs) with the exact context and steering instructions they need, no matter which server originally hosted the template.

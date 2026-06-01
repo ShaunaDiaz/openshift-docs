@@ -1,0 +1,28 @@
+// Module included in the following assemblies:
+//
+// *install-guide/disconnected-install.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="con-rhcl-install-disconnected_{context}"]
+= Installing {prodname} in disconnected clusters
+
+[role="_abstract"]
+By using {prodname} as disconnected gateway, you can securely route traffic, enforce rate limits, and perform automated failover between your isolated clusters. You can also automate internal TLS certificate management and manage all internal networking and security policies.
+
+{prodname} consists of four Operators bundled in a single combined catalog:
+
+* {prodname} Operator: Provides policy attachment and Gateway API integration. Includes runtime images for wasm-shim and console-plugin.
+* Authorino Operator: Provides authentication and authorization engine. Includes the `authorino` runtime image.
+* Limitador Operator: Provides rate limiting engine. Includes the `limitador` runtime image.
+* DNS Operator: Provides multi-cluster DNS management. Includes the `coredns-kuadrant` runtime image.
+
+The catalog image is available at `quay.io/kuadrant/kuadrant-operator-catalog:latest`. All four Operators are available from this catalog. The {prodname} Operator declares the other three Operators as dependencies through Operator Lifecycle Manager (OLM).
+
+You install {prodname} Operators in disconnected {ocp} environments by mirroring the Operator catalog and images to your internal registry. Use the `oc-mirror` tool to perform the following actions:
+
+* Mirror the catalog image.
+* Discover the following Operator bundles in the catalog: {prodname}, Authorino, Limitador, and DNS.
+* Mirror all images from each bundle's `relatedImages` section.
+* Generate the `ImageDigestMirrorSet` object for runtime images.
+* Generate the `ImageTagMirrorSet` object for catalog and bundle images.
+* Generate the `CatalogSource` manifest.

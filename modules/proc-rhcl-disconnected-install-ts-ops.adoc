@@ -1,0 +1,35 @@
+// Module included in the following assemblies:
+//
+// *install-guide/disconnected-install.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-rhcl-disconnected-install-ts-ops_{context}"]
+= Dependent Operators are not installing
+
+[role="_abstract"]
+If you only see the {prodname} Operator `ClusterServiceVersion`, but the Authorino, Limitador, or DNS Operators are missing, the catalog might be missing digest references or the dependencies are not declared. You can track the source of the problem by checking a couple of resources.
+
+.Prerequisites
+
+* You completed a disconnected installation of {prodname}.
+
+.Procedure
+
+. Verify that all four Operators are available as `PackageManifest` resources by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get packagemanifest -n openshift-marketplace | grep -E
+'(kuadrant|authorino|limitador|dns)-operator'
+----
+//Q: if one or more are missing, what do we do about it?
+
+. Check that the `InstallPlan` shows all dependencies by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc get installplan -n kuadrant-system -o yaml
+----
++
+Look for all four Operators in the `InstallPlan` specification output.
+//Q: if one or more are missing, what do we do about it?

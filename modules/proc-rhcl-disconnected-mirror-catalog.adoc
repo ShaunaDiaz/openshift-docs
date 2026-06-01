@@ -1,0 +1,117 @@
+// Module included in the following assemblies:
+//
+// *install-guide/disconnected-install.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-rhcl-disconnected-mirror-catalog_{context}"]
+= Mirroring the {prodname} catalog
+
+[role="_abstract"]
+To begin your disconnected {prodname} installation, you must mirror the Operator catalog. By mirroring, you are making a complete local copy of {prodname} on a private container registry that your isolated cluster can reach.
+
+[NOTE]
+====
+Applying `ImageDigestMirrorSet` or `ImageTagMirrorSet` objects triggers `MachineConfig` object updates and restarts cluster nodes.
+====
+
+.Prerequisites
+
+* You have a supported-version, disconnected {ocp} cluster.
+* You configured a mirror registry.
+* You have either an `ImageDigestMirrorSet` or `ImageTagMirrorSet` object configured for platform images.
+* Optional. You installed the `oc-mirror` CLI tool for mirroring operator catalogs.
+
+.Procedure
+
+. If you are using the `oc mirror` tool, add the {prodname} catalog to your `ImageSetConfiguration` file by using the following example:
++
+.Example `ImageSetConfiguration` YAML
+[source,yaml]
+----
+kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v2alpha1
+mirror:
+  operators:
+    - catalog: quay.io/kuadrant/kuadrant-operator-catalog:latest
+      full: true
+----
++
+This catalog has all of the Operators and their dependencies.
+
+. Optional: If you plan to use the DNS Operator CoreDNS deployment feature, add the CoreDNS image to your `ImageSetConfiguration` YAML file by adding the following configuration snippet:
++
+[source,yaml]
+----
+additionalImages:
+  - name: quay.io/kuadrant/coredns-kuadrant:latest
+----
++
+. If you are not using the `oc mirror` tool, mirror the CoreDNS image directly by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc image mirror quay.io/kuadrant/coredns-kuadrant:latest \
+  _<your_mirror_registry>_/kuadrant/coredns-kuadrant:latest
+----
+
+. Mirror the Operator catalog and images to your registry by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc-mirror --config imageset-config.yaml docker://_<your_mirror_registry>_
+----
++
+Replace `_<your_mirror_registry>_` with the path to your mirror registry.
+
+. Apply the generated `ImageDigestMirrorSet` configuration by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f oc-mirror-workspace/results-*/imageDigestMirrorSet.yaml
+----
+
+. Apply the generated `ImageTagMirrorSet` configuration by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f oc-mirror-workspace/results-*/imageTagMirrorSet.yaml
+----
+
+. Wait for the `MachineConfigPool` object to update by running the following command:
++
+[source,terminal]
+----
+$ oc wait mcp --all --for=condition=Updated --timeout=30m
+----
++
+.Example output
+[source,text]
+----
+machineconfigpool.machineconfiguration.openshift.io/master condition met
+machineconfigpool.machineconfiguration.openshift.io/worker condition met
+----
+
+. Apply the generated `CatalogSource` manifest by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc apply -f oc-mirror-workspace/results-*/catalogSource-*.yaml
+----
+//Q: instead of the stars, can we give generic examples?
+
+. Wait for the Operator catalog to be ready by running the following command:
++
+[source,terminal,subs="+quotes"]
+----
+$ oc wait catalogsource -n openshift-marketplace --all --for=condition=Ready --timeout=5m
+----
++
+.Example output
+[source,text]
+----
+catalogsource.operators.coreos.com/certified-operators condition met
+catalogsource.operators.coreos.com/community-operators condition met
+catalogsource.operators.coreos.com/redhat-marketplace condition met
+catalogsource.operators.coreos.com/redhat-operators condition met
+catalogsource.operators.coreos.com/rhcl-operator-catalog condition met
+----
