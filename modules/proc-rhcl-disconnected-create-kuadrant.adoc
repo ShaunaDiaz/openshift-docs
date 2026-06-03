@@ -1,0 +1,73 @@
+// Module included in the following assemblies:
+//
+// *install-guide/disconnected-install.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="proc-rhcl-disconnected-create-kuadrant_{context}"]
+= Creating a Kuadrant custom resource
+
+[role="_abstract"]
+After installing the {prodname} operator, create a `Kuadrant` custom resource to deploy the {prodname} components.
+
+.Prerequisites
+
+* You have installed the {prodname} operator
+* The {prodname} operator is running in the `kuadrant-system` namespace
+
+.Procedure
+
+. Create a `Kuadrant` custom resource:
++
+[source,yaml]
+----
+apiVersion: kuadrant.io/v1beta1
+kind: Kuadrant
+metadata:
+  name: kuadrant
+  namespace: kuadrant-system
+spec: {}
+----
+
+. Apply the `Kuadrant` custom resource:
++
+[source,terminal]
+----
+$ oc apply -f kuadrant.yaml
+----
+
+.Verification
+
+. Verify the `Kuadrant` resource is ready:
++
+[source,terminal]
+----
+$ oc get kuadrant kuadrant -n kuadrant-system
+----
++
+.Example output
+[source,terminal]
+----
+NAME        STATUS   AGE
+kuadrant    Ready    2m
+----
+
+. Verify all component operator pods are running:
++
+[source,terminal]
+----
+$ oc get pods -n kuadrant-system
+----
++
+.Example output
+[source,terminal]
+----
+NAME                                                READY   STATUS    RESTARTS   AGE
+authorino-operator-controller-manager-<hash>        2/2     Running   0          5m
+dns-operator-controller-manager-<hash>              2/2     Running   0          5m
+kuadrant-operator-controller-manager-<hash>         2/2     Running   0          7m
+limitador-operator-controller-manager-<hash>        2/2     Running   0          5m
+----
+
+.Next steps
+
+* Configure Gateway API resources to use {prodname} policies. See link:https://docs.redhat.com[{prodname} documentation] for examples.

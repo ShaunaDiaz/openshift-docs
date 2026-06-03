@@ -7,7 +7,14 @@ include::_attributes/attributes.adoc[]
 toc::[]
 
 [role="_abstract"]
-You can use {prodname} in a disconnected environment to apply the speed and automation of cloud-like traffic management within your private, secure network.
+You can install {prodname} on an {ocp} cluster in a disconnected environment by mirroring the required operator catalog and installing the {prodname} operator from your local mirror registry.
+
+.Prerequisites
+
+* A disconnected {ocp} cluster version 4.14 or later
+* Access to the cluster as a user with the `cluster-admin` role
+* Configured mirror registry accessible from the cluster
+* For general Operator Lifecycle Manager configuration in disconnected environments, see link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/operators/administrator-tasks#olm-restricted-networks[Using Operator Lifecycle Manager in disconnected environments]
 
 include::modules/con-rhcl-install-disconnected.adoc[leveloffset=+1]
 
@@ -15,16 +22,11 @@ include::modules/proc-rhcl-disconnected-mirror-catalog.adoc[leveloffset=+1]
 
 include::modules/proc-rhcl-disconnected-install-operators.adoc[leveloffset=+1]
 
-include::modules/proc-rhcl-disconnected-install-ts-pods-stuck.adoc[leveloffset=+1]
+include::modules/proc-rhcl-disconnected-create-kuadrant.adoc[leveloffset=+1]
 
-include::modules/proc-rhcl-disconnected-install-ts-cat-image.adoc[leveloffset=+1]
-
-include::modules/proc-rhcl-disconnected-install-ts-ops.adoc[leveloffset=+1]
-
-[id="additional-resources_disconnected-install"]
 [role="_additional-resources"]
 == Additional resources
 
-* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/images/managing-images[Managing image settings (OpenShift Container Platform documentation)]
-* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/operators/administrator-tasks#olm-managing-custom-catalogs[Managing custom catalogs (OpenShift Container Platform documentation)]
-* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/disconnected_environments/installing-mirroring-disconnected-about[Disconnected installation overview (OpenShift Container Platform documentation)]
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/operators/administrator-tasks#olm-restricted-networks[Using Operator Lifecycle Manager in disconnected environments]
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/disconnected_environments/installing-mirroring-installation-images[Mirroring images for a disconnected installation]
+* link:https://docs.redhat.com[Red Hat Connectivity Link documentation]

@@ -4,31 +4,28 @@
 
 :_mod-docs-content-type: PROCEDURE
 [id="proc-rhcl-disconnected-install-operators_{context}"]
-= Installing {prodname} Operators
+= Installing the {prodname} operator
 
 [role="_abstract"]
-After you mirrored all of the {prodname} Operator bundles, you are ready to install it into your disconnected {ocp} clusters. Repeat the process as needed for each cluster that shares the registry.
+After mirroring the catalog, you can install the {prodname} operator using Operator Lifecycle Manager (OLM).
 
 .Prerequisites
 
-* You have a supported-version, disconnected {ocp} cluster.
-* You configured a mirror registry.
-* You mirrored the {prodname} Operator bundles.
-* Optional. You installed the `oc-mirror` CLI tool for mirroring operator catalogs.
+* You have mirrored the {prodname} operator catalog to your local registry
+* You have applied the catalog source to your cluster
 
 .Procedure
 
-. Create a namespace for {prodname} by running the following command:
+. Create a namespace for {prodname}:
 +
-[source,terminal,subs="+quotes"]
+[source,terminal]
 ----
-$ oc new-project kuadrant-system
+$ oc create namespace kuadrant-system
 ----
-//Q: can the user change this namespace name?
 
-. Create an `OperatorGroup` custom resource (CR) by running the following command:
+. Create an `OperatorGroup` for the {prodname} operator:
 +
-[source,yaml,subs="+quotes"]
+[source,yaml]
 ----
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
@@ -37,124 +34,77 @@ metadata:
   namespace: kuadrant-system
 spec: {}
 ----
-+
-[IMPORTANT]
-====
-The empty `spec: {}` is required. {prodname} Operators support only the `AllNamespaces`, or cluster-scoped, install mode. Do not set the `targetNamespaces` parameter.
-====
-//Q: can the user change the namespace name?
 
-. Apply the CR by running the following command:
+. Apply the `OperatorGroup`:
 +
-[source,terminal,subs="+quotes"]
+[source,terminal]
 ----
-$ oc apply -f kuadrant-operator-group.yaml
+$ oc apply -f operatorgroup.yaml
 ----
 
-. Query the default channel from the `PackageManifest` by running the following command:
+. Create a `Subscription` for the {prodname} operator:
 +
-[source,terminal,subs="+quotes"]
-----
-$ CHANNEL=$(oc get packagemanifest kuadrant-operator -n openshift-marketplace \
-  -o jsonpath='{.status.defaultChannel}')
-----
-
-. Create a `Subscription` resource by running the following command:
-+
-[source,yaml,subs="+quotes"]
+[source,yaml]
 ----
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: kuadrant-operator
+  name: rhcl-operator
   namespace: kuadrant-system
 spec:
-  channel: ${CHANNEL}
-  name: kuadrant-operator
-  source: kuadrant-disconnected-catalog
+  channel: stable <1>
+  name: rhcl-operator
+  source: <catalog_source_name> <2>
   sourceNamespace: openshift-marketplace
-  installPlanApproval: Automatic
 ----
++
+<1> Specify `stable` as the channel.
+<2> Specify the name of the `CatalogSource` object created by `oc-mirror`. You can find the catalog source name by running `oc get catalogsource -n openshift-marketplace`.
 +
 [NOTE]
 ====
-Replace the `spec.source` parameter value with the `CatalogSource` name from `oc-mirror` if it differs. OLM automatically installs the Authorino, Limitador, and DNS Operators based on the dependencies declared in the {prodname} Operator bundle.
+OLM automatically installs the Authorino, Limitador, and DNS operators based on the dependencies declared in the {prodname} operator bundle.
 ====
-//Q: don't know what this means; better to show an actual example from the previous step to this one
 
-. Apply the CR by running the following command:
+. Apply the `Subscription`:
 +
-[source,terminal,subs="+quotes"]
+[source,terminal]
 ----
-$ oc apply -f kuadrant-operator.yaml
+$ oc apply -f subscription.yaml
 ----
 
-. Verify that all Operator `ClusterServiceVersion` resources are installed by running the following command:
+.Verification
+
+. Verify the {prodname} operator installed successfully:
 +
-[source,terminal,subs="+quotes"]
+[source,terminal]
 ----
 $ oc get csv -n kuadrant-system
 ----
 +
 .Example output
-[source,text]
+[source,terminal]
 ----
 NAME                           DISPLAY                  VERSION   REPLACES   PHASE
-kuadrant-operator.vX.Y.Z       Kuadrant Operator        X.Y.Z                Succeeded
 authorino-operator.vX.Y.Z      Authorino Operator       X.Y.Z                Succeeded
-limitador-operator.vX.Y.Z      Limitador Operator       X.Y.Z                Succeeded
 dns-operator.vX.Y.Z            DNS Operator             X.Y.Z                Succeeded
+kuadrant-operator.vX.Y.Z       Kuadrant Operator        X.Y.Z                Succeeded
+limitador-operator.vX.Y.Z      Limitador Operator       X.Y.Z                Succeeded
 ----
 
-. Verify that all pods are running by using the following command:
+. Verify the operator pod is running:
 +
-[source,terminal,subs="+quotes"]
-----
-$ oc get pods -n kuadrant-system
-----
-
-. Create a `Kuadrant` custom resource (CR) by running the following command:
-+
-[source,terminal,subs="+quotes"]
-----
-$ cat <<EOF | oc apply -f -
-apiVersion: kuadrant.io/v1beta1
-kind: Kuadrant
-metadata:
-  name: kuadrant
-  namespace: kuadrant-system
-spec: {}
-EOF
-----
-
-. Wait for the `Kuadrant` resource to be ready by running the following command:
-+
-[source,terminal,subs="+quotes"]
-----
-$ oc wait kuadrant/kuadrant -n kuadrant-system --for=condition=Ready --timeout=5m
-----
-
-.Verification
-
-. Verify that all pods are running by using the following command:
-+
-[source,terminal,subs="+quotes"]
+[source,terminal]
 ----
 $ oc get pods -n kuadrant-system
 ----
 +
-All pods should show `Running` status.
-
-. Verify that there are no image pull errors by running the following command:
-+
-[source,terminal,subs="+quotes"]
+.Example output
+[source,terminal]
 ----
-$ oc get events -n kuadrant-system --field-selector reason=Failed
+NAME                                                READY   STATUS    RESTARTS   AGE
+authorino-operator-controller-manager-<hash>        2/2     Running   0          3m
+dns-operator-controller-manager-<hash>              2/2     Running   0          3m
+kuadrant-operator-controller-manager-<hash>         2/2     Running   0          5m
+limitador-operator-controller-manager-<hash>        2/2     Running   0          3m
 ----
-+
-The output should show no image pull failures.
-+
-[NOTE]
-====
-Pod specifications still show original image references, for example, `quay.io/kuadrant/...`, even when images are pulled from your mirror registry. The redirection happens transparently at the CRI-O level through `ImageDigestMirrorSet` or `ImageTagMirrorSet` configuration objects.
-====
