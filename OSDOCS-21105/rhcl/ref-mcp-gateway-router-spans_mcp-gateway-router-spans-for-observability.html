@@ -454,13 +454,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_install.html">Install</a>
 </li>
+<li><a href="_configure.html">Configure</a>
+</li>
 <li><a href="_upgrade.html">Upgrade</a>
+</li>
+<li><a href="_secure.html">Secure</a>
 </li>
 <li><a href="_administer.html">Administer</a>
 </li>
 <li><a href="_develop.html">Develop</a>
-</li>
-<li><a href="_configure.html">Configure</a>
 </li>
 <li><a href="_observe.html">Observe</a>
 </li>
@@ -468,27 +470,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_reference.html">Reference</a>
 <ul class="sectlevel2">
-<li><a href="rhcl-supported-configs_supported-openshift-version-configurations.html">Supported configurations with Connectivity Link</a>
-</li>
-<li><a href="rhcl-supported-configs_supported-operators.html">Supported configurations with Connectivity Link</a>
-</li>
-<li><a href="rhcl-supported-configs_supported-cloud-and-dns-providers.html">Supported configurations with Connectivity Link</a>
-</li>
-<li><a href="rhcl-supported-configs_supported-data-stores-and-identity-access-management.html">Supported configurations with Connectivity Link</a>
-</li>
-<li><a href="the-mcpgatewayextension-custom-resource-api-reference-con_the-mcpgatewayextension-custom-resource-api-reference.html">The MCPGatewayExtension custom resource API reference</a>
+<li><a href="mcpgatewayextension-custom-resource-api-reference-con_the-mcpgatewayextension-custom-resource-api-reference.html">The MCPGatewayExtension custom resource API reference</a>
 </li>
 <li><a href="automatically-created-httproute-example-con_automatically-created-httproute-example.html">Automatically created HTTPRoute example</a>
 </li>
 <li><a href="common-access-log-format-variables-con_common-access-log-format-variables.html">Common access log format variables</a>
 </li>
-<li><a href="mcp-gateway-router-spans-for-observability-con_mcp-gateway-router-spans-for-observability.html">MCP gateway router spans for observability</a>
-</li>
 <li><a href="custom-audit-log-provider-fields-con_custom-audit-log-provider-fields.html">Custom audit log provider fields</a>
 </li>
-<li><a href="understand-the-mcpserverregistration-custom-resource-con_understand-the-mcpserverregistration-custom-resource.html">Understand the MCPServerRegistration custom resource</a>
-</li>
 <li><a href="parameter-values-for-a-single-server-scoped-authpolicy-cr-con_parameter-values-for-a-single-server-scoped-authpolicy-cr.html">Parameter values for a single-server-scoped AuthPolicy CR</a>
+</li>
+<li><a href="mcp-gateway-router-spans-for-observability-con_mcp-gateway-router-spans-for-observability.html">MCP gateway router spans for observability</a>
 </li>
 </ul>
 </li>
@@ -511,7 +503,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>The MCP gateway uses the following router spans:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 31. MCP router spans</caption>
+<caption class="title">Table 26. MCP router spans</caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -571,7 +563,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>The attributes in the following tables use <a href="https://opentelemetry.io/docs/specs/semconv/gen-ai/mcp/#server">OpenTelemetry MCP Semantic Conventions</a>.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 32. MCP router root span, <code>mcp-router.process</code>, attributes</caption>
+<caption class="title">Table 27. MCP router root span, <code>mcp-router.process</code>, attributes</caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -643,7 +635,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 33. MCP route decision span, <code>mcp-router.route-decision</code>, attributes</caption>
+<caption class="title">Table 28. MCP route decision span, <code>mcp-router.route-decision</code>, attributes</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 66.6667%;">
@@ -666,7 +658,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 34. MCP tool call span, <code>mcp-router.tool-call</code>, attributes</caption>
+<caption class="title">Table 29. MCP tool call span, <code>mcp-router.tool-call</code>, attributes</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 66.6667%;">
@@ -697,7 +689,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 35. MCP error attributes</caption>
+<caption class="title">Table 30. MCP error attributes</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 66.6667%;">
@@ -732,12 +724,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph nav-footer">
-<p>↑ Up: <a href="mcp-gateway-router-spans-for-observability-con_mcp-gateway-router-spans-for-observability.html">MCP gateway router spans for observability</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="custom-audit-log-provider-fields-con_custom-audit-log-provider-fields.html">Custom audit log provider fields</a> →</p>
+<p>↑ Up: <a href="mcp-gateway-router-spans-for-observability-con_mcp-gateway-router-spans-for-observability.html">MCP gateway router spans for observability</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a></p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-09-14 13:45:35 -0400
+Last updated 2026-09-16 08:57:04 -0400
 </div>
 </div>
 <style>
