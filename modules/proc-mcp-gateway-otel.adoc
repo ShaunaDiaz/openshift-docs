@@ -134,7 +134,7 @@ $ oc set env deployment/mcp-gateway -n _<mcp_gateway_namespace>_ \
 
 . If you are using {TempoName}, navigate to the OpenShift Web Console *Observe > Traces* dashboard and select your stack name as the data source (for example, `tempo-mcp`).
 
-. Filter {DTShortName} in the *Observe > Traces* dashboard by setting attributes such as `service.name="mcp-gateway"`, `mcp.method.name`, `gen_ai.tool.name`, or `mcp.server` to identify errors or operational bottlenecks.
+. Filter distributed traces in the *Observe > Traces* dashboard by setting attributes such as `service.name="mcp-gateway"`, `mcp.method.name`, `gen_ai.tool.name`, or `mcp.server` to identify errors or operational bottlenecks.
 
 . For Loki logs, navigate to *Observe > Logs*, select the **Structured** view tab, and filter logs using `trace_id` or `span_id`. Logs emitted before telemetry initialization remain on stdout and are not exported through OTLP.
 

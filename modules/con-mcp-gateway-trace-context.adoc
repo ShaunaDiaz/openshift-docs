@@ -12,7 +12,7 @@ You can correlate {mcpg} activity with broader {DTShortName} across your infrast
 [id="con-mcp-gateway-w3c-trace-context-header-support_{context}"]
 == W3C Trace Context standard header support
 
-The router extracts the `traceparent` header from incoming requests. This header follows the W3C Trace Context standard and contains trace ID, parent span ID, and sampling information.
+The router extracts the `traceparent` header from incoming requests. This header follows the W3C Trace Context standard and has trace ID, parent span ID, and sampling information.
 
 Clients can pass an explicit `traceparent` header for end-to-end observability. When the header is present, the {mcpg} continues the existing trace. When the header is absent, the router creates a new root trace.
 

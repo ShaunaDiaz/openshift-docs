@@ -9,7 +9,7 @@
 [role="_abstract"]
 Get real-time, aggregated visibility into the health, performance, and resource usage of your {mcpg}. Prometheus metrics give you a high-level numerical overview of your system state over time.
 
-* Use internal cluster scraping for ad hoc debugging and verification. Retrieve metrics through pod IP discovery.
+* Use internal cluster scraping for ad-doc debugging and verification. Retrieve metrics through pod IP discovery.
 * Use Kubernetes pod service discovery for continuous scraping with Prometheus.
 * If you use Prometheus Operator, configure an equivalent pod-IP scrape job in the operator-managed Prometheus instance.
 
