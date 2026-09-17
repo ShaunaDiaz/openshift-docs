@@ -454,6 +454,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_install.html">Install</a>
 </li>
+<li><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
+</li>
 <li><a href="_configure.html">Configure</a>
 </li>
 <li><a href="_upgrade.html">Upgrade</a>
@@ -462,13 +464,31 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_administer.html">Administer</a>
 <ul class="sectlevel2">
-<li><a href="con-about-grpc-support_connect-grpc-applications.html">About GRPCRoute policy attachment</a>
+<li><a href="rhcl-app-dev-workflow_connect-apis.html">Application development workflow</a>
 </li>
-<li><a href="rhcl-platform-eng-workflow_automate-multicluster-traffic-routing.html">Workflow for providing a platform</a>
+<li><a href="con-about-grpc-support_connect-grpc-applications.html">About GRPCRoute policy attachment</a>
 </li>
 <li><a href="con-about-token-based-rate-limiting_control-ai-token-consumption.html">About token-based rate limiting with TokenRateLimitPolicy</a>
 </li>
-<li><a href="understand-policy-status-conditions-con_understand-policy-status-conditions.html">Understand policy status conditions</a>
+<li><a href="apply-a-customized-httproute-object-con_apply-a-customized-httproute-object.html">Apply a customized HTTPRoute object</a>
+</li>
+<li><a href="con-create-virt-mcp-server_virtual-mcp-servers.html">Virtual MCP servers for curating tools and prompts</a>
+</li>
+<li><a href="create-virtual-mcp-servers-con_create-virtual-mcp-servers.html">Create virtual MCP servers</a>
+</li>
+<li><a href="create-virtual-mcp-servers-107-con_create-virtual-mcp-servers-107.html">Create virtual MCP servers</a>
+</li>
+<li><a href="con-virt-mcp-server-auth-tool-filtering_virtual-mcp-servers-authorization-and-filtering.html">Virtual MCP server authorization and filtering</a>
+</li>
+<li><a href="verify-virtual-mcp-servers-con_verify-virtual-mcp-servers.html">Verify virtual MCP servers</a>
+</li>
+<li><a href="revoke-mcp-server-tool-access-con_revoke-mcp-server-tool-access.html">Revoke MCP server tool access</a>
+</li>
+<li><a href="con-mcp-gateway-understand-tool-access-revocation_understand-tool-access-revocation.html">Understand tool access revocation</a>
+</li>
+<li><a href="revoke-tool-and-prompt-call-requests-con_revoke-tool-and-prompt-call-requests.html">Revoke tool and prompt call requests</a>
+</li>
+<li><a href="filter-revoked-tools-and-prompts-from-display-con_filter-revoked-tools-and-prompts-from-display.html">Filter revoked tools and prompts from display</a>
 </li>
 </ul>
 </li>
@@ -477,6 +497,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="_observe.html">Observe</a>
 </li>
 <li><a href="_troubleshoot.html">Troubleshoot</a>
+</li>
+<li><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
 </li>
 <li><a href="_reference.html">Reference</a>
 </li>
@@ -487,7 +509,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect3">
 <h4 id="proc-register-mcp-server_unregister-or-remove-an-mcp-server">Register an MCP server for use with the MCP gateway</h4>
 <div class="paragraph _abstract">
-<p>Direct your MCP gateway to discover and route to your Model Context Protocol (MCP) servers by registering them. To connect each MCP server to the MCP gateway, you must first create an <code>HTTPRoute</code> custom resource (CR) that routes to the server. Then, you must create an <code>MCPServerRegistration</code> custom resource (CR) that references the <code>HTTPRoute</code> CR.</p>
+<p>Direct your MCP gateway to discover and route to your Model Context Protocol (MCP) servers by registering them.</p>
+</div>
+<div class="paragraph">
+<p>To connect each MCP server to the MCP gateway, you must first create an <code>HTTPRoute</code> custom resource (CR) that routes to the server. Then, you must create an <code>MCPServerRegistration</code> custom resource (CR) that references the <code>HTTPRoute</code> CR.</p>
 </div>
 <div class="ulist">
 <div class="title">Prerequisites</div>
@@ -748,12 +773,12 @@ metadata:
 </div>
 </div>
 <div class="paragraph nav-footer">
-<p>← Previous: <a href="proc-mcp-gateway-delete-virt-mcp-server_delete-virtual-mcp-servers.html">Delete virtual MCP servers</a> | ↑ Up: <a href="understand-policy-status-conditions-con_understand-policy-status-conditions.html">Understand policy status conditions</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="_develop.html">Develop</a> →</p>
+<p>← Previous: <a href="proc-mcp-gateway-delete-virt-mcp-server_delete-virtual-mcp-servers.html">Delete virtual MCP servers</a> | ↑ Up: <a href="verify-virtual-mcp-servers-con_verify-virtual-mcp-servers.html">Verify virtual MCP servers</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="revoke-mcp-server-tool-access-con_revoke-mcp-server-tool-access.html">Revoke MCP server tool access</a> →</p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-09-16 08:57:04 -0400
+Last updated 2026-09-17 12:54:53 -0400
 </div>
 </div>
 <style>

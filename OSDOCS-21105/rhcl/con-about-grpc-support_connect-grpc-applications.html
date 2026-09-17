@@ -454,6 +454,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_install.html">Install</a>
 </li>
+<li><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
+</li>
 <li><a href="_configure.html">Configure</a>
 </li>
 <li><a href="_upgrade.html">Upgrade</a>
@@ -462,13 +464,31 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_administer.html">Administer</a>
 <ul class="sectlevel2">
-<li><a href="con-about-grpc-support_connect-grpc-applications.html"><span class="toc-current">About GRPCRoute policy attachment</span></a>
+<li><a href="rhcl-app-dev-workflow_connect-apis.html">Application development workflow</a>
 </li>
-<li><a href="rhcl-platform-eng-workflow_automate-multicluster-traffic-routing.html">Workflow for providing a platform</a>
+<li><a href="con-about-grpc-support_connect-grpc-applications.html"><span class="toc-current">About GRPCRoute policy attachment</span></a>
 </li>
 <li><a href="con-about-token-based-rate-limiting_control-ai-token-consumption.html">About token-based rate limiting with TokenRateLimitPolicy</a>
 </li>
-<li><a href="understand-policy-status-conditions-con_understand-policy-status-conditions.html">Understand policy status conditions</a>
+<li><a href="apply-a-customized-httproute-object-con_apply-a-customized-httproute-object.html">Apply a customized HTTPRoute object</a>
+</li>
+<li><a href="con-create-virt-mcp-server_virtual-mcp-servers.html">Virtual MCP servers for curating tools and prompts</a>
+</li>
+<li><a href="create-virtual-mcp-servers-con_create-virtual-mcp-servers.html">Create virtual MCP servers</a>
+</li>
+<li><a href="create-virtual-mcp-servers-107-con_create-virtual-mcp-servers-107.html">Create virtual MCP servers</a>
+</li>
+<li><a href="con-virt-mcp-server-auth-tool-filtering_virtual-mcp-servers-authorization-and-filtering.html">Virtual MCP server authorization and filtering</a>
+</li>
+<li><a href="verify-virtual-mcp-servers-con_verify-virtual-mcp-servers.html">Verify virtual MCP servers</a>
+</li>
+<li><a href="revoke-mcp-server-tool-access-con_revoke-mcp-server-tool-access.html">Revoke MCP server tool access</a>
+</li>
+<li><a href="con-mcp-gateway-understand-tool-access-revocation_understand-tool-access-revocation.html">Understand tool access revocation</a>
+</li>
+<li><a href="revoke-tool-and-prompt-call-requests-con_revoke-tool-and-prompt-call-requests.html">Revoke tool and prompt call requests</a>
+</li>
+<li><a href="filter-revoked-tools-and-prompts-from-display-con_filter-revoked-tools-and-prompts-from-display.html">Filter revoked tools and prompts from display</a>
 </li>
 </ul>
 </li>
@@ -477,6 +497,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="_observe.html">Observe</a>
 </li>
 <li><a href="_troubleshoot.html">Troubleshoot</a>
+</li>
+<li><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
 </li>
 <li><a href="_reference.html">Reference</a>
 </li>
@@ -487,24 +509,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="con-about-grpc-support_connect-grpc-applications">About GRPCRoute policy attachment</h3>
 <div class="paragraph _abstract">
-<p>Beginning with Connectivity Link 1.4.0, <code>GRPCRoute</code> policy attachment is supported. You can now use <code>GRPCRoute</code> custom resources (CRs) for your Remote Procedure Call (gRPC)-native applications and services in all of your Connectivity Link policies except <code>TokenRateLimitPolicy</code> CRs. You can migrate existing policies after you create your <code>GRPCRoute</code> CRs.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Important</div>
-</td>
-<td class="content">
-<div class="paragraph">
-<p><code>GRPCRoute</code> policy attachment is a Technology Preview feature only. Technology Preview features are not supported with Red&#160;Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features offer early access to upcoming product features, enabling customers to test functionality and give feedback during the development process.</p>
+<p>You can use <code>GRPCRoute</code> custom resources (CRs) for your Remote Procedure Call (gRPC)-native applications and services in all of your Connectivity Link policies except <code>TokenRateLimitPolicy</code> CRs.</p>
 </div>
 <div class="paragraph">
-<p>For more information about the support scope of Red Hat Technology Preview features, see <a href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.</p>
-</div>
-</td>
-</tr>
-</table>
+<p>You can migrate existing policies after you create your <code>GRPCRoute</code> CRs.</p>
 </div>
 <div class="paragraph">
 <p>Connectivity Link policies can now target <code>GRPCRoute</code> resources with the <code>targetRef</code> parameter. Specifically, <code>AuthPolicy</code> and <code>RateLimitPolicy</code> accept <code>GRPCRoute</code> as a valid target <code>kind</code>. The following well-known attributes are also available for Common Expression Language (CEL) expressions:</p>
@@ -541,10 +549,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p>AuthPolicy CRs</p>
+<p><code>AuthPolicy</code> CRs</p>
 </li>
 <li>
-<p>RateLimitPolicy CRs</p>
+<p><code>RateLimitPolicy</code> CRs</p>
 </li>
 </ul>
 </div>
@@ -592,12 +600,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph nav-footer">
-<p>↑ Up: <a href="_administer.html">Administer</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="proc-create-grpcroute_connect-grpc-applications.html">Create a GRPCRoute custom resource</a> →</p>
+<p>← Previous: <a href="con-migrate-policies-to-grpc_connect-apis.html">Migrate policies to GRPCRoute support</a> | ↑ Up: <a href="_administer.html">Administer</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="proc-create-grpcroute_connect-grpc-applications.html">Create a GRPCRoute custom resource</a> →</p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-09-16 08:57:04 -0400
+Last updated 2026-09-17 12:54:53 -0400
 </div>
 </div>
 <style>

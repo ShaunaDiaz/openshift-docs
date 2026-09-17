@@ -453,14 +453,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="_plan.html">Plan</a>
 </li>
 <li><a href="_install.html">Install</a>
+</li>
+<li><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
 <ul class="sectlevel3">
-<li><a href="rhcl-getting-ready-to-install_install-connectivity-link.html">Get ready to install Connectivity Link</a>
+<li><a href="configure-dns-provider-aws_configure-dns-provider-credentials-for-aws.html">Configure DNS provider credentials for AWS</a>
 </li>
-<li><a href="rhcl-install-ocp-web-console_install-connectivity-link-with-the-openshift-web-console.html">Install Connectivity Link with the OpenShift Container Platform web console</a>
+<li><a href="proc-configure-dns-provider-google_configure-google-dns-provider-credentials.html">Configure Google DNS provider credentials</a>
 </li>
-<li><a href="proc-install-on-ocp-cmd-cio_install-connectivity-link-on-openshift-from-the-command-line.html">Install Connectivity Link on OpenShift Container Platform from the CLI</a>
+<li><a href="proc-configure-dns-provider-azure_configure-azure-dns-provider-credentials.html">Configure Azure DNS provider credentials</a>
 </li>
-<li><a href="proc-install-on-ocp-cmd-istio_install-connectivity-link-on-openshift-from-the-command-line.html">Install Connectivity Link on OpenShift Container Platform from the CLI with Istio as the Gateway controller</a>
+<li><a href="configure-storage-for-rate-limiting-con_configure-storage-for-rate-limiting.html">Configure storage for rate limiting</a>
+</li>
+<li><a href="con-about-using-openshift-web-console_enable-the-connectivity-link-dynamic-plugin-for-openshift-web-console.html">About using the OpenShift web console</a>
 </li>
 <li><a href="con-rhcl-install-disconnected_install-connectivity-link-in-a-disconnected-environment.html">About Connectivity Link in disconnected environments</a>
 </li>
@@ -486,6 +490,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_troubleshoot.html">Troubleshoot</a>
 </li>
+<li><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
+</li>
 <li><a href="_reference.html">Reference</a>
 </li>
 </ul>
@@ -495,7 +501,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect3">
 <h4 id="proc-mcp-gateway-install-olm-ext-cr_install-mcp-gateway">Apply the MCPGatewayExtension custom resource</h4>
 <div class="paragraph _abstract">
-<p>To finish your installation of the MCP gateway deployment Operator by using Operator Lifecycle Manager (OLM), create a <code>MCPGatewayExtension</code> custom resources (CR) manually and apply it to complete your initial setup. After the extension is ready, both an <code>HTTPRoute</code> object and an Envoy filter are automatically created.</p>
+<p>To finish your installation of the MCP gateway deployment Operator by using Operator Lifecycle Manager (OLM), create a <code>MCPGatewayExtension</code> custom resources (CR) manually and apply it to complete your initial setup.</p>
+</div>
+<div class="paragraph">
+<p>After the extension is ready, both an <code>HTTPRoute</code> object and an Envoy filter are automatically created.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -666,7 +675,7 @@ mcp-gateway-route ["mcp.example.com"] 5m</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-09-16 08:57:04 -0400
+Last updated 2026-09-17 12:54:53 -0400
 </div>
 </div>
 <style>

@@ -453,24 +453,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="_plan.html">Plan</a>
 </li>
 <li><a href="_install.html">Install</a>
-<ul class="sectlevel3">
-<li><a href="rhcl-getting-ready-to-install_install-connectivity-link.html">Get ready to install Connectivity Link</a>
-</li>
-<li><a href="rhcl-install-ocp-web-console_install-connectivity-link-with-the-openshift-web-console.html">Install Connectivity Link with the OpenShift Container Platform web console</a>
-</li>
-<li><a href="proc-install-on-ocp-cmd-cio_install-connectivity-link-on-openshift-from-the-command-line.html"><span class="toc-current">Install Connectivity Link on OpenShift Container Platform from the CLI</span></a>
-</li>
-<li><a href="proc-install-on-ocp-cmd-istio_install-connectivity-link-on-openshift-from-the-command-line.html">Install Connectivity Link on OpenShift Container Platform from the CLI with Istio as the Gateway controller</a>
-</li>
-<li><a href="con-rhcl-install-disconnected_install-connectivity-link-in-a-disconnected-environment.html">About Connectivity Link in disconnected environments</a>
-</li>
-<li><a href="install-mcp-gateway-con_install-mcp-gateway.html">Install the MCP gateway</a>
-</li>
-<li><a href="con-dns-management-mcp-gateway_configure-dns-for-mcp-gateway.html">DNS management with the MCP gateway</a>
-</li>
-<li><a href="apply-a-customized-httproute-object-con_apply-a-customized-httproute-object.html">Apply a customized HTTPRoute object</a>
+<ul class="sectlevel2">
+<li><a href="rhcl-install-on-ocp-con_install-connectivity-link.html">Install on OpenShift Container Platform</a>
 </li>
 </ul>
+</li>
+<li><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
 </li>
 <li><a href="_configure.html">Configure</a>
 </li>
@@ -485,6 +473,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="_observe.html">Observe</a>
 </li>
 <li><a href="_troubleshoot.html">Troubleshoot</a>
+</li>
+<li><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
 </li>
 <li><a href="_reference.html">Reference</a>
 </li>
@@ -505,7 +495,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Connectivity Link uses labels formatted as <code>kuadrant.io/*</code> to search and filter resources on the cluster. Removing of any labels with the prefix might cause unexpected behavior and degradation of Connectivity Link.</p>
+<p>Connectivity Link uses labels formatted as <code>kuadrant.io/*</code> to search and filter resources on the cluster. Removing any labels with the prefix might cause unexpected behavior and degradation of Connectivity Link.</p>
 </div>
 </td>
 </tr>
@@ -556,10 +546,9 @@ spec:
   sourceNamespace: openshift-marketplace</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the name of the namespace where you want to deploy Connectivity Link.</p>
+<div class="paragraph">
+<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace you created to install Connectivity Link.</p>
+</div>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -580,9 +569,6 @@ spec:
 </table>
 </div>
 </li>
-</ul>
-</div>
-</li>
 <li>
 <p>Apply the <code>Subscription</code> CR by running the following command:</p>
 <div class="listingblock">
@@ -592,7 +578,7 @@ spec:
 </div>
 </li>
 <li>
-<p>Create the <code>OperatorGroup</code> custom resource (CR) by using the following example:</p>
+<p>Create the <code>OperatorGroup</code> CR by using the following example:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: operators.coreos.com/v1
@@ -605,7 +591,7 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace you used.</p>
+<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace where you are installing Connectivity Link.</p>
 </div>
 </li>
 <li>
@@ -634,7 +620,7 @@ ip=$(oc get subscription rhcl-operator -o=jsonpath={.status.installPlanRef.name}
 </div>
 </li>
 <li>
-<p>Create your Connectivity Link custom resource (CR) by using the following example:</p>
+<p>Create your Connectivity Link CR by using the following example:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: kuadrant.io/v1beta1
@@ -646,7 +632,7 @@ spec: {}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace you used.</p>
+<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace where you installed Connectivity Link.</p>
 </div>
 </li>
 <li>
@@ -686,7 +672,7 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace you used.</p>
+<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace where you installed Connectivity Link.</p>
 </div>
 <div class="listingblock">
 <div class="title">Example output</div>
@@ -702,10 +688,9 @@ spec:
 <pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get pods -n <em>&lt;kuadrant_system&gt;</em></code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace you used.</p>
+<div class="paragraph">
+<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace where you installed Connectivity Link.</p>
+</div>
 <div class="listingblock">
 <div class="title">Example output</div>
 <div class="content">
@@ -717,9 +702,6 @@ limitador-operator-controller-manager-&lt;hash&gt;        2/2     Running   0   
 </div>
 </div>
 </li>
-</ul>
-</div>
-</li>
 <li>
 <p>For a disconnected installation, verify that there are no image pull errors by running the following command:</p>
 <div class="listingblock">
@@ -727,12 +709,11 @@ limitador-operator-controller-manager-&lt;hash&gt;        2/2     Running   0   
 <pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get events -n <em>&lt;kuadrant_system&gt;</em> --field-selector reason=Failed</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace you used.</p>
 <div class="paragraph">
-<p>The output should not show image pull failures.</p>
+<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace where you installed Connectivity Link.</p>
+</div>
+<div class="paragraph">
+<p>The output must not show image pull failures.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -749,9 +730,6 @@ limitador-operator-controller-manager-&lt;hash&gt;        2/2     Running   0   
 </table>
 </div>
 </li>
-</ul>
-</div>
-</li>
 </ol>
 </div>
 <div class="ulist">
@@ -760,12 +738,12 @@ limitador-operator-controller-manager-&lt;hash&gt;        2/2     Running   0   
 </div>
 </div>
 <div class="paragraph nav-footer">
-<p>← Previous: <a href="rhcl-install-ocp-web-console_install-connectivity-link-with-the-openshift-web-console.html">Install Connectivity Link with the OpenShift Container Platform web console</a> | ↑ Up: <a href="_install.html">Install</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="proc-install-on-ocp-cmd-istio_install-connectivity-link-on-openshift-from-the-command-line.html">Install Connectivity Link on OpenShift Container Platform from the CLI with Istio as the Gateway controller</a> →</p>
+<p>← Previous: <a href="rhcl-install-ocp-web-console_install-connectivity-link-with-the-openshift-web-console.html">Install Connectivity Link with the OpenShift Container Platform web console</a> | ↑ Up: <a href="rhcl-install-on-ocp-con_install-connectivity-link.html">Install on OpenShift Container Platform</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="proc-install-on-ocp-cmd-istio_install-connectivity-link-on-openshift-from-the-command-line.html">Install Connectivity Link on OpenShift Container Platform from the CLI with Istio as the Gateway controller</a> →</p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-09-16 08:57:04 -0400
+Last updated 2026-09-17 12:54:53 -0400
 </div>
 </div>
 <style>

@@ -458,6 +458,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_install.html">Install</a>
 </li>
+<li><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
+</li>
 <li><a href="_configure.html">Configure</a>
 </li>
 <li><a href="_upgrade.html">Upgrade</a>
@@ -471,6 +473,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="_observe.html">Observe</a>
 </li>
 <li><a href="_troubleshoot.html">Troubleshoot</a>
+</li>
+<li><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
 </li>
 <li><a href="_reference.html">Reference</a>
 </li>
@@ -489,14 +493,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <dd>
 <p>Installing Connectivity Link in a disconnected environment is now Generally Available. You can apply cloud-like traffic management within your private, secure network. For more information, see <a href="../install_rhcl/rhcl-install-disconnected.html#rhcl-install-disconnected">Install Connectivity Link in a disconnected environment</a>.</p>
 </dd>
-<dt class="hdlist1"><strong>MCP gateway</strong>: MCP gateway adds new protocol support</dt>
+<dt class="hdlist1">Support for <code>GRPCRoute</code> policy attachment is Generally Available</dt>
 <dd>
-<p>With this release, the MCP gateway adds support for the <code>2026-07-28</code> stateless Model Context Protocol (MCP) protocol version. This enhancement means that MCP servers can operate like standard HTTP services in cloud-native environments. Every request is now self-describing and independent, meaning that you can scale your MCP servers while reducing costs.</p>
+<p>With this Connectivity Link release, <code>GRPCRoute</code> policy attachment support is a Generally Available feature. You can attach <code>AuthPolicy</code> and <code>RateLimitPolicy</code> custom resources (CRs) to <code>GRPCRoute</code> CRs, enabling authentication and rate-limiting controls for gRPC services with native service and method matching. For more information, see <a href="../deployment/connect-secure-apis-services.html#con-about-grpc-support_connect-secure-apis-services">About GRPCRoute policy attachment support</a>.</p>
 </dd>
-</dl>
-</div>
-<div class="dlist">
-<dl>
 <dt class="hdlist1">Red Hat Developer Hub plugin is Generally Available</dt>
 <dd>
 <p>The Red Hat Developer Hub plugin for Connectivity Link is Generally Available. With a Red Hat Developer Hub subscription, you can create a self-service API catalog that makes API consumption easier and enables teams to work together more effectively. For more information, see <a href="../develop/rhdh_plugin/rhdh-plugin-installation.html#rhdh-plugin-installation">Manage APIs through Red Hat Developer Hub</a>.</p>
@@ -504,6 +504,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <dt class="hdlist1"><strong>MCP gateway</strong>: MCP gateway is now Generally Available</dt>
 <dd>
 <p>The MCP gateway is now Generally Available. Gather your Model Context Protocol (MCP) servers behind a single endpoint. Grow your agentic AI applications at scale without building in connectivity. Manage access to and the security of AI tools and MCP servers. For more information, see <a href="../mcp_gateway_discover/mcp-gateway-introduction.html#mcp-gateway-introduction">Introduction to the MCP gateway</a>.</p>
+</dd>
+<dt class="hdlist1"><strong>MCP gateway</strong>: MCP gateway adds new protocol support</dt>
+<dd>
+<p>With this release, the MCP gateway adds support for the <code>2026-07-28</code> stateless Model Context Protocol (MCP) protocol version. This enhancement means that MCP servers can operate like standard HTTP services in cloud-native environments. Every request is now self-describing and independent, meaning that you can scale your MCP servers while reducing costs.</p>
 </dd>
 <dt class="hdlist1"><strong>MCP gateway</strong>: Audit trail documentation is updated</dt>
 <dd>
@@ -518,7 +522,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-09-16 08:57:04 -0400
+Last updated 2026-09-17 12:54:53 -0400
 </div>
 </div>
 <style>

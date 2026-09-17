@@ -454,6 +454,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_install.html">Install</a>
 </li>
+<li><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
+</li>
 <li><a href="_configure.html">Configure</a>
 </li>
 <li><a href="_upgrade.html">Upgrade</a>
@@ -506,9 +508,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="con-mcp-gateway-audit-trail-no-auth_use-an-audit-trail-without-authentication.html">Use an audit trail without authentication</a>
 </li>
+<li><a href="configure-access-logs-con_configure-access-logs.html">Configure access logs</a>
+</li>
+<li><a href="configure-an-authpolicy-with-identity-injection-con_configure-an-authpolicy-with-identity-injection.html">Configure an AuthPolicy with identity injection</a>
+</li>
+<li><a href="verify-authpolicy-identity-injection-con_verify-authpolicy-identity-injection.html">Verify AuthPolicy identity injection</a>
+</li>
 </ul>
 </li>
 <li><a href="_troubleshoot.html">Troubleshoot</a>
+</li>
+<li><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
 </li>
 <li><a href="_reference.html">Reference</a>
 </li>
@@ -519,7 +529,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="rhcl-obs-about-tracing_tracing-in-connectivity-link">Connectivity Link tracing</h3>
 <div class="paragraph _abstract">
-<p>Connectivity Link supports tracing at both the control plane and data-plane levels. Connectivity Link exports control-plane traces to your OpenTelemetry Collector so that you can observe reconciliation loops and internal operations. This is useful for debugging controller behavior, understanding operator performance, and tracking policy lifecycle events.</p>
+<p>Connectivity Link supports tracing at both the control plane and data-plane levels.</p>
+</div>
+<div class="paragraph">
+<p>Connectivity Link exports control-plane traces to your OpenTelemetry Collector so that you can observe reconciliation loops and internal operations. This is useful for debugging controller behavior, understanding operator performance, and tracking policy lifecycle events.</p>
 </div>
 <div class="paragraph">
 <p>Data-plane tracing traces actual user requests through the gateway and policy enforcement components. You can see request flows through Istio, Authorino, Limitador, and the <code>wasm-shim</code> module. Data-plane tracing is useful for debugging request-level issues and policy enforcement.</p>
@@ -541,7 +554,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-09-16 08:57:04 -0400
+Last updated 2026-09-17 12:54:53 -0400
 </div>
 </div>
 <style>

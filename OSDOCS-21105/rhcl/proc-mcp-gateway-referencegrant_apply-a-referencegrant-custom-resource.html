@@ -453,14 +453,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="_plan.html">Plan</a>
 </li>
 <li><a href="_install.html">Install</a>
+</li>
+<li><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
 <ul class="sectlevel3">
-<li><a href="rhcl-getting-ready-to-install_install-connectivity-link.html">Get ready to install Connectivity Link</a>
+<li><a href="configure-dns-provider-aws_configure-dns-provider-credentials-for-aws.html">Configure DNS provider credentials for AWS</a>
 </li>
-<li><a href="rhcl-install-ocp-web-console_install-connectivity-link-with-the-openshift-web-console.html">Install Connectivity Link with the OpenShift Container Platform web console</a>
+<li><a href="proc-configure-dns-provider-google_configure-google-dns-provider-credentials.html">Configure Google DNS provider credentials</a>
 </li>
-<li><a href="proc-install-on-ocp-cmd-cio_install-connectivity-link-on-openshift-from-the-command-line.html">Install Connectivity Link on OpenShift Container Platform from the CLI</a>
+<li><a href="proc-configure-dns-provider-azure_configure-azure-dns-provider-credentials.html">Configure Azure DNS provider credentials</a>
 </li>
-<li><a href="proc-install-on-ocp-cmd-istio_install-connectivity-link-on-openshift-from-the-command-line.html">Install Connectivity Link on OpenShift Container Platform from the CLI with Istio as the Gateway controller</a>
+<li><a href="configure-storage-for-rate-limiting-con_configure-storage-for-rate-limiting.html">Configure storage for rate limiting</a>
+</li>
+<li><a href="con-about-using-openshift-web-console_enable-the-connectivity-link-dynamic-plugin-for-openshift-web-console.html">About using the OpenShift web console</a>
 </li>
 <li><a href="con-rhcl-install-disconnected_install-connectivity-link-in-a-disconnected-environment.html">About Connectivity Link in disconnected environments</a>
 </li>
@@ -486,6 +490,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_troubleshoot.html">Troubleshoot</a>
 </li>
+<li><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
+</li>
 <li><a href="_reference.html">Reference</a>
 </li>
 </ul>
@@ -495,7 +501,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect3">
 <h4 id="proc-mcp-gateway-referencegrant_apply-a-referencegrant-custom-resource">Apply a ReferenceGrant custom resource</h4>
 <div class="paragraph _abstract">
-<p>You can isolate teams within a single cluster by applying team-specific <code>MCPGatewayExtension</code> custom resources (CRs) in individual namespaces that all target a shared <code>Gateway</code> object. When you apply an <code>MCPGatewayExtension</code> CR in a different namespace than the <code>Gateway</code> CR, you must then create a <code>ReferenceGrant</code> in the namespace of the gateway to give access.</p>
+<p>You can isolate teams within a single cluster by applying team-specific <code>MCPGatewayExtension</code> custom resources (CRs) in individual namespaces that all target a shared <code>Gateway</code> object.</p>
+</div>
+<div class="paragraph">
+<p>When you apply an <code>MCPGatewayExtension</code> CR in a different namespace than the <code>Gateway</code> CR, you must then create a <code>ReferenceGrant</code> in the namespace of the gateway to give access.</p>
 </div>
 <div class="ulist">
 <div class="title">Prerequisites</div>
@@ -567,12 +576,12 @@ spec:
 </div>
 </div>
 <div class="paragraph nav-footer">
-<p>← Previous: <a href="proc-config-mcp-gateway-listener_configure-mcp-gateway-listeners.html">Configure MCP gateway listeners</a> | ↑ Up: <a href="create-a-gateway-object-for-your-mcp-gateway-deployment-con_create-a-gateway-object-for-your-mcp-gateway-deployment.html">Create a Gateway object for your MCP gateway deployment</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="apply-a-customized-httproute-object-con_apply-a-customized-httproute-object.html">Apply a customized HTTPRoute object</a> →</p>
+<p>← Previous: <a href="ref-mcp-gateway-auto-route_automatically-created-httproute-example.html">Automatically created HTTPRoute example</a> | ↑ Up: <a href="install-mcp-gateway-con_install-mcp-gateway.html">Install the MCP gateway</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="con-dns-management-mcp-gateway_configure-dns-for-mcp-gateway.html">DNS management with the MCP gateway</a> →</p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-09-16 08:57:04 -0400
+Last updated 2026-09-17 12:54:53 -0400
 </div>
 </div>
 <style>

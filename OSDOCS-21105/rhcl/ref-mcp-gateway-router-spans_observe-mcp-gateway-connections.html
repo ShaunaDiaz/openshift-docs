@@ -454,6 +454,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_install.html">Install</a>
 </li>
+<li><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
+</li>
 <li><a href="_configure.html">Configure</a>
 </li>
 <li><a href="_upgrade.html">Upgrade</a>
@@ -506,9 +508,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="con-mcp-gateway-audit-trail-no-auth_use-an-audit-trail-without-authentication.html">Use an audit trail without authentication</a>
 </li>
+<li><a href="configure-access-logs-con_configure-access-logs.html">Configure access logs</a>
+</li>
+<li><a href="configure-an-authpolicy-with-identity-injection-con_configure-an-authpolicy-with-identity-injection.html">Configure an AuthPolicy with identity injection</a>
+</li>
+<li><a href="verify-authpolicy-identity-injection-con_verify-authpolicy-identity-injection.html">Verify AuthPolicy identity injection</a>
+</li>
 </ul>
 </li>
 <li><a href="_troubleshoot.html">Troubleshoot</a>
+</li>
+<li><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
 </li>
 <li><a href="_reference.html">Reference</a>
 </li>
@@ -531,7 +541,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>The MCP gateway uses the following router spans:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 10. MCP router spans</caption>
+<caption class="title">Table 11. MCP router spans</caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -591,7 +601,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>The attributes in the following tables use <a href="https://opentelemetry.io/docs/specs/semconv/gen-ai/mcp/#server">OpenTelemetry MCP Semantic Conventions</a>.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 11. MCP router root span, <code>mcp-router.process</code>, attributes</caption>
+<caption class="title">Table 12. MCP router root span, <code>mcp-router.process</code>, attributes</caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -663,7 +673,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 12. MCP route decision span, <code>mcp-router.route-decision</code>, attributes</caption>
+<caption class="title">Table 13. MCP route decision span, <code>mcp-router.route-decision</code>, attributes</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 66.6667%;">
@@ -686,7 +696,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 13. MCP tool call span, <code>mcp-router.tool-call</code>, attributes</caption>
+<caption class="title">Table 14. MCP tool call span, <code>mcp-router.tool-call</code>, attributes</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 66.6667%;">
@@ -717,7 +727,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 14. MCP error attributes</caption>
+<caption class="title">Table 15. MCP error attributes</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 66.6667%;">
@@ -757,7 +767,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-09-16 08:57:04 -0400
+Last updated 2026-09-17 12:54:53 -0400
 </div>
 </div>
 <style>

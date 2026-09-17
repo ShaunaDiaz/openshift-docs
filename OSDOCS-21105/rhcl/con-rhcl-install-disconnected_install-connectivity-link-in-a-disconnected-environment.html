@@ -453,14 +453,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="_plan.html">Plan</a>
 </li>
 <li><a href="_install.html">Install</a>
+</li>
+<li><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
 <ul class="sectlevel3">
-<li><a href="rhcl-getting-ready-to-install_install-connectivity-link.html">Get ready to install Connectivity Link</a>
+<li><a href="configure-dns-provider-aws_configure-dns-provider-credentials-for-aws.html">Configure DNS provider credentials for AWS</a>
 </li>
-<li><a href="rhcl-install-ocp-web-console_install-connectivity-link-with-the-openshift-web-console.html">Install Connectivity Link with the OpenShift Container Platform web console</a>
+<li><a href="proc-configure-dns-provider-google_configure-google-dns-provider-credentials.html">Configure Google DNS provider credentials</a>
 </li>
-<li><a href="proc-install-on-ocp-cmd-cio_install-connectivity-link-on-openshift-from-the-command-line.html">Install Connectivity Link on OpenShift Container Platform from the CLI</a>
+<li><a href="proc-configure-dns-provider-azure_configure-azure-dns-provider-credentials.html">Configure Azure DNS provider credentials</a>
 </li>
-<li><a href="proc-install-on-ocp-cmd-istio_install-connectivity-link-on-openshift-from-the-command-line.html">Install Connectivity Link on OpenShift Container Platform from the CLI with Istio as the Gateway controller</a>
+<li><a href="configure-storage-for-rate-limiting-con_configure-storage-for-rate-limiting.html">Configure storage for rate limiting</a>
+</li>
+<li><a href="con-about-using-openshift-web-console_enable-the-connectivity-link-dynamic-plugin-for-openshift-web-console.html">About using the OpenShift web console</a>
 </li>
 <li><a href="con-rhcl-install-disconnected_install-connectivity-link-in-a-disconnected-environment.html"><span class="toc-current">About Connectivity Link in disconnected environments</span></a>
 </li>
@@ -486,6 +490,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_troubleshoot.html">Troubleshoot</a>
 </li>
+<li><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
+</li>
 <li><a href="_reference.html">Reference</a>
 </li>
 </ul>
@@ -496,6 +502,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="con-rhcl-install-disconnected_install-connectivity-link-in-a-disconnected-environment">About Connectivity Link in disconnected environments</h3>
 <div class="paragraph _abstract">
 <p>You can do many tasks on isolated clusters when you use Connectivity Link as a disconnected gateway. For example, securely route traffic, limit request rates, and handle automatic failover. You can also manage internal network policies, security rules, and automate TLS certificates.</p>
+</div>
+<div class="paragraph">
+<p>If you are using CoreDNS on a cluster that other clusters can access on an internal network, ensure that your CoreDNS instances is accessible to whatever uses them, such as internal DNS resolvers.</p>
 </div>
 <div class="paragraph">
 <p>Install Connectivity Link Operators in disconnected OpenShift Container Platform environments by mirroring the Operator catalog and images to your internal registry. Use the <code>oc-mirror</code> tool to perform the following actions, in order:</p>
@@ -514,23 +523,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ol>
 </div>
 <div class="paragraph">
-<p>The Connectivity Link Operator automatically installs the following Operators:</p>
+<p>The following policy requirements apply in disconnected environments:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The Authorino Operator for authentication and authorization</p>
+<p><code>DNSPolicy</code> objects: Require external DNS provider access. For example, AWS Route53, Google Cloud DNS, or Azure DNS. Limited or non-functional in fully disconnected environments.</p>
 </li>
 <li>
-<p>The Limitador Operator for rate limiting</p>
+<p><code>AuthPolicy</code> objects: External identity provider integrations such as OIDC and OAuth require connectivity to external IdP endpoints - only internal/on-cluster identity providers fully supported</p>
 </li>
 <li>
-<p>The DNS Operator for DNS management</p>
+<p><code>RateLimitPolicy</code> objects: Fully functional.</p>
+</li>
+<li>
+<p><code>TLSPolicy</code> objects: Fully functional when cert-manager can access certificate authorities. Limited when external ACME providers such as Let&#8217;s Encrypt are required.</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>All required images are included when you mirror the <code>rhcl-operator</code> package from the Red Hat catalog.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -553,12 +562,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph nav-footer">
-<p>← Previous: <a href="proc-install-on-ocp-cmd-istio_install-connectivity-link-on-openshift-from-the-command-line.html">Install Connectivity Link on OpenShift Container Platform from the CLI with Istio as the Gateway controller</a> | ↑ Up: <a href="_install.html">Install</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="proc-rhcl-disconnected-mirror-catalog_install-connectivity-link-in-a-disconnected-environment.html">Mirror the Connectivity Link Operator catalog</a> →</p>
+<p>← Previous: <a href="enable-openshift-dynamic-plugin-web-console_enable-the-connectivity-link-dynamic-plugin-for-openshift-web-console.html">Enable the dynamic plugin for the OpenShift Container Platform web console</a> | ↑ Up: <a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="proc-rhcl-disconnected-mirror-catalog_install-connectivity-link-in-a-disconnected-environment.html">Mirror the Connectivity Link Operator catalog</a> →</p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-09-16 08:57:04 -0400
+Last updated 2026-09-17 12:54:53 -0400
 </div>
 </div>
 <style>
