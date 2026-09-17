@@ -15,8 +15,8 @@ The standard {OTELName} environment variables configure how the {mcpg} component
 | Variable | Description | Default
 
 |`OTEL_EXPORTER_OTLP_ENDPOINT`
-|Base OTLP endpoint for all signals
-|none -- disabled
+|Base OTLP endpoint for traces and logs
+|Unset; trace and log exporters are disabled unless a signal-specific endpoint is set
 
 |`OTEL_EXPORTER_OTLP_TRACES_ENDPOINT`
 |Override endpoint for traces only
@@ -27,7 +27,7 @@ The standard {OTELName} environment variables configure how the {mcpg} component
 |Falls back to base
 
 |`OTEL_EXPORTER_OTLP_INSECURE`
-|Disable TLS verification
+|Select an insecure transport for OTLP trace and log exporters when `true`
 |false
 
 |`OTEL_SERVICE_NAME`

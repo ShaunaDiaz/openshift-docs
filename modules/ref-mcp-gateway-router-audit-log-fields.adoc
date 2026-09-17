@@ -19,7 +19,7 @@ Each router audit log entry has the following fields. You can use the `audit` fi
 |Always `true`. Filters audit entries from other `Info`-level logs.
 
 |`user`
-|JWT `sub` claim from the `Authorization` header. Empty if not authenticated.
+|JWT `sub` claim from the `Authorization` header. Empty only when no bearer JWT with a `sub` claim is supplied. Without an `AuthPolicy` CR, do not treat this value as an authenticated identity.
 
 |`tool`
 |Prefixed tool name as sent by the client, for example, `everything_echo`.

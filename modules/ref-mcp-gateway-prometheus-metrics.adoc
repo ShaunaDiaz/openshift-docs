@@ -7,7 +7,7 @@
 = Prometheus metrics for the {mcpg} broker
 
 [role="_abstract"]
-You can use these metrics to monitor discovery attempts, tool counts, connection failures, and response sizes. The {mcpg} broker component exposes Prometheus metrics on port `9090` without requiring {OTELName} configuration.
+You can use these metrics to monitor discovery attempts, tool counts, connection failures, and response sizes. The {mcpg} broker component exposes Prometheus metrics on port `9090` without requiring an OTLP endpoint. If telemetry configuration fails, the `/metrics` endpoint returns `503`; check the startup logs for configuration errors.
 
 The {mcpg} broker component provides the following metrics:
 
@@ -26,15 +26,15 @@ The {mcpg} broker component provides the following metrics:
 
 |`mcp_broker_tools_discovered`
 |Gauge
-|Current number of tools discovered per backend MCP server. Uses only the `server_name` label.
+|Cached tool count per upstream MCP server. Cached values survive transient connection or ping failures and reach zero after three consecutive connection or ping failures. Uses only the `server_name` label.
 
 |`mcp_broker_upstream_connection_failures_total`
 |Counter
 |Total number of connection failures to upstream MCP servers. Uses only the `server_name` label.
 
 |`mcp_broker_tools_list_response_bytes`
-|Histogram
+|Gauge
 |Size of serialized tool list responses in bytes. Uses only the `server_name` label.
 |===
 
-Label values are formatted as `namespace/name`, matching the namespace and name give in the `MCPServerRegistration` custom resource. For example, `_<mcp_test>/<mcp_server_one>_`. No high-cardinality labels such `trace_id` or `request_id` are used.
+Label values are formatted as `namespace/name`, matching the namespace and name given in the `MCPServerRegistration` custom resource. For example, `_<mcp_test>/<mcp_server_one>_`. No high-cardinality labels such as `trace_id` or `request_id` are used.

@@ -121,7 +121,7 @@ Topics:
   File: observability
 - Name: Audit MCP tool calls
   File: mcp-gateway-audit-trail-router-log
-- Name: Audit MCP tool calls on non-OpenShift clusters
+- Name: Observe MCP gateway connections
   File: mcp-gateway-observe
 ---
 Name: Troubleshoot
