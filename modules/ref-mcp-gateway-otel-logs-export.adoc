@@ -7,6 +7,6 @@
 = Logs export through {OTELName}
 
 [role="_abstract"]
-All structured log output, `slog`, from the {mcpg} exports through the OpenTelemetry protocol (OTLP)  endpoint alongside standard output, `stdout`. Logs automatically include trace context correlation, which enables backends such as Grafana to link log entries to their corresponding trace spans.
+After telemetry initialization, `slog` log lines from the {mcpg} are exported through the OpenTelemetry protocol (OTLP) endpoint in addition to standard output (`stdout`). Logs emitted before telemetry initialization remain on stdout only. Logs emitted within a traced request include trace context, which enables backends such as Grafana to link log entries to their corresponding trace spans.
 
-This automatic correlation means that you can jump from a span in the trace timeline directly to the relevant log entries without manual correlation.
+This correlation means that you can jump from a span in the trace timeline directly to the relevant log entries without manual correlation.

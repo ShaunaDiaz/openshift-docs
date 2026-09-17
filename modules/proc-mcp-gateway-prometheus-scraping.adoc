@@ -10,12 +10,12 @@
 Get real-time, aggregated visibility into the health, performance, and resource usage of your {mcpg}. Prometheus metrics give you a high-level numerical overview of your system state over time.
 
 * Use internal cluster scraping for ad-doc debugging and verification. Retrieve metrics through pod IP discovery.
-* Use `PodMonitor` resources for automated configuration of continuous metrics scraping for Prometheus Operator deployments.
+* Use Kubernetes pod service discovery for continuous scraping with Prometheus.
+* If you use Prometheus Operator, configure an equivalent pod-IP scrape job in the operator-managed Prometheus instance.
 
 .Prerequisites
 
-* You installed the Prometheus Operator.
-* You configured your metrics endpoints.
+* You installed and configured Prometheus or the Prometheus Operator.
 
 .Procedure
 
@@ -23,41 +23,42 @@ Get real-time, aggregated visibility into the health, performance, and resource 
 +
 [source,terminal,subs="+quotes"]
 ----
-POD=$(oc get pod -n _<mcp_system>_ -l app.kubernetes.io/name=_<mcp_gateway>_ \
+POD=$(oc get pod -n _<mcp_gateway_namespace>_ -l app.kubernetes.io/name=mcp-gateway \
   -o jsonpath='{.items[0].metadata.name}')
-oc port-forward -n _<mcp_system>_ pod/$POD 9090:9090 &
+oc port-forward -n _<mcp_gateway_namespace>_ pod/$POD 9090:9090 &
 sleep 1
 curl http://localhost:9090/metrics
 ----
 +
-* Replace `_<mcp_gateway>_` with the label value matching your deployment name.
-* Replace `_<mcp_system>_` with the namespace where your {mcpg} pods are running.
+* Replace `_<mcp_gateway_namespace>_` with the namespace where your {mcpg} pods are running.
 +
 [NOTE]
 ====
 This command is for local manual inspection only.
 ====
 
-. If you have the Prometheus Operator installed, apply a `PodMonitor` CR to set up continuous metrics scraping. Use the following example:
+. Configure Prometheus to scrape the pod-local endpoint directly. Use the following pod service discovery configuration:
 +
-.Example `PodMonitor` CR
 [source,yaml,subs="+quotes"]
 ----
-apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
-metadata:
-  name: mcp-gateway-broker
-  namespace: _<mcp_gateway_system>_
-spec:
-  selector:
-    matchLabels:
-      app: mcp-gateway
-  podMetricsEndpoints:
-  - port: metrics
-    path: /metrics
-    interval: 30s
+scrape_configs:
+  - job_name: mcp-broker
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names: ["_<mcp_gateway_namespace>_"]
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+        action: keep
+        regex: mcp-gateway
+      - source_labels: [__meta_kubernetes_pod_ip]
+        target_label: __address__
+        replacement: $1:9090
 ----
 +
-* User workload monitoring must be enabled. Ensure that you set `enableUserWorkload: true` in the `cluster-monitoring-config` ConfigMap in `openshift-monitoring`.
-* Port must be named in the `Pod` spec. Ensure that your {mcpg} `Deployment` template either names port `9090`, such as `name: metrics`, or that you explicitly set `targetPort: 9090` in the `PodMonitor` spec.
+* Replace `_<mcp_gateway_namespace>_` with the namespace where your {mcpg} pods are running.
+* Add the scrape job to your Prometheus configuration.
+* User workload monitoring must be enabled when you use the OpenShift user-workload Prometheus instance. Ensure that you set `enableUserWorkload: true` in the `cluster-monitoring-config` ConfigMap in `openshift-monitoring`.
++
+The generated broker `Service` exposes the HTTP and gRPC ports but not port `9090`, so scrape the pod-local endpoint directly. The default generated broker container does not declare a named `metrics` port. A `PodMonitor` with `port: metrics` works only when your deployment exposes port `9090` with that name.
 

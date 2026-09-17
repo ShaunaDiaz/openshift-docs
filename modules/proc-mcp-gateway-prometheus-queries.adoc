@@ -21,7 +21,7 @@ You can use the {OCP} web console for inspection and visualization.
 
 . Navigate to *Observe > Metrics* or *Observe > Targets* to verify scraping status.
 
-. Select the target project or namespace, such as `mcp-system`.
+. Select the namespace containing the {mcpg} deployment, as identified in the metrics scraping procedure.
 
 . Paste `PromQL` queries directly into the *Expression* search bar and click *Run Queries*.
 
