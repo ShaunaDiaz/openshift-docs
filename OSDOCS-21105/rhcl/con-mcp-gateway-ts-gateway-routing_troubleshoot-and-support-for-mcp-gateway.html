@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="generator" content="Asciidoctor 2.0.26">
 <title>Red Hat Connectivity Link</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -116,7 +116,6 @@ h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title str
 :not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
 pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
 pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
-pre>code{display:block}
 pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
 em em{font-style:normal}
 strong strong{font-weight:400}
@@ -140,7 +139,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +161,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -208,19 +208,17 @@ table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
 .admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
 .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
 .exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
-.exampleblock>.content>:first-child{margin-top:0}
-.exampleblock>.content>:last-child{margin-bottom:0}
 .sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
-.sidebarblock>:first-child{margin-top:0}
-.sidebarblock>:last-child{margin-bottom:0}
 .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
-.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
 .literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
 @media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
 @media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
 .literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
 .literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
 .listingblock>.content{position:relative}
+.listingblock pre>code{display:block}
 .listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
 .listingblock:hover code[data-lang]::before{display:block}
 .listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
@@ -330,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -393,7 +391,7 @@ b.conum *{color:inherit!important}
 dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
 h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
 p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
-p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
 p{margin-bottom:1.25rem}
 .sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
 .exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
@@ -439,38 +437,337 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
                        font-size: 0.9em;} #content{display: flex; flex-direction: column; flex: 1 1 auto;}
              .nav-footer{text-align: center; margin-top: auto;}
              .nav-footer > p > a {white-space: nowrap;}</style>
+<!-- jtbd-right-toc-start -->
+<style>
+  body.jtbd-has-right-toc { padding-right: 18em; }
+  #jtbd-right-toc {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 16em;
+    height: 100%;
+    overflow: auto;
+    padding: 1.25em 1em;
+    background: #f8f8f7;
+    border-left: 1px solid #e7e7e9;
+    z-index: 1000;
+    font-family: "Open Sans", "DejaVu Sans", sans-serif;
+    font-size: .9em;
+  }
+  #jtbd-right-toc h2 { margin-top: 0; font-size: 1.1em; }
+  #jtbd-right-toc ul { list-style: none; margin: 0; padding: 0; }
+  #jtbd-right-toc li { line-height: 1.35; margin: .4em 0; }
+  #jtbd-right-toc li.level-3 { padding-left: 1em; }
+  #jtbd-right-toc li.level-4 { padding-left: 2em; }
+  #jtbd-right-toc li.level-5,
+  #jtbd-right-toc li.level-6 { padding-left: 3em; }
+  #jtbd-right-toc a { text-decoration: none; }
+  @media screen and (max-width: 1023px) {
+    body.jtbd-has-right-toc { padding-right: 0; }
+    #jtbd-right-toc {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 1em;
+      border: 1px solid #e7e7e9;
+      border-radius: 4px;
+    }
+  }
+</style>
+<!-- jtbd-right-toc-end -->
+<!-- jtbd-preview-warning-start -->
+<style>
+  .jtbd-preview-warning {
+    background: #fff1f1;
+    border: 2px solid #c9190b;
+    border-radius: 4px;
+    color: #3b0a0a;
+    font-family: "Open Sans", "DejaVu Sans", sans-serif;
+    margin: 1em auto;
+    max-width: 70em;
+    padding: 1em 1.25em;
+  }
+  .jtbd-preview-warning strong { color: #a30000; }
+  .jtbd-preview-warning details { margin-top: .75em; }
+  .jtbd-preview-warning pre {
+    background: #fff;
+    border: 1px solid #d7d7d7;
+    max-height: 20em;
+    overflow: auto;
+    padding: .75em;
+    white-space: pre-wrap;
+  }
+</style>
+<!-- jtbd-preview-warning-end -->
 </head>
-<body id="con-mcp-gateway-ts-gateway-routing_troubleshoot-and-support-for-mcp-gateway" class="book toc2 toc-left">
+<body id="con-mcp-gateway-ts-gateway-routing_troubleshoot-and-support-for-mcp-gateway" class="book toc2 toc-left jtbd-has-right-toc">
+<div class="jtbd-preview-warning" role="alert"><strong>Preview warning: this preview is incomplete.</strong><p>One or more AsciiDoc includes are missing. Content may be absent from this page or from related pages.</p><details><summary>Show missing-include report</summary><pre>Include preflight failed for maps/rhcl/navigation.adoc
+
+Missing include targets:
+  maps/rhcl/secure.adoc:8
+    include::jobs/secure-protect-and-connect-apis.adoc[leveloffset=+1]
+    expected: maps/rhcl/jobs/secure-protect-and-connect-apis.adoc
+  maps/rhcl/secure.adoc:14
+    include::jobs/protect-services-from-traffic-spikes.adoc[leveloffset=+1]
+    expected: maps/rhcl/jobs/protect-services-from-traffic-spikes.adoc
+  maps/rhcl/secure.adoc:58
+    include::jobs/create-tls-settings-for-an-external-mcp-server.adoc[leveloffset=+1]
+    expected: maps/rhcl/jobs/create-tls-settings-for-an-external-mcp-server.adoc
+  maps/rhcl/troubleshoot.adoc:8
+    include::jobs/troubleshoot-dnspolicy.adoc[leveloffset=+1]
+    expected: maps/rhcl/jobs/troubleshoot-dnspolicy.adoc
+
+How to fix these errors:
+  1. Restore or create the expected .adoc file, preserving the path relative to the referring map; or
+  2. Change the include directive to the path of the existing source file if the topic was renamed or moved.
+  Then rerun this audit and the preview. Do not ignore the error: Asciidoctor can otherwise generate incomplete HTML.
+</pre></details><details><summary>How to remediate missing content</summary><ol><li>Restore or create the expected <code>.adoc</code> file at the reported path, including its required content and attributes.</li><li>If the topic was renamed or moved, update the reported <code>include::</code> directive to point to the existing file. The path is relative to the file containing the directive.</li><li>If the topic is intentionally not ready, remove the include from the map and track the content gap separately. Do not use an empty placeholder as a substitute for content.</li></ol><p>After making the change, run <code>python3 scripts/audit-map-includes.py maps/rhcl/navigation.adoc</code>. Once the audit passes, run <code>bash scripts/preview-jtbd-maps.sh -d rhcl -o /tmp/rhcl-jtbd-preview</code> to rebuild the preview.</p></details></div>
 <div id="header">
 <h1>Red Hat Connectivity Link</h1>
 <div id="toc" class="toc2">
 <div id="toctitle"></div>
 <p><span class="toc-root"><a href="navigation.html">Red Hat Connectivity Link</a></span></p><ul class="sectlevel1">
-<li><a href="_whats_new.html">What&#8217;s new</a>
+<li><button class="toc-toggle" type="button" data-toc-key="_whats_new.html">▶</button><a href="_whats_new.html">What&#8217;s new</a>
+
+<ul class="sectlevel2">
+<li><a href="rhcl-release-notes_rhcl-release-notes.html">Red&#160;Hat Connectivity Link 1.5 release notes</a>
 </li>
-<li><a href="_discover.html">Discover</a>
+</ul>
 </li>
-<li><a href="_plan.html">Plan</a>
+<li><button class="toc-toggle" type="button" data-toc-key="_discover.html">▶</button><a href="_discover.html">Discover</a>
+
+<ul class="sectlevel2">
+<li><a href="about-connectivity-link_connectivity-link-architecture.html">About Red Hat Connectivity Link</a>
 </li>
-<li><a href="_install.html">Install</a>
+<li><a href="con-about-mcp-gateway_mcp-gateway-architecture.html">About the MCP gateway</a>
 </li>
-<li><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
+</ul>
 </li>
-<li><a href="_configure.html">Configure</a>
+<li><button class="toc-toggle" type="button" data-toc-key="_plan.html">▶</button><a href="_plan.html">Plan</a>
+
+<ul class="sectlevel2">
+<li><a href="rhcl-getting-ready-to-install_plan-the-rhcl-installation.html">Get ready to install Connectivity Link</a>
 </li>
-<li><a href="_upgrade.html">Upgrade</a>
+</ul>
 </li>
-<li><a href="_secure.html">Secure</a>
+<li><button class="toc-toggle" type="button" data-toc-key="_install.html">▶</button><a href="_install.html">Install</a>
+
+<ul class="sectlevel2">
+<li><a href="rhcl-install-on-ocp-con_install-connectivity-link.html">Install on OpenShift Container Platform</a>
 </li>
-<li><a href="_administer.html">Administer</a>
+</ul>
 </li>
-<li><a href="_develop.html">Develop</a>
+<li><button class="toc-toggle" type="button" data-toc-key="give-connectivity-link-access-con_give-connectivity-link-access.html">▶</button><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
+
+<ul class="sectlevel3">
+<li><a href="configure-dns-provider-aws_configure-dns-provider-credentials-for-aws.html#configure-dns-provider-aws_configure-dns-provider-credentials-for-aws">Configure DNS provider credentials for AWS</a>
 </li>
-<li><a href="_observe.html">Observe</a>
+<li><a href="proc-configure-dns-provider-google_configure-google-dns-provider-credentials.html#proc-configure-dns-provider-google_configure-google-dns-provider-credentials">Configure Google DNS provider credentials</a>
 </li>
-<li><a href="_troubleshoot.html">Troubleshoot</a>
+<li><a href="proc-configure-dns-provider-azure_configure-azure-dns-provider-credentials.html#proc-configure-dns-provider-azure_configure-azure-dns-provider-credentials">Configure Azure DNS provider credentials</a>
 </li>
-<li><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
+<li><a href="configure-storage-for-rate-limiting-con_configure-storage-for-rate-limiting.html">Configure storage for rate limiting</a>
+</li>
+<li><a href="con-about-using-openshift-web-console_enable-the-connectivity-link-dynamic-plugin-for-openshift-web-console.html">About using the OpenShift web console</a>
+</li>
+<li><a href="con-rhcl-install-disconnected_install-connectivity-link-in-a-disconnected-environment.html">About Connectivity Link in disconnected environments</a>
+</li>
+<li><a href="install-mcp-gateway-con_install-mcp-gateway.html">Install the MCP gateway</a>
+</li>
+<li><a href="con-dns-management-mcp-gateway_configure-dns-for-mcp-gateway.html">DNS management with the MCP gateway</a>
+</li>
+<li><a href="apply-a-customized-httproute-object-con_apply-a-customized-httproute-object.html"><span class="toc-current">Apply a customized HTTPRoute object</span></a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_configure.html">▶</button><a href="_configure.html">Configure</a>
+
+<ul class="sectlevel2">
+<li><a href="rhcl-config-deploy-gateway-policies.html">Configure and deploy gateway policies</a>
+</li>
+<li><a href="con-about-token-based-rate-limiting_control-ai-token-consumption.html">About token-based rate limiting with TokenRateLimitPolicy</a>
+</li>
+<li><a href="con-about-using-onprem-dns-coredns_manage-on-premise-dns-traffic.html">About on-premise DNS with CoreDNS</a>
+</li>
+<li><a href="con-mcp-gateway-register-mcp-server_register-an-mcp-server-for-use-with-the-mcp-gateway.html">Understand MCP server registration</a>
+</li>
+<li><a href="register-external-mcp-servers-con_register-external-mcp-servers.html">Register external MCP servers</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_upgrade.html">▶</button><a href="_upgrade.html">Upgrade</a>
+
+<ul class="sectlevel3">
+<li><a href="rhcl-supported-configs_update-connectivity-link.html#rhcl-supported-configs_update-connectivity-link">Supported configurations with Connectivity Link</a>
+</li>
+<li><a href="con-update-rhcl-with-web-console_update-connectivity-link.html#con-update-rhcl-with-web-console_update-connectivity-link">Update Connectivity Link with the OpenShift Container Platform web console</a>
+</li>
+<li><a href="proc-update-rhcl-with-web-console_update-connectivity-link.html#proc-update-rhcl-with-web-console_update-connectivity-link">Update to Connectivity Link 1.5 in the web console</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_secure.html">▶</button><a href="_secure.html">Secure</a>
+
+<ul class="sectlevel2">
+<li><a href="configure-per-user-or-per-consumer-rate-limiting-con_configure-per-user-or-per-consumer-rate-limiting.html">Configure per-user or per-consumer rate limiting</a>
+</li>
+<li><a href="encrypt-gateway-connections-con_encrypt-gateway-connections.html">Encrypt gateway connections</a>
+</li>
+<li><a href="customize-application-access-con_customize-application-access.html">Customize application access</a>
+</li>
+<li><a href="con-rhcl-about-using-x509-auth_verify-client-identities-cryptographically.html">About X.509 authentication in Connectivity Link</a>
+</li>
+<li><a href="con-rhcl-about-using-x509-auth_establish-a-public-key-infrastructure-pki.html">About X.509 authentication in Connectivity Link</a>
+</li>
+<li><a href="enforce-mutual-tls-validation-con_enforce-mutual-tls-validation.html">Enforce mutual TLS validation</a>
+</li>
+<li><a href="authorize-access-using-certificate-attributes-con_authorize-access-using-certificate-attributes.html">Authorize access using certificate attributes</a>
+</li>
+<li><a href="con-mcp-gateway-vault_use-credentials-to-access-external-apis-with-vault.html">Vault with the MCP gateway</a>
+</li>
+<li><a href="con-mcp-gateway-vault_use-vault-with-the-mcp-gateway.html">Vault with the MCP gateway</a>
+</li>
+<li><a href="set-up-a-trust-relationship-between-vault-and-authorino-con_set-up-a-trust-relationship-between-vault-and-authorino.html">Set up a trust relationship between Vault and Authorino</a>
+</li>
+<li><a href="create-a-single-server-scoped-authpolicy-cr-for-vault-con_create-a-single-server-scoped-authpolicy-cr-for-vault.html">Create a single-server-scoped AuthPolicy CR for Vault</a>
+</li>
+<li><a href="test-your-mcp-gateway-and-vault-integration-con_test-your-mcp-gateway-and-vault-integration.html">Test your MCP gateway and Vault integration</a>
+</li>
+<li><a href="use-a-vault-root-token-con_use-a-vault-root-token.html">Use a Vault root token</a>
+</li>
+<li><a href="secure-apis-with-oidcjwt-authentication-con_secure-apis-with-oidcjwt-authentication.html">Secure APIs with OIDC/JWT authentication</a>
+</li>
+<li><a href="con-rhcl-planpolicy-overview_authenticate-api-consumers-with-api-keys.html">PlanPolicy for tiered service offerings</a>
+</li>
+<li><a href="con-mcp-gateway-authentication_understand-mcp-gateway-authentication.html">Understand MCP gateway authentication</a>
+</li>
+<li><a href="configure-mcp-gateway-authentication-with-an-authpolicy-con_configure-mcp-gateway-authentication-with-an-authpolicy.html">Configure MCP gateway authentication with an AuthPolicy</a>
+</li>
+<li><a href="use-authorization-with-mcp-gateway-con_use-authorization-with-mcp-gateway.html">Use authorization with MCP gateway</a>
+</li>
+<li><a href="con-understanding-mcp-gateway-authorization_understand-authorization-in-mcp-gateway.html">Understand authorization in MCP gateway</a>
+</li>
+<li><a href="configure-mcp-gateway-authorization-with-an-authpolicy-con_configure-mcp-gateway-authorization-with-an-authpolicy.html">Configure MCP gateway authorization with an AuthPolicy</a>
+</li>
+<li><a href="create-a-secret-for-an-external-mcp-server-con_create-a-secret-for-an-external-mcp-server.html">Create a Secret for an external MCP server</a>
+</li>
+<li><a href="create-an-authpolicy-for-an-external-mcp-server-con_create-an-authpolicy-for-an-external-mcp-server.html">Create an AuthPolicy for an external MCP server</a>
+</li>
+<li><a href="use-authentication-with-mcp-gateway-con_use-authentication-with-mcp-gateway.html">Use authentication with MCP gateway</a>
+</li>
+<li><a href="configure-tls-for-mcp-gateway-upstream-connections-to-internal-mcp-serve-con_configure-tls-for-mcp-gateway-upstream-connections-to-internal-mcp-serve.html">Configure TLS for MCP gateway upstream connections to internal MCP servers</a>
+</li>
+<li><a href="configure-per-user-or-per-consumer-rate-limiting-con_configure-per-user-or-per-consumer-rate-limiting.html">Configure per-user or per-consumer rate limiting</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_administer.html">▶</button><a href="_administer.html">Administer</a>
+
+<ul class="sectlevel2">
+<li><a href="rhcl-app-dev-workflow_connect-apis.html">Application development workflow</a>
+</li>
+<li><a href="con-about-grpc-support_connect-grpc-applications.html">About GRPCRoute policy attachment</a>
+</li>
+<li><a href="con-about-token-based-rate-limiting_control-ai-token-consumption.html">About token-based rate limiting with TokenRateLimitPolicy</a>
+</li>
+<li><a href="apply-a-customized-httproute-object-con_apply-a-customized-httproute-object.html">Apply a customized HTTPRoute object</a>
+</li>
+<li><a href="con-create-virt-mcp-server_virtual-mcp-servers.html">Virtual MCP servers for curating tools and prompts</a>
+</li>
+<li><a href="create-virtual-mcp-servers-con_create-virtual-mcp-servers.html">Create virtual MCP servers</a>
+</li>
+<li><a href="con-virt-mcp-server-auth-tool-filtering_virtual-mcp-servers-authorization-and-filtering.html">Virtual MCP server authorization and filtering</a>
+</li>
+<li><a href="verify-virtual-mcp-servers-con_verify-virtual-mcp-servers.html">Verify virtual MCP servers</a>
+</li>
+<li><a href="revoke-mcp-server-tool-access-con_revoke-mcp-server-tool-access.html">Revoke MCP server tool access</a>
+</li>
+<li><a href="con-mcp-gateway-understand-tool-access-revocation_understand-tool-access-revocation.html">Understand tool access revocation</a>
+</li>
+<li><a href="revoke-tool-and-prompt-call-requests-con_revoke-tool-and-prompt-call-requests.html">Revoke tool and prompt call requests</a>
+</li>
+<li><a href="filter-revoked-tools-and-prompts-from-display-con_filter-revoked-tools-and-prompts-from-display.html">Filter revoked tools and prompts from display</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_develop.html">▶</button><a href="_develop.html">Develop</a>
+
+<ul class="sectlevel2">
+<li><a href="api-management-role-based-access-reference-con_api-management-role-based-access-reference.html">API management role-based-access reference</a>
+</li>
+<li><a href="con-rhcl-api-management-console-pages_create-share-and-consume-apis-across-teams.html">API management pages in the web console</a>
+</li>
+<li><a href="control-who-can-access-your-published-api-con_control-who-can-access-your-published-api.html">Control who can access your published API</a>
+</li>
+<li><a href="publishing-an-api-for-other-teams-to-discover-and-consume-con_publishing-an-api-for-other-teams-to-discover-and-consume.html">Publishing an API for other teams to discover and consume</a>
+</li>
+<li><a href="integrate-with-an-api-published-by-another-team-con_integrate-with-an-api-published-by-another-team.html">Integrate with an API published by another team</a>
+</li>
+<li><a href="rhdh-plugin-on-ocp_configure-multi-tenant-rbac-for-the-connectivity-link-console-plugin.html">API catalog integration in Red Hat Developer Hub</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_observe.html">▶</button><a href="_observe.html">Observe</a>
+
+<ul class="sectlevel2">
+<li><a href="rhcl-observability-features_connectivity-link-observability.html">Connectivity Link observability</a>
+</li>
+<li><a href="configure-your-observability-monitoring-stack-con_configure-your-observability-monitoring-stack.html">Configure your observability monitoring stack</a>
+</li>
+<li><a href="enable-observability-monitoring-in-connectivity-link-con_enable-observability-monitoring-in-connectivity-link.html">Enable observability monitoring in Connectivity Link</a>
+</li>
+<li><a href="rhcl-about-configuring-observability-dashboards_configure-observability-dashboards-and-alerts.html">Observability dashboards and alerts configuration</a>
+</li>
+<li><a href="import-dashboards-in-grafana-con_import-dashboards-in-grafana.html">Import dashboards in Grafana</a>
+</li>
+<li><a href="rhcl-about-import-dashboard-auto-ocp_import-dashboards-automatically-in-openshift.html">About importing dashboards automatically in OpenShift Container Platform</a>
+</li>
+<li><a href="configure-prometheus-alerts-con_configure-prometheus-alerts.html">Configure Prometheus alerts</a>
+</li>
+<li><a href="rhcl-obs-about-tracing_tracing-in-connectivity-link.html">Connectivity Link tracing</a>
+</li>
+<li><a href="control-plane-tracing-environment-variables-con_control-plane-tracing-environment-variables.html">Control-plane tracing environment variables</a>
+</li>
+<li><a href="ref-obs-data-plane-tracing-config-fields_configure-data-plane-tracing-in-connectivity-link.html">Data-plane tracing configuration fields</a>
+</li>
+<li><a href="view-rate-limit-logging-with-trace-ids-con_view-rate-limit-logging-with-trace-ids.html">View rate-limit logging with trace IDs</a>
+</li>
+<li><a href="filter-access-logs-con_filter-access-logs.html">Filter access logs</a>
+</li>
+<li><a href="con-obs-access-logs-correlation_use-access-logs-for-request-correlation.html">About using access logs for request correlation</a>
+</li>
+<li><a href="con-obs-access-logs-correlation_set-up-access-log-and-tracing-correlation.html">About using access logs for request correlation</a>
+</li>
+<li><a href="observe-mcp-gateway-connections-con_observe-mcp-gateway-connections.html">Observe MCP gateway connections</a>
+</li>
+<li><a href="enable-red-hat-build-of-opentelemetry-for-the-mcp-gateway-con_enable-red-hat-build-of-opentelemetry-for-the-mcp-gateway.html">Enable Red Hat build of OpenTelemetry for the MCP gateway</a>
+</li>
+<li><a href="con-mcp-gateway-audit-trail_understand-an-mcp-gateway-audit-trail.html">The MCP gateway audit trail</a>
+</li>
+<li><a href="add-a-custom-audit-log-provider-con_add-a-custom-audit-log-provider.html">Add a custom audit log provider</a>
+</li>
+<li><a href="create-a-telemetry-custom-resource-for-audit-logs-con_create-a-telemetry-custom-resource-for-audit-logs.html">Create a Telemetry custom resource for audit logs</a>
+</li>
+<li><a href="con-mcp-gateway-audit-trail-no-auth_use-an-audit-trail-without-authentication.html">Use an audit trail without authentication</a>
+</li>
+<li><a href="configure-access-logs-con_configure-access-logs.html">Configure access logs</a>
+</li>
+<li><a href="configure-an-authpolicy-with-identity-injection-con_configure-an-authpolicy-with-identity-injection.html">Configure an AuthPolicy with identity injection</a>
+</li>
+<li><a href="verify-authpolicy-identity-injection-con_verify-authpolicy-identity-injection.html">Verify AuthPolicy identity injection</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_troubleshoot.html">▶</button><a href="_troubleshoot.html">Troubleshoot</a>
+
+<ul class="sectlevel2">
+<li><a href="troubleshoot-authpolicy-con_troubleshoot-authpolicy.html">Troubleshoot AuthPolicy</a>
+</li>
+<li><a href="troubleshoot-ratelimitpolicy-con_troubleshoot-ratelimitpolicy.html">Troubleshoot RateLimitPolicy</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">▶</button><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
 <ul class="sectlevel2">
 <li><a href="proc-set-tls-policy_troubleshoot-tlspolicy.html">Set a TLS policy</a>
 </li>
@@ -478,11 +775,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </li>
-<li><a href="_reference.html">Reference</a>
+<li><button class="toc-toggle" type="button" data-toc-key="_reference.html">▶</button><a href="_reference.html">Reference</a>
+
+<ul class="sectlevel2">
+<li><a href="mcpgatewayextension-custom-resource-api-reference-con_the-mcpgatewayextension-custom-resource-api-reference.html">The MCPGatewayExtension custom resource API reference</a>
+</li>
+<li><a href="automatically-created-httproute-example-con_automatically-created-httproute-example.html">Automatically created HTTPRoute example</a>
+</li>
+<li><a href="common-access-log-format-variables-con_common-access-log-format-variables.html">Common access log format variables</a>
+</li>
+<li><a href="custom-audit-log-provider-fields-con_custom-audit-log-provider-fields.html">Custom audit log provider fields</a>
+</li>
+<li><a href="parameter-values-for-a-single-server-scoped-authpolicy-cr-con_parameter-values-for-a-single-server-scoped-authpolicy-cr.html">Parameter values for a single-server-scoped AuthPolicy CR</a>
+</li>
+<li><a href="mcp-gateway-router-spans-for-observability-con_mcp-gateway-router-spans-for-observability.html">MCP gateway router spans for observability</a>
+</li>
+</ul>
 </li>
 </ul>
 </div>
 </div>
+<aside id="jtbd-right-toc" aria-label="On this page"><h2>On this page</h2><ul><li class="level-4"><a href="#proc-mcp-gateway-ts-authn-issues-401s-empty_troubleshoot-and-support-for-mcp-gateway">Troubleshoot MCP gateway empty 401 errors</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-authn-issues-valid-tokens-rejected_troubleshoot-and-support-for-mcp-gateway">Troubleshoot MCP gateway valid tokens rejected</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-authn-issues_troubleshoot-and-support-for-mcp-gateway">Troubleshoot MCP gateway authentication issues</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-authz-check-kuadrant-op_troubleshoot-and-support-for-mcp-gateway">Check the Kuadrant Operator status</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-authz-issues-cel_troubleshoot-and-support-for-mcp-gateway">Troubleshoot MCP gateway CEL issues</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-authz-issues_troubleshoot-and-support-for-mcp-gateway">Troubleshoot MCP gateway authorization issues</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-ext-mcp-server-auth-issues_troubleshoot-and-support-for-mcp-gateway">Troubleshoot external MCP server authentication issues</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-ext-mcp-server-connect-issues_troubleshoot-and-support-for-mcp-gateway">Troubleshoot external MCP server connectivity issues</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-extension-not-ready_troubleshoot-and-support-for-mcp-gateway">Troubleshoot an MCPGatewayExtension status of not ready</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-gateway-listener_troubleshoot-and-support-for-mcp-gateway">Troubleshoot the gateway listener</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-isolated-empty-config-secret_troubleshoot-and-support-for-mcp-gateway">Troubleshooting an empty configuration secret</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-isolated-invalid-ext_troubleshoot-and-support-for-mcp-gateway">Troubleshooting an MCPGatewayExtension InvalidMCPGatewayExtension status</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-isolated-refgrant-required_troubleshoot-and-support-for-mcp-gateway">Troubleshoot an MCPGatewayExtension ReferenceGrantRequired status</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-isolated-registration-not-ready_troubleshoot-and-support-for-mcp-gateway">Troubleshooting an MCPServerRegistration NotReady status</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-on-prem-mcp-server-bcr-logs_troubleshoot-and-support-for-mcp-gateway">Troubleshoot on-premise MCP server tools not displaying</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-on-prem-mcp-server-tools-no-prefix_troubleshoot-and-support-for-mcp-gateway">Troubleshoot on-premise MCP server tools without prefixes</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-on-prem-mcp-server_troubleshoot-and-support-for-mcp-gateway">Troubleshoot on-premise MCP server registration issues</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-pods-not-starting_troubleshoot-and-support-for-mcp-gateway">MCP gateway pods not starting</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-on-prem-mcp-server-restart-broker_troubleshoot-and-support-for-mcp-gateway">Restart the MCP gateway broker component</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-requests-fail-or-bypass-router_troubleshoot-and-support-for-mcp-gateway">Troubleshoot requests failing or bypassing the router</a></li><li class="level-4"><a href="#proc-mcp-gateway-ts-traffic-not-reaching-backend-server_troubleshoot-and-support-for-mcp-gateway">Troubleshoot traffic not reaching the backend MCP server</a></li></ul></aside>
 <div id="content">
 <div class="sect2">
 <h3 id="con-mcp-gateway-ts-gateway-routing_troubleshoot-and-support-for-mcp-gateway">Gateway and routing troubleshooting</h3>
@@ -531,81 +844,2329 @@ listener. In this case, one of the following situations likely applies:</p>
 </li>
 </ul>
 </div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-authn-issues-401s-empty_troubleshoot-and-support-for-mcp-gateway">Troubleshoot MCP gateway empty 401 errors</h4>
+<div class="paragraph _abstract">
+<p>When your <code>401 Unauthorized</code> responses do not include OAuth discovery information, the <code>WWW-Authenticate</code> header is missing. This usually means that your <code>AuthPolicy</code> CR is not properly configured. Use the following steps to troubleshoot this situation.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You registered an MCP server.</p>
+</li>
+<li>
+<p>You created a <code>Secret</code> CR for authentication.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Isolate the failure point by using verbose output which lists the TLS handshake, the HTTP headers, and the server response code by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ curl -v https://<em>&lt;mcp_hostname&gt;</em>/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc": "2.0", "id": 1, "method": "tools/list"}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;mcp_hostname&gt;</em></code> with the hostname for your backend MCP server.</p>
+</div>
+</li>
+<li>
+<p>Verify that your <code>AuthPolicy</code> CR <code>spec.response.unauthenticated.headers:</code> list includes <code>response.unauthenticated.headers.WWW-Authenticate</code>.</p>
+</li>
+<li>
+<p>Check that your <code>AuthPolicy</code> CR <code>response.unauthenticated.headers.WWW-Authenticate.value</code> includes the correct <code>metadata</code>.</p>
+</li>
+<li>
+<p>Ensure that your <code>AuthPolicy</code> CR is applied to the correct <code>Gateway</code> object and listener.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-authn-issues-valid-tokens-rejected_troubleshoot-and-support-for-mcp-gateway">Troubleshoot MCP gateway valid tokens rejected</h4>
+<div class="paragraph _abstract">
+<p>When your valid tokens are rejected with <code>401</code> errors, that means your JWT token validation has failed. Use the following steps to troubleshoot this situation.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You registered an MCP server.</p>
+</li>
+<li>
+<p>You created a <code>Secret</code> CR for authentication.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>List the <code>AuthPolicy</code> CRs by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get authpolicy -A</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check the specific <code>AuthPolicy</code> CR configuration by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe authpolicy <em>&lt;authn_name&gt;</em> -n <em>&lt;namespace&gt;</em></code></pre>
+</div>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="proc-mcp-gateway-ts-authn-issues-401s-empty_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot MCP gateway empty 401 errors</a></p>
+<p>Replace <code><em>&lt;authn_name&gt;</em></code> with the name of your <code>AuthPolicy</code> CR.</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-authn-issues-valid-tokens-rejected_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot MCP gateway valid tokens rejected</a></p>
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where your <code>AuthPolicy</code> CR is applied.</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-authn-issues_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot MCP gateway authentication issues</a></p>
+<p>Verify that the <code>issuerUrl</code> in the <code>AuthPolicy</code> CR matches your identity provider&#8217;s <code>realm</code>.</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-authz-check-kuadrant-op_troubleshoot-and-support-for-mcp-gateway.html">Check the Kuadrant Operator status</a></p>
+<p>Check the Authorino Operator logs by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc logs -n <em>&lt;kuadrant_system&gt;</em> -l authorino-resource=authorino</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace where Connectivity Link is installed.</p>
+</div>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-authz-issues-cel_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot MCP gateway CEL issues</a></p>
+<p>Decode JWT to verify claims by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ echo "<em>&lt;example_token&gt;</em>" | cut -d. -f2 | base64 -d | jq</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;example_token&gt;</em></code> with your token.</p>
+</div>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-authz-issues_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot MCP gateway authorization issues</a></p>
+<p>Ensure that your issuer URL is reachable from the cluster by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc exec -n <em>&lt;kuadrant_system&gt;</em> deployment/authorino -- curl -s https://auth.provider.com/realms/mcp/.well-known/openid-configuration</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the name of your Connectivity Link deployment.</p>
+</div>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-ext-mcp-server-auth-issues_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot external MCP server authentication issues</a></p>
+<p>Check the token expiration time by examining the <code>exp</code> claim.</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-ext-mcp-server-connect-issues_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot external MCP server connectivity issues</a></p>
+<p>Verify the audience, if required, by using an <code>aud</code> claim.</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-extension-not-ready_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot an MCPGatewayExtension status of not ready</a></p>
+<p>Ensure that the token includes all required claims such as <code>groups</code>, <code>email</code>, and so on.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-authn-issues_troubleshoot-and-support-for-mcp-gateway">Troubleshoot MCP gateway authentication issues</h4>
+<div class="paragraph _abstract">
+<p>Authentication errors can happen in a variety of ways, including silent failures, broken sessions, and tool-access denials, depending on your backend MCP server setup. You can troubleshoot common problems by checking your connections and custom resource (CR) configurations.</p>
+</div>
+<div class="paragraph">
+<p>When your clients cannot discover OAuth configuration, discovery is not working. Use the following steps to troubleshoot this situation.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-gateway-listener_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot the gateway listener</a></p>
+<p>You installed Connectivity Link.</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-isolated-empty-config-secret_troubleshoot-and-support-for-mcp-gateway.html">Troubleshooting an empty configuration secret</a></p>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-isolated-invalid-ext_troubleshoot-and-support-for-mcp-gateway.html">Troubleshooting an MCPGatewayExtension InvalidMCPGatewayExtension status</a></p>
+<p>You configured a <code>Gateway</code> object.</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-isolated-refgrant-required_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot an MCPGatewayExtension ReferenceGrantRequired status</a></p>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-isolated-registration-not-ready_troubleshoot-and-support-for-mcp-gateway.html">Troubleshooting an MCPServerRegistration NotReady status</a></p>
+<p>You registered an MCP server.</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-on-prem-mcp-server-bcr-logs_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot on-premise MCP server tools not displaying</a></p>
+<p>You created a <code>Secret</code> CR for authentication.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Retrieve the JSON object that lists the security requirements for your backend MCP server by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ curl https://<em>&lt;mcp_hostname&gt;</em>/.well-known/oauth-protected-resource</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;mcp_hostname&gt;</em></code> with the name of the host for your MCP server.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example output</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">{
+  "resource_name": "MCP Server",
+  "resource": "https://mcp.example.com/mcp",
+  "authorization_servers": [
+    "https://auth.provider.com/realms/mcp"
+  ],
+  "bearer_methods_supported": ["header"],
+  "scopes_supported": [
+    "basic",
+    "groups",
+    "roles",
+    "profile"
+  ]
+}</code></pre>
+</div>
+</div>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-on-prem-mcp-server-tools-no-prefix_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot on-premise MCP server tools without prefixes</a></p>
+<p>Check that your associated <code>HTTPRoute</code> CR includes a path for <code>/.well-known/oauth-protected-resource</code> by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get httproute <em>&lt;route_name&gt;</em> -n <em>&lt;mcp_system&gt;</em> -o json | jq -r '.spec.rules[].matches[].path.value | select(. == "/.well-known/oauth-protected-resource")'</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;route_name&gt;</em></code> with the associated <code>HTTPRoute</code> CR.</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-on-prem-mcp-server_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot on-premise MCP server registration issues</a></p>
+<p>Replace <code><em>&lt;mcp_system&gt;</em></code> with the name of your MCP gateway deployment.</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-pods-not-starting_troubleshoot-and-support-for-mcp-gateway.html">MCP gateway pods not starting</a></p>
+<p>If there is no output, your <code>HTTPRoute</code> CR does not have a path for <code>/.well-known/oauth-protected-resource</code>. You must add one.</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-on-prem-mcp-server-restart-broker_troubleshoot-and-support-for-mcp-gateway.html">Restart the MCP gateway broker component</a></p>
+<p>Check the specific <code>AuthPolicy</code> CR configuration by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe authpolicy <em>&lt;authn_name&gt;</em> -n <em>&lt;namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;authn_name&gt;</em></code> with the name of your <code>AuthPolicy</code> CR.</p>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-requests-fail-or-bypass-router_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot requests failing or bypassing the router</a></p>
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where your <code>AuthPolicy</code> CR is applied.</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
-<p><a href="proc-mcp-gateway-ts-traffic-not-reaching-backend-server_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot traffic not reaching the backend MCP server</a></p>
+<p>Check that you excluded all <code>/.well-known/</code> paths from your <code>AuthPolicy</code> CR by trying to reach the endpoint without any credentials by using the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ curl -o /dev/null -s -w "%{https_code}\n" https://<em>&lt;mcp_hostname&gt;</em>/.well-known/oauth-protected-resource</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;mcp_hostname&gt;</em></code> with the name of the host for your MCP server.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The following codes are examples of possible outputs:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>200</code>: Means that the exclusion exists and matches.</p>
+</li>
+<li>
+<p><code>401</code>: Means that your <code>AuthPolicy</code> CR is still demanding a token for this path. The exclusion is either not present or not working.</p>
+</li>
+<li>
+<p><code>404</code>: The exclusion might be present and working, but the <code>HTTPRoute</code> CR does not point to that path or to a valid backend.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Optional. Check all MCP broker component environment variables by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get deployment <em>&lt;mcp_gateway&gt;</em> -n <em>&lt;mcp_system&gt;</em> -o yaml | grep -A 10 env</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;mcp_gateway&gt;</em></code> with the name of your MCP gateway deployment.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;mcp_system&gt;</em></code> with the namespace where your MCP gateway deployment is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Verify that the MCP broker component pod restarted after any environment variable changes.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-authz-check-kuadrant-op_troubleshoot-and-support-for-mcp-gateway">Check the Kuadrant Operator status</h4>
+<div class="paragraph _abstract">
+<p>When authorization errors happen because the Kuadrant Operator is not working, you can diagnose the situation by checking the Operator status.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You registered an MCP server.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check that the Kuadrant Operator is working by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get pods -n <em>&lt;kuadrant_system&gt;</em></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace where your Connectivity Link is installed.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example output</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">NAME                                                  READY   STATUS    RESTARTS   AGE
+authorino-78c5679f94-abc12                            1/1     Running   0          5d
+dns-operator-controller-manager-5d4789f6-x1y2z        1/1     Running   0          5d
+kuadrant-operator-controller-manager-8495bc4d-98765   1/1     Running   0          5d
+limitador-67f89bc5d4-z9w8v                            1/1     Running   0          5d</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If the <code>authorino-*</code> pod shows <code>CrashLoopBackOff</code>, it either cannot reach your OIDC issuer or has an invalid configuration.</p>
+</li>
+<li>
+<p>If the <code>kuadrant-operator-controller-manager-*</code> pod is down, any changes you make to your <code>AuthPolicy</code> CR cannot be applied to the <code>Gateway</code> object because the controller pod does not reconcile your <code>AuthPolicy</code> CR.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Remedy pod issues as required.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-authz-issues-cel_troubleshoot-and-support-for-mcp-gateway">Troubleshoot MCP gateway CEL issues</h4>
+<div class="paragraph _abstract">
+<p>When authorization fails with <code>CEL</code> evaluation errors, you can troubleshoot by checking logs, communication, and other configuration.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Ensure that there is not a mismatch between your Envoy proxy layer and upstream application layers in performing URL normalization.</p>
+</div>
+<div class="paragraph">
+<p>Envoy serves raw request paths to the <code>wasm-shim</code> component unless <code>normalize_path</code> and <code>merge_slashes</code> are explicitly enabled in the Envoy HTTP Connection Manager (HCM) settings. This means that you can treat <code>/admin</code> and <code>//admin</code> as distinct paths in your CEL predicates, and so on.</p>
+</div>
+<div class="paragraph">
+<p>However, your application receives the requests. That upstream service can strip redundant slashes or decode URL-encoded values. This means it bypasses your configuration, serving the protected route.</p>
+</div>
+<div class="paragraph">
+<p>Make sure that you configure your upstream service so that you do not unintentionally bypass your own security. For more information, see <a href="https://istio.io/latest/docs/ops/best-practices/security/#customize-your-system-on-path-normalization">Customize your system on path normalization</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You registered an MCP server.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check the Authorino Operator logs for CEL evaluation by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc logs -n <em>&lt;kuadrant_system&gt;</em> -l authorino-resource=authorino | grep -i authz</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;kuadrant_system&gt;</em></code> with the namespace where Connectivity Link is installed.</p>
+</div>
+</li>
+<li>
+<p>Ensure that the Authorino Operator can communicate with your identity server.</p>
+</li>
+<li>
+<p>Verify that your JWT token includes <code>resource_access[server-name].roles</code> claims.</p>
+</li>
+<li>
+<p>Verify the CEL syntax in your authorization <code>rules</code>.</p>
+</li>
+<li>
+<p>Check that referenced fields exist, such as <code>auth.identity.groups</code>.</p>
+</li>
+<li>
+<p>Verify that the JSON or data object coming back from the source matches the exact fields you referenced in your Authorino configuration.</p>
+</li>
+<li>
+<p>Test <code>CEL</code> expression syntax using online validation tools.</p>
+</li>
+<li>
+<p>Add persistent logging to understand the <code>CEL</code> evaluation context.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-authz-issues_troubleshoot-and-support-for-mcp-gateway">Troubleshoot MCP gateway authorization issues</h4>
+<div class="paragraph _abstract">
+<p>Authorization errors can happen in a variety of ways, including an authenticated user getting <code>403</code> errors for all tool calls, authorization checks not enforced, or authorization failing with <code>CEL</code> evaluation errors.</p>
+</div>
+<div class="paragraph">
+<p>You can troubleshoot these problems by checking your configurations and troubleshooting <code>CEL</code>.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You registered an MCP server.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check your <code>AuthPolicy</code> custom resource (CR) authorization rules by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get authpolicy <em>&lt;policy_name&gt;</em> -n <em>&lt;namespace&gt;</em> -o yaml | grep -A 20 authorization</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;policy_name&gt;</em></code> with the name of your <code>AuthPolicy</code> CR.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;namespace&gt;</em> `with the namespace where your `AuthPolicy</code> CR is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>When your authorization checks are not enforced, first check your <code>AuthPolicy</code> CR status by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe authpolicy <em>&lt;policy_name&gt;</em> -n <em>&lt;namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;policy_name&gt;</em></code> with the name of your <code>AuthPolicy</code> CR.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;namespace&gt;</em> `with the namespace where your `AuthPolicy</code> CR is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Next, verify your <code>AuthPolicy</code> CR targets the correct resource by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get authpolicy <em>&lt;policy_name&gt;</em> -n <em>&lt;namespace&gt;</em> -o yaml | grep -A 5 targetRef</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;policy_name&gt;</em></code> with the name of your <code>AuthPolicy</code> CR.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;namespace&gt;</em> `with the namespace where your `AuthPolicy</code> CR is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Ensure that your <code>AuthPolicy</code> CR <code>targetRef</code> matches your <code>Gateway</code> object name and namespace by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ echo "--- AuthPolicy Targets ---" &amp;&amp; \
+oc get authpolicy -n <em>&lt;mcp_system&gt;</em> -o jsonpath='{range .items[*]}{.metadata.name}{"\t targets -&gt; \t"}{.spec.targetRef.kind}{"/"}{.spec.targetRef.name}{"\n"}{end}' &amp;&amp; \
+echo "--- Actual Gateways ---" &amp;&amp; \
+oc get gateway -n <em>&lt;mcp_system&gt;</em> -o custom-columns=NAME:.metadata.name</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;mcp_system&gt;</em></code> with the name of your MCP gateway deployment.</p>
+</div>
+</li>
+<li>
+<p>If your <code>AuthPolicy</code> CR and your <code>Gateway</code> object are in different namespaces, you must either move the <code>AuthPolicy</code> CR into the same namespace as the Gateway object, or target the <code>HTTPRoute</code> CR instead.</p>
+</li>
+<li>
+<p>Check that your <code>AuthPolicy</code> CR <code>sectionName</code> matches your <code>Gateway</code> object listener name.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe authpolicy <em>&lt;auth_policy_name&gt;</em> -n <em>&lt;mcp_system&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;auth_policy_name&gt;</em></code> with the name of your <code>AuthPolicy</code> CR.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;mcp_system&gt;</em></code> with the name of your MCP gateway deployment.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Examine the <code>Status</code> block for an entry about your listener. If the <code>sectionName</code> is wrong, the policy shows <code>"Accepted"</code>, but the policy does not affect the intended traffic path.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-ext-mcp-server-auth-issues_troubleshoot-and-support-for-mcp-gateway">Troubleshoot external MCP server authentication issues</h4>
+<div class="paragraph _abstract">
+<p>If your registered external MCP server fails authentication and returns <code>401</code> or <code>403</code> errors, troubleshoot by checking the credentials and the logs.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You registered an external MCP server.</p>
+</li>
+<li>
+<p>You created a <code>Secret</code> CR for authentication.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check that a Secret custom resource (CR) exists and that it has the correct <code>label</code> by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get secret <em>&lt;secret_name&gt;</em> -n <em>&lt;namespace&gt;</em> --show-labels</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;secret_name&gt;</em></code> with the name of your <code>Secret</code> CR.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where your <code>Secret</code> CR is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Verify the <code>Secret</code> CR contents by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get secret <em>&lt;secret_name&gt;</em> -n <em>&lt;namespace&gt;</em> -o yaml</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;secret_name&gt;</em></code> with the name of your <code>Secret</code> CR.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where your <code>Secret</code> CR is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check the <code>MCPServerRegistration</code> CR <code>credentialRef</code> parameter value by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpsr <em>&lt;mcpsr_name&gt;</em> -n <em>&lt;namespace&gt;</em> -o yaml | grep -A 3 credentialRef</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;mcpsr_name&gt;</em></code> with the name of your <code>MCPServerRegistration</code> CR.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where your <code>MCPServerRegistration</code> CR is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Ensure that the <code>Secret</code> CR has the label <code>mcp.kuadrant.io/secret: "true"</code>.</p>
+</li>
+<li>
+<p>Verify that the <code>Secret</code> CR data key matches the <code>credentialRef.key</code> in the <code>MCPServerRegistration</code> CR.</p>
+</li>
+<li>
+<p>Check the credential format.</p>
+</li>
+<li>
+<p>Verify that the credential you are using has the necessary permissions for the external service.</p>
+</li>
+<li>
+<p>Check the MCP gateway broker component logs for credential errors by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc logs -n <em>&lt;mcp_system&gt;</em> deployment/mcp-gateway | grep -i auth</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;mcp_system&gt;</em></code> with the name of your MCP gateway deployment.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-ext-mcp-server-connect-issues_troubleshoot-and-support-for-mcp-gateway">Troubleshoot external MCP server connectivity issues</h4>
+<div class="paragraph _abstract">
+<p>If your external MCP server cannot connect, or if tools are not displaying, you can troubleshoot by checking custom resources (CRs) and network settings.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You registered an external MCP server.</p>
+</li>
+<li>
+<p>You created a <code>Secret</code> CR for authentication.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>If you are seeing errors such as <code>502 Bad Gateway</code> and <code>403 Forbidden</code>, check the <code>ServiceEntry</code> CR by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get serviceentry -n <em>&lt;namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace with the <code><em>&lt;namespace&gt;</em></code> where the <code>ServiceEntry</code> CR is applied.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>If the command returns an empty list, create a <code>ServiceEntry</code> CR to allow egress.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>For detailed troubleshooting, such as to checks ports and the TLS setting, examine the <code>ServiceEntry</code> CR activity by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe serviceentry <em>&lt;se_name&gt;</em> -n <em>&lt;namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace with the <code><em>&lt;se_name&gt;</em></code> with the name the <code>ServiceEntry</code> CR.</p>
+</li>
+<li>
+<p>Replace with the <code><em>&lt;namespace&gt;</em></code> where the <code>ServiceEntry</code> CR is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Verify that <code>ServiceEntry</code> CR <code>hosts</code> values are exact matches external <code>hostname</code> values.</p>
+</li>
+<li>
+<p>If you are seeing <code>TLS</code> errors, verify that a <code>DestinationRule</code> CR exists by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get destinationrule -n <em>&lt;namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace with the <code><em>&lt;namespace&gt;</em></code> where the <code>DestinationRule</code> CR is applied.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>If the previous command returns <code>No resources found in &lt;namespace&gt; namespace</code>, create a <code>DestinationRule</code> CR.</p>
+</li>
+<li>
+<p>Ensure that <code>DestinationRule</code> CR <code>host</code> values exactly match <code>ServiceEntry</code> CR host values.</p>
+</li>
+<li>
+<p>Check the <code>TLS</code> configuration in <code>DestinationRule</code> CR.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>For detailed troubleshooting of actual connection details, such as encryption, load balancing, and connection pooling, examine the <code>DestinationRule</code> CR by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe destinationrule <em>&lt;dr_name&gt;</em> -n &lt;namespace&gt;</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace with the <code><em>&lt;dr_name&gt;</em></code> with the name the <code>DestinationRule</code> CR.</p>
+</li>
+<li>
+<p>Replace with the <code><em>&lt;namespace&gt;</em></code> where the <code>DestinationRule</code> CR is applied.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Ensure that your network egress policies allow external traffic from the pod.</p>
+</li>
+</ol>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Test the DNS resolution by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc run -it --rm debug --image=<em>&lt;image_path/name&gt;</em> --restart=Never -- \
+  nslookup <em>&lt;external_hostname&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;image_path/name&gt;</em></code> with the path to your application image.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;external_hostname&gt;</em></code> with your external MCP server <code>hostname</code> parameter value.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Test the external connectivity by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc run -it --rm debug --image=<em>&lt;image_path/name&gt;</em> --restart=Never -- \
+  curl -v https://<em>&lt;external_hostname_url&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;image_path/name&gt;</em></code> with the path to your application image.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;external_hostname_url&gt;</em></code> with your external MCP server URL.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Verify that the <code>HTTPRoute</code> CR <code>backendRef</code> value is configured with the correct external hostname.</p>
+</li>
+<li>
+<p>Ensure that the <code>HTTPRoute</code> CR has the <code>URLRewrite</code> filter applied to rewrite to the external hostname.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-extension-not-ready_troubleshoot-and-support-for-mcp-gateway">Troubleshoot an MCPGatewayExtension status of not ready</h4>
+<div class="paragraph _abstract">
+<p>You can troubleshoot when your <code>MCPGatewayExtension</code> custom resource (CR) shows a <code>Ready: False</code> state by running a few commands.</p>
+</div>
+<div class="paragraph">
+<p>Common causes include the following errors and indicate an associated action:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>InvalidMCPGatewayExtension</code>: This often means that the <code>targetRef</code> points to a Gateway object that does not exist, or you have a typing error in the <code>kind</code> or <code>group</code>.</p>
+</li>
+<li>
+<p><code>ReferenceGrantRequired</code>: This occurs if your extension is in one namespace but is trying to target a <code>Gateway</code> object in another. To fix this, you must apply a <code>ReferenceGrant</code> in the <code>Gateway</code> object namespace.</p>
+</li>
+<li>
+<p><code>Conflict</code>: Only one <code>MCPGatewayExtension</code> can target a specific <code>Gateway</code> object. If another extension is already pointing to the <code>Gateway</code> object you configured with a new extension, the new one fails.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You registered an MCP server.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check the status of the specific <code>MCPGatewayExtension</code> CR by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpgatewayextension -n <em>&lt;namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where your <code>MCPGatewayExtension</code> CR is applied.</p>
+</div>
+</li>
+<li>
+<p>Check for conflicting <code>MCPGatewayExtension</code> CRs by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpgatewayextension -A</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There must be only one extension per namespace.</p>
+</div>
+</li>
+<li>
+<p>Verify that the target Gateway object exists by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get gateway -n <em>&lt;gateway_namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;gateway_namespace&gt;</em></code> with the namespace where your <code>Gateway</code> object is applied.</p>
+</div>
+</li>
+<li>
+<p>Check the <code>MCPServerRegistration</code> CR namespace and route status by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe mcpsr <em>&lt;mcpsr_name&gt;</em> -n <em>&lt;mcpsr_namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;mcpsr_name&gt;</em></code> with the name of your <code>MCPServerRegistration</code> CR.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;mcpsr_namespace&gt;</em></code> with the namespace where your <code>MCPServerRegistration</code> CR is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Ensure that the <code>MCPGatewayExtension</code> CR targets the <code>Gateway</code> object that the <code>HTTPRoute</code> CR is attached to.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-gateway-listener_troubleshoot-and-support-for-mcp-gateway">Troubleshoot the gateway listener</h4>
+<div class="paragraph _abstract">
+<p>If your MCP gateway cannot reach an MCP endpoint at the configured hostname, the <code>Listener</code> custom resource (CR) you configured might not be working. You can troubleshoot this situation by using a few commands and some insight.</p>
+</div>
+<div class="paragraph">
+<p>Use the following concepts with the commands that follow to solve a non-functioning <code>Listener</code> CR:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ensure that your <code>Gateway</code> object has <code>Accepted</code> and <code>Programmed</code> conditions set to <code>True</code>.</p>
+</li>
+<li>
+<p>Verify that the <code>hostname</code> parameter value in the <code>Listener</code> CR matches your DNS or hosts configuration.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check the general <code>Gateway</code> object configuration by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get gateway -A</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This command returns general information about all <code>Gateway</code> objects in the cluster. If the <code>Gateway</code> object you are troubleshooting exists, the command returns the following information:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <code>gatewayClassName</code> is it using, whether or not it has an IP address or hostname assigned</p>
+</li>
+<li>
+<p>The <code>status</code>, such as <code>Ready</code>, <code>Programmed</code>, or <code>Pending</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check the full metadata and status history for a specific <code>Gateway</code> object that is stuck in <code>Pending</code> by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe gateway <em>&lt;gateway_name&gt;</em> -n <em>&lt;gateway_system&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;gateway_name&gt;</em></code> with the name of the <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;gateway_system&gt;</em></code> with the namespace where the <code>Gateway</code> object is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check for port conflicts and verify that the <code>SSL/TLS</code> certificates are correctly attached to <code>Listener</code> CRs.</p>
+</li>
+<li>
+<p>Verify the <code>Listener</code> CR configuration by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get gateway <em>&lt;gateway_name&gt;</em> -n <em>&lt;gateway_system&gt;</em> -o yaml | grep -A 10 listeners</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;gateway_name&gt;</em></code> with the name of the <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;gateway_system&gt;</em></code> with the namespace where the <code>Gateway</code> object is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check all of your <code>Listener</code> CR configurations at the same time by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get gateway <em>&lt;gateway_name&gt;</em> -n <em>&lt;gateway_system&gt;</em> -o jsonpath='{range .spec.listeners[*]}{.name}{"\t"}{.hostname}{"\t"}{.port}{"\n"}{end}'</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;gateway_name&gt;</em></code> with the name of the <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;gateway_system&gt;</em></code> with the namespace where the <code>Gateway</code> object is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check that the Istio gateway pod is running by using the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get pods -n <em>&lt;gateway_system&gt;</em> -l gateway.istio.io/managed=istio.io-gateway-controller</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;gateway_system&gt;</em></code> with the name of your <code>Gateway</code> object deployment.</p>
+</li>
+<li>
+<p>This command checks the status of Envoy-proxy pods and returns pod, traffic flow, and policy errors.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Verify that the port you are trying to use is not already in use by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get gateway -A -o yaml | grep "port:"</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-isolated-empty-config-secret_troubleshoot-and-support-for-mcp-gateway">Troubleshooting an empty configuration secret</h4>
+<div class="paragraph _abstract">
+<p>If the configuration <code>Secret</code> object exists but contains no MCP server entries, the <code>MCPServerRegistration</code> custom resources (CRs) might not be in a <code>Ready</code> state.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You deployed isolated MCP gateway instances.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check the contents of the configuration <code>Secret</code> object by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get secret mcp-gateway-config -n <em>&lt;namespace&gt;</em> -o jsonpath='{.data.config\.yaml}' | base64 -d</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where the <code>MCPGatewayExtension</code> CR is applied.</p>
+</div>
+</li>
+<li>
+<p>Verify that <code>MCPServerRegistration</code> CRs exist and are in <code>Ready</code> state by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpserverregistration -n <em>&lt;namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If no <code>MCPServerRegistration</code> CRs exist or none are in <code>Ready</code> state, register MCP servers for this gateway instance.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-isolated-invalid-ext_troubleshoot-and-support-for-mcp-gateway">Troubleshooting an MCPGatewayExtension InvalidMCPGatewayExtension status</h4>
+<div class="paragraph _abstract">
+<p>If an <code>MCPGatewayExtension</code> custom resource (CR) shows an <code>InvalidMCPGatewayExtension</code> status, the target <code>Gateway</code> object does not exist or there is a conflict with another extension.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You deployed isolated MCP gateway instances.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Verify that the target <code>Gateway</code> object exists by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get gateway <em>&lt;gateway_name&gt;</em> -n <em>&lt;gateway_namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;gateway_name&gt;</em></code> with the name of the <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;gateway_namespace&gt;</em></code> with the namespace where the <code>Gateway</code> object is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check for conflicting <code>MCPGatewayExtension</code> CRs that target the same <code>Gateway</code> object by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpgatewayextension -A</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Only one <code>MCPGatewayExtension</code> CR can target a given <code>Gateway</code> object. If multiple extensions target the same <code>Gateway</code> object, the controller marks newer ones as conflicted. The oldest extension by creation timestamp takes precedence.</p>
+</div>
+</li>
+<li>
+<p>If a conflict exists, update the newer <code>MCPGatewayExtension</code> CR to target a different <code>Gateway</code> object, or delete the conflicting extension.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-isolated-refgrant-required_troubleshoot-and-support-for-mcp-gateway">Troubleshoot an MCPGatewayExtension ReferenceGrantRequired status</h4>
+<div class="paragraph _abstract">
+<p>If an <code>MCPGatewayExtension</code> custom resource (CR) targets a <code>Gateway</code> object in a different namespace and no <code>ReferenceGrant</code> CR exists, the extension shows a <code>ReferenceGrantRequired</code> condition.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You deployed isolated MCP gateway instances.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check the status of the <code>MCPGatewayExtension</code> CR by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpgatewayextension -n <em>&lt;namespace&gt;</em> -o yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where the <code>MCPGatewayExtension</code> CR is applied.</p>
+</div>
+</li>
+<li>
+<p>Look for the following condition in the output:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">conditions:
+  - type: Ready
+    status: "False"
+    reason: ReferenceGrantRequired
+    message: "invalid: ReferenceGrant required in %s to allow cross-namespace reference from %s"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create a <code>ReferenceGrant</code> CR in the <code>Gateway</code> object namespace:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: <em>&lt;team_a_refgrant&gt;</em>
+  namespace: <em>&lt;gateway_namespace&gt;</em>
+spec:
+  from:
+    - group: mcp.kuadrant.io
+      kind: MCPGatewayExtension
+      namespace: <em>&lt;team_namespace&gt;</em>
+  to:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: <em>&lt;team_a_gateway&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace the <code>metadata.name</code> value with the name of your team.</p>
+</li>
+<li>
+<p>Replace the <code>metadata.namespace</code> value with the namespace where the <code>Gateway</code> object is applied.</p>
+</li>
+<li>
+<p>Replace the <code>spec.from.namespace</code> value with the namespace where the <code>MCPGatewayExtension</code> CR is applied.</p>
+</li>
+<li>
+<p>Replace the <code>spec.to.name</code> value with the name of the team <code>Gateway</code> object.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Verify the <code>MCPGatewayExtension</code> CR is ready by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc wait --for=condition=Ready mcpgatewayextension/<em>&lt;extension_name&gt;</em> -n <em>&lt;namespace&gt;</em> --timeout=60s</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-isolated-registration-not-ready_troubleshoot-and-support-for-mcp-gateway">Troubleshooting an MCPServerRegistration NotReady status</h4>
+<div class="paragraph _abstract">
+<p>If an <code>MCPServerRegistration</code> custom resource (CR) shows a <code>NotReady</code> status, the registration cannot find a valid <code>MCPGatewayExtension</code> CR for the <code>Gateway</code> object that its <code>HTTPRoute</code> CR is attached to.</p>
+</div>
+<div class="paragraph">
+<p><code>MCPServerRegistration</code> CRs are processed only when a valid <code>MCPGatewayExtension</code> CR exists for the <code>Gateway</code> object that their <code>HTTPRoute</code> CR is attached to.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You deployed isolated MCP gateway instances.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check the status of the <code>MCPServerRegistration</code> CR by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpserverregistration -n <em>&lt;namespace&gt;</em> -o yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where the <code>MCPServerRegistration</code> CR is applied.</p>
+</div>
+</li>
+<li>
+<p>Verify the following conditions:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>The <code>HTTPRoute</code> CR exists and references the correct <code>Gateway</code> object, and its status is accepted.</p>
+</li>
+<li>
+<p>An <code>MCPGatewayExtension</code> CR exists that targets the same <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>The <code>MCPGatewayExtension</code> CR is in <code>Ready</code> state by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpgatewayextension -n <em>&lt;namespace&gt;</em></code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-on-prem-mcp-server-bcr-logs_troubleshoot-and-support-for-mcp-gateway">Troubleshoot on-premise MCP server tools not displaying</h4>
+<div class="paragraph _abstract">
+<p>When you have confirmed that your <code>MCPServerRegistration</code> CR is active, but your tools are not displaying, you can take some diagnostics steps to find the problem.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You registered an MCP server.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check the MCP broker component router logs for errors by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc logs -n <em>&lt;mcp_system&gt;</em> -l app.kubernetes.io/name=<em>&lt;mcp_gateway&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;mcp_system&gt;</em></code> with the namespace of your MCP gateway deployment.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;mcp_gateway&gt;</em></code> with the name of your MCP gateway deployment.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>If you see errors, check for typos in the <code>targetRef</code> parameter value and ensure that you are pointing to an existing <code>Service</code> CR.</p>
+</li>
+<li>
+<p>Verify that the backend MCP server is implementing the <code>tools/list</code> method correctly. Using the MCP Inspector is the easiest way to check.</p>
+</li>
+<li>
+<p>Check your backend MCP server logs for errors.</p>
+</li>
+<li>
+<p>Ensure that your backend MCP server is returning valid MCP protocol responses. Using the MCP Conformance Test Framework is the easiest way to catch protocol errors.</p>
+</li>
+<li>
+<p>Verify that the <code>prefix</code> entry in the <code>MCPServerRegistration</code> CR is valid, meaning that there are no spaces or special characters.</p>
+</li>
+<li>
+<p>Start a debug session based on your existing MCP server deployment to initiate a backend server test by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc debug deployment/<em>&lt;mcpsr_name&gt;</em> -it</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;mcpsr_name&gt;</em></code> with the name of your MCP server.</p>
+</div>
+</li>
+<li>
+<p>Test whether your backend MCP server is functional by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">sh-4.4# curl -X POST https://localhost:&lt;port&gt;/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc": "2.0", "id": 1, "method": "tools/list"}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the command returns a list of tools, your backend is healthy.</p>
+</div>
+</li>
+<li>
+<p>If your backend is healthy but tools are missing in the <code>Gateway</code> CR, your <code>MCPServerRegistration</code> CR is not correctly mapping the service. Check the logs to see why the backend rejected the request by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc logs -l app=<em>&lt;mcp_server_label&gt;</em></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;mcp_server_label&gt;</em></code> with the application defined in the <code>metadata.labels.app:</code> section of your MCP server <code>Pod</code> or <code>Deployment</code> CR.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-on-prem-mcp-server-tools-no-prefix_troubleshoot-and-support-for-mcp-gateway">Troubleshoot on-premise MCP server tools without prefixes</h4>
+<div class="paragraph _abstract">
+<p>When your MCP server tools are displayed without configured prefixes, you can troubleshoot by checking for common problems.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You registered an MCP server.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check the <code>MCPServerRegistration</code> custom resource (CR) by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpsr <em>&lt;mcpsr_name&gt;</em> -n <em>&lt;mcpsr_namespace&gt;</em> -o yaml | grep prefix</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;mcpsr_name&gt;</em></code> with the name of your MCP server.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;mcpsr_namespace&gt;</em></code> with the namespace where your <code>MCPServerRegistration</code> CR is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Verify that the <code>prefix</code> entry in the <code>MCPServerRegistration</code> CR is valid, meaning that there are no spaces or special characters.</p>
+</li>
+<li>
+<p>Check the MCP gateway controller component logs for problems with your <code>MCPServerRegistration</code> CR by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc logs -n <em>&lt;mcp_system&gt;</em> deployment/mcp-gateway-controller | grep prefix</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;mcp_system&gt;</em></code> with the namespace of your MCP gateway deployment.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>If you see <code>failed to generate prefix</code>, then	there is an error in your <code>MCPServerRegistration</code> CR <code>metadata</code> or there is a conflict.</p>
+</li>
+<li>
+<p>If there is no output at all, then either the controller is not detecting your <code>MCPServerRegistration</code> CR, or the request is failing before it gets to the routing stage.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-on-prem-mcp-server_troubleshoot-and-support-for-mcp-gateway">Troubleshoot on-premise MCP server registration issues</h4>
+<div class="paragraph _abstract">
+<p>When your on-premise MCP server is not discovered by your MCP gateway after you registered the server, or if you are having trouble with your tools, you can troubleshoot by checking for common problems.</p>
+</div>
+<div class="paragraph">
+<p>Basic steps include making sure that your backend server is available, that routing is applied correctly, and that tool prefix headers are labeled correctly.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You registered an MCP server.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>If tools from your on-premise MCP server do not display in <code>tools/list</code>, check that the MCP server is properly discovered by MCP gateway components by running the following commands:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>List your <code>MCPServerRegistration</code> CRs by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpsr -A</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Get the detailed status and configuration of the <code>MCPServerRegistration</code> CR that has missing tools by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe mcpserverregistration <em>&lt;mcpsr_name&gt;</em> -n <em>&lt;mcpsr_namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;mcpsr_name&gt;</em></code> with the <code>name</code> of your MCP server.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;mcpsr_namespace&gt;</em></code> with the namespace where your <code>MCPServerRegistration</code> CR is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Verify that the <code>MCPServerRegistration</code> CR <code>targetRef</code> points to correct <code>HTTPRoute</code> name and namespace by running the following commands:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Get the <code>name</code> and <code>namespace</code> of the <code>HTTPRoute</code> CR that the <code>MCPServerRegistration</code> CR is attempting to attach to by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpserverregistration <em>&lt;mcpsr_name&gt;</em> -n <em>&lt;mcpsr_namespace&gt;</em> -o jsonpath='{.spec.targetRef.name}{"\n"}{.spec.targetRef.namespace}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;mcpsr_name&gt;</em></code> with the <code>name</code> of your MCP server.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;mcpsr_namespace&gt;</em></code> with the namespace where your <code>MCPServerRegistration</code> CR is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>If the <code>MCPServerRegistration</code> CR targets the <code>HTTPRoute</code> CR that is applied in the same namespace, the <code>.spec.targetRef.namespace</code> is not needed. No output is displayed.</p>
+</li>
+<li>
+<p>Cross-reference the <code>HTTPRoute</code> details from of the previous command with your <code>HTTPRoute</code> CRs by verifying that a route actually exists with those exact details by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get httproute <em>&lt;httproute_name&gt;</em> -n <em>&lt;httproute_namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;httproute_name&gt;</em></code> with the value from the output of the earlier step.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;httproute_namespace&gt;</em></code> with the value from the output of the earlier step.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>If you get a <code>NotFound</code> server <code>Error</code> from the earlier step, correct your <code>MCPServerRegistration</code> CR.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Verify that the MCP gateway controller component successfully bound the <code>MCPGatewayExtension</code> and <code>HTTPRoute</code> CR together by checking the status with the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpserverregistration <em>&lt;mcpsr_name&gt;</em> -n <em>&lt;mcpsr_namespace&gt;</em> -o jsonpath='{.status.conditions[?(@.type=="Accepted")]}'</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;mcpsr_name&gt;</em></code> with the name of your MCP server.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;mcpsr_namespace&gt;</em></code> with the namespace where your <code>MCPServerRegistration</code> CR is applied.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>If you get a <code>status: False</code> output, the MCP gateway controller component found the route but could not use it. Check that you created a <code>ReferenceGrant</code> CR if the <code>MCPGatewayExtension</code> and <code>HTTPRoute</code> CRs are in different namespaces.</p>
+</li>
+</ol>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check that the backend MCP server is running by entering the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get pods -n <em>&lt;mcpsr_namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;mcpsr_namespace&gt;</em></code> with the namespace where your <code>MCPServerRegistration</code> CR is applied.</p>
+</div>
+</li>
+<li>
+<p>If your MCP server pods are crashing, check for the following conditions:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CrashLoopBackOff</code>: This generally means that your MCP server is starting but then crashing. This problem can be caused by a missing environment variable or by permission issues.</p>
+</li>
+<li>
+<p><code>Pending</code>: This might mean that the pod has not started because of a resource issue in the cluster.</p>
+</li>
+<li>
+<p><code>ErrImagePull</code>: Either the cluster cannot reach the registry, or you do not have permission to pull the image. Check your OpenShift Container Platform settings and network configuration.</p>
+</li>
+<li>
+<p>If your pod has a <code>Running</code> status with a high restart count, your MCP server might be unstable because of memory constraints or connectivity issues. Check your OpenShift Container Platform settings and network configuration.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Verify that the targeted application of your <code>MCPServerRegistration</code> CR actually exists and has a valid entry point by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get svc -n <em>&lt;namespace&gt;</em> <em>&lt;service_name&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where your application runs.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;service_name&gt;</em></code> with the name of your application.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check that your application has a standard <code>ClusterIP</code> assigned to handle load balancing across pods.</p>
+</li>
+<li>
+<p>Compare the ports to your <code>MCPServerRegistration</code> CR to make sure that they match and that either the <code>TCP</code> or <code>SCTP</code> protocol is used.</p>
+</li>
+<li>
+<p>Check that the selectors on the <code>Service</code> CR for your application match the labels on your pods by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get endpoints <em>&lt;service_name&gt;</em> -n <em>&lt;namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;service_name&gt;</em></code> with the name of your application.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where your application runs.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check that the attached <code>HTTPRoute</code> CR has valid backend reference by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe httproute <em>&lt;route_name&gt;</em></code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-pods-not-starting_troubleshoot-and-support-for-mcp-gateway">MCP gateway pods not starting</h4>
+<div class="paragraph _abstract">
+<p>After installation, if your MCP gateway pods are stuck in one of several states that indicate that they are not starting as expected, you can take several steps to diagnose the problem.</p>
+</div>
+<div class="paragraph">
+<p>Common causes include the following states and indicate an associated action:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ImagePullBackOff</code>: Check image repository access and credentials.</p>
+</li>
+<li>
+<p><code>CrashLoopBackOff</code>: Check the logs for application errors.</p>
+</li>
+<li>
+<p><code>Pending</code>: Check resource availability and node capacity.</p>
+</li>
+<li>
+<p><code>Init Container Failure</code>: Check RBAC permissions.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check the pod status by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get pods -n <em>&lt;mcp_system&gt;</em></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;mcp_system&gt;</em></code> with the name of the MCP gateway deployment that you are checking.</p>
+</div>
+</li>
+<li>
+<p>Describe problem pods by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe pod -n <em>&lt;mcp_system&gt;</em> <em>&lt;pod_name&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;mcp_system&gt;</em></code> with the name of the MCP gateway deployment that you are checking.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;pod_name&gt;</em></code> with the name of the pod that you are checking.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check the pod logs by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc logs -n <em>&lt;mcp_system&gt;</em> <em>&lt;pod_name&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;mcp_system&gt;</em></code> with the name of the MCP gateway deployment that you are checking.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;pod_name&gt;</em></code> with the name of the pod that you are checking.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-on-prem-mcp-server-restart-broker_troubleshoot-and-support-for-mcp-gateway">Restart the MCP gateway broker component</h4>
+<div class="paragraph _abstract">
+<p>While you are troubleshooting your on-premise MCP server, you might make changes to your <code>MCPServerRegistration</code> custom resource (CR). To ensure that your changes are applied, you must restart the MCP gateway broker component.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You registered an MCP server.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Procedure</div>
+<ul>
+<li>
+<p>Restart the MCP gateway broker component after making <code>MCPServerRegistration</code> CR changes by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc rollout restart deployment/<em>&lt;mcp_gateway&gt;</em> -n <em>&lt;mcp_system&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;mcp_gateway&gt;</em></code> with the name of your MCP gateway deployment.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;mcp_system&gt;</em></code> with the namespace of your MCP gateway deployment.</p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
 </div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-requests-fail-or-bypass-router_troubleshoot-and-support-for-mcp-gateway">Troubleshoot requests failing or bypassing the router</h4>
+<div class="paragraph _abstract">
+<p>When you are certain that an <code>MCPGatewayExtension</code> custom resource (CR) exists for your MCP server, but requests either fail or bypass the router, it might mean that the <code>EnvoyFilter</code> CR is not applied properly. You can take several steps to troubleshoot the problem.</p>
+</div>
+<div class="paragraph">
+<p>The <code>EnvoyFilter</code> CR is automatically created in the <code>Gateway</code> CR namespace by the MCP gateway controller component when an <code>MCPGatewayExtension</code> CR is <code>Ready</code>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can look closely at the <code>EnvoyFilter</code> CR during deep troubleshooting, but do not manually edit or delete the CR.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You registered an MCP server.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Ensure that the <code>Gateway</code> object exists and is in the expected namespace by checking the general <code>Gateway</code> object configuration by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get gateway -A</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This command returns general information about all <code>Gateway</code> objects in the cluster. If the <code>Gateway</code> object you are troubleshooting exists, the command returns the <code>gatewayClassName</code> is it using, whether or not it has an IP address or hostname assigned, and a <code>status</code>, such as <code>Ready</code>, <code>Programmed</code>, or <code>Pending</code>.</p>
+</div>
+</li>
+<li>
+<p>Verify that the <code>MCPGatewayExtension</code> CR is <code>Ready</code> by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get mcpgatewayextension -A</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Verify that a <code>ReferenceGrant</code> CR exists if the <code>MCPGatewayExtension</code> CR is in a different namespace than the <code>Gateway</code> object by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get referencegrant <em>&lt;referencegrant_name&gt;</em> -n <em>&lt;gateway_system&gt;</em> -o yaml</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;referencegrant_name&gt;</em></code> with the names of the <code>ReferenceGrant</code> CR.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;gateway_system&gt;</em></code> with the namespace where the <code>Gateway</code> object is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check the <code>HTTPRoute</code> CR by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe httproute <em>&lt;httproute_name&gt;</em> -n <em>&lt;httproute_namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;httproute_namespace&gt;</em></code> with the namespace where the <code>HTTPRoute</code> CR is applied.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;httproute_name&gt;</em></code> with the names of the <code>HTTPRoute</code> CR.</p>
+</li>
+<li>
+<p>If the <code>HTTPRoute</code> CR is not <code>Accepted</code> by the <code>Gateway</code> object, the route is not programmed into Envoy, causing a <code>404</code>.</p>
+</li>
+<li>
+<p>The conditions <code>Status.Parents.Conditions: Accepted: True</code> and <code>Programmed: True</code> show that the route is correct.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>If any of the CRs you just checked are not <code>Ready</code>, check the controller logs for <code>EnvoyFilter</code> creation errors by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc logs -n <em>&lt;mcp_system&gt;</em> deployment/mcp-gateway-controller</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;mcp_system&gt;</em></code> with the name of your MCP gateway deployment.</p>
+</li>
+<li>
+<p>This step verifies that the MCP controller is successfully generating the underlying Istio configurations.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check that the <code>EnvoyFilter</code> exists in the <code>Gateway</code> namespace by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get envoyfilter -n <em>&lt;gateway_namespace&gt;</em> -l app.kubernetes.io/managed-by=mcp-gateway-controller</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;gateway_namespace&gt;</em></code> with the namespace where the <code>Gateway</code> object is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Verify the <code>EnvoyFilter</code> configuration by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe envoyfilter -n <em>&lt;gateway_namespace&gt;</em> -l app.kubernetes.io/managed-by=mcp-gateway-controller</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;gateway_namespace&gt;</em></code> with the namespace where the <code>Gateway</code> object is applied.</p>
+</li>
+<li>
+<p>The <code>workloadSelector</code> labels must match your <code>Gateway</code> pods, or your policies are bypassed.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Compare the <code>EnvoyFilter</code> labels against your pod labels by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get pods -n <em>&lt;gateway_namespace&gt;</em> --show-labels</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;gateway_namespace&gt;</em></code> with the namespace where the <code>Gateway</code> object is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Identify the port that the <code>Gateway</code> object is configured to use by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get gateway <em>&lt;gateway_name&gt;</em> -n <em>&lt;gateway_namespace&gt;</em> -o jsonpath='{range .spec.listeners[*]}{.name}{": "}{.port}{"\n"}{end}'</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;gateway_name&gt;</em></code> with the name of the <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;gateway_namespace&gt;</em></code> with the namespace where the <code>Gateway</code> object is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Use the following commands to verify the <code>EnvoyFilter</code> chain binding:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Create a secure tunnel between a port on your computer and a port on the pod by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc port-forward deploy/<em>&lt;gateway_deployment_name&gt;</em> -n <em>&lt;gateway_system&gt;</em> 15000:15000</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;gateway_deployment_name&gt;</em></code> with the name of the Deployment related to the Gateway object. Typically this value is either <code><em>&lt;&lt;gateway_name&gt;</em>-istio</code> or <code><em>&lt;gateway_name&gt;</em>-openshift-default</code>, depending on the ingress you used.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;gateway_system&gt;</em></code> with the namespace where the Gateway object is applied.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>From a different terminal window, access localhost:15000 by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ curl -s localhost:15000/listeners</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>If this command returns empty, the <code>EnvoyFilter</code> CR is not active on this pod. Traffic is bypassing your policies.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Restart the Istio gateway to force a configuration reload by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc rollout restart deployment/<em>&lt;gateway_name&gt;</em>-istio -n <em>&lt;gateway_namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;gateway_namespace&gt;</em></code> with the namespace where the <code>Gateway</code> object is applied.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;gateway_name&gt;</em></code> with the names of the <code>Gateway</code> object.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-ts-traffic-not-reaching-backend-server_troubleshoot-and-support-for-mcp-gateway">Troubleshoot traffic not reaching the backend MCP server</h4>
+<div class="paragraph _abstract">
+<p>When you are certain that an <code>HTTPRoute</code> custom resource (CR) exists for your application, but traffic is not reaching your backend MCP servers, you can take several steps to troubleshoot the problem.</p>
+</div>
+<div class="paragraph">
+<p>On the client side, errors such as <code>401</code>, <code>403</code>, and <code>404</code> can indicate this situation.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed the OpenShift CLI (<code>oc</code>).</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>You configured an <code>HTTPRoute</code> object for the gateway.</p>
+</li>
+<li>
+<p>You registered an MCP server.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Check the <code>HTTPRoute</code> general custom resource (CR) status by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get httproute -A</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>This command returns general information about all <code>HTTPRoute</code> objects in the cluster.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check for the <code>Accepted</code> condition in the <code>HTTPRoute</code> CR <code>status</code> fields.</p>
+</li>
+<li>
+<p>Check the full metadata and status history for one specific <code>HTTPRoute</code> object by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc describe httproute <em>&lt;route_name&gt;</em> -n <em>&lt;namespace&gt;</em></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;route_name&gt;</em></code> with the name of the <code>HTTPRoute</code> object.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where the <code>HTTPRoute</code> object is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Verify that the <code>hostnames</code> value in the <code>HTTPRoute</code> CR matches the gateway <code>Listener</code> CR <code>hostname</code>.</p>
+</li>
+<li>
+<p>If the <code>HTTPRoute</code> status shows <code>Accepted: False</code>, then the <code>Gateway</code> object is not using the route.</p>
+</li>
+<li>
+<p>If the condition is <code>ResolvedRefs: False:</code>, the route is accepted through the <code>Gateway</code> object, but it cannot find the backend MCP service. There might be either a mismatch in the CR <code>metadata.name:</code> field, or the MCP service is in a namespace the <code>Gateway</code> object cannot access.</p>
+</li>
+<li>
+<p>Verify the parent reference by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get httproute <em>&lt;route_name&gt;</em> -n <em>&lt;namespace&gt;</em> -o yaml | grep -A 5 parentRefs</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;route_name&gt;</em></code> with the name of the <code>HTTPRoute</code> object.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;namespace&gt;</em></code> with the namespace where the <code>HTTPRoute</code> object is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Ensure that the retrieved <code>parentRefs</code> value matches your <code>Gateway</code> CR name and namespace exactly.</p>
+</li>
+<li>
+<p>Check that the <code>allowedRoutes.namespaces</code> value in the <code>Gateway</code> CR allows the <code>HTTPRoute</code> namespace by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get gateway <em>&lt;gateway_name&gt;</em> -n <em>&lt;gateway_namespace&gt;</em> -o jsonpath='{range .spec.listeners[*]}{.name}{": "}{.allowedRoutes.namespaces.from}{"\n"}{end}'</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code><em>&lt;gateway_name&gt;</em></code> with the name of the <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>Replace <code><em>&lt;gateway_namespace&gt;</em></code> with the namespace where the <code>Gateway</code> object is applied.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
 <div class="paragraph nav-footer">
-<p>← Previous: <a href="support_get-support.html">Get support</a> | ↑ Up: <a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="proc-mcp-gateway-ts-authn-issues-401s-empty_troubleshoot-and-support-for-mcp-gateway.html">Troubleshoot MCP gateway empty 401 errors</a> →</p>
+<p>← Previous: <a href="proc-set-tls-policy_troubleshoot-tlspolicy.html">Set a TLS policy</a> | ↑ Up: <a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="_reference.html">Reference</a> →</p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-09-17 12:54:53 -0400
+Last updated 2026-09-20 09:16:16 +0100
 </div>
 </div>
 <style>
@@ -616,31 +3177,122 @@ Last updated 2026-09-17 12:54:53 -0400
    display: block;
  }
  .toc-toggle {
+   appearance: none;
+   background: transparent;
+   border: 0;
+   color: inherit;
    cursor: pointer;
-   margin-right: 4px;
-   font-size: 0.75em;
+   display: inline-block;
+   font: inherit;
+   line-height: 1;
+   margin: 0 4px 0 0;
+   padding: 2px 4px;
    user-select: none;
+   vertical-align: middle;
+ }
+ .toc-toggle:focus-visible {
+   outline: 2px solid currentColor;
+   outline-offset: 2px;
+ }
+ #toc li:has(> ul)::before {
+   content: '▶';
+   display: inline-block;
+   font-size: 0.75em;
+   margin-right: 4px;
+   vertical-align: middle;
+ }
+ #toc li.has-children::before {
+   content: none;
  }
 </style>
 <script>
- document.addEventListener('DOMContentLoaded', function() {
-   document.querySelectorAll('#toc li').forEach(function(li) {
-     var sublist = li.querySelector(':scope > ul');
-     if (sublist) {
-       li.classList.add('has-children');
-       var toggle = document.createElement('span');
-       toggle.className = 'toc-toggle';
-       toggle.textContent = '▶';
-       li.insertBefore(toggle, li.firstChild);
-       toggle.addEventListener('click', function() {
-         li.classList.toggle('open');
-         toggle.textContent = li.classList.contains('open') ? '▼' : '▶';
-       });
+ (function() {
+   var storageKey = 'rhcl-jtbd-preview-open-toc-sections';
+
+   function loadOpenSections() {
+     try {
+       return JSON.parse(window.localStorage.getItem(storageKey) || '{}');
+     } catch (error) {
+       return {};
      }
-   });
- });
+   }
+
+   function saveOpenSections(openSections) {
+     try {
+       window.localStorage.setItem(storageKey, JSON.stringify(openSections));
+     } catch (error) {
+       // Continue to support browsers that disable local storage.
+     }
+   }
+
+   function sectionKey(li, index) {
+     var link = Array.prototype.find.call(li.children, function(child) {
+       return child.tagName === 'A';
+     });
+     if (link && link.getAttribute('href')) {
+       return link.getAttribute('href').split('#')[0];
+     }
+     return 'section-' + index;
+   }
+
+   function initializeTocToggles() {
+     var openSections = loadOpenSections();
+     document.querySelectorAll('#toc li').forEach(function(li, index) {
+       var sublist = Array.prototype.find.call(li.children, function(child) {
+         return child.tagName === 'UL';
+       });
+       if (!sublist) {
+         return;
+       }
+
+       li.classList.add('has-children');
+       sublist.id = sublist.id || 'toc-sublist-' + index;
+       var key = sectionKey(li, index);
+
+       var toggle = li.querySelector('.toc-toggle');
+       if (!toggle) {
+         toggle = document.createElement('button');
+         toggle.className = 'toc-toggle';
+         toggle.type = 'button';
+         toggle.textContent = '▶';
+         li.insertBefore(toggle, li.firstChild);
+       }
+       toggle.setAttribute('aria-controls', sublist.id);
+       toggle.setAttribute('data-toc-key', key);
+       var initiallyOpen = Boolean(openSections[key]);
+       if (initiallyOpen) {
+         li.classList.add('open');
+       }
+       toggle.setAttribute('aria-expanded', String(initiallyOpen));
+       toggle.setAttribute('aria-label', initiallyOpen ? 'Collapse section' : 'Expand section');
+       toggle.textContent = initiallyOpen ? '▼' : '▶';
+
+       if (toggle.dataset.tocBound === 'true') {
+         return;
+       }
+       toggle.dataset.tocBound = 'true';
+       toggle.addEventListener('click', function() {
+         var open = li.classList.toggle('open');
+         if (open) {
+           openSections[key] = true;
+         } else {
+           delete openSections[key];
+         }
+         saveOpenSections(openSections);
+         toggle.textContent = open ? '▼' : '▶';
+         toggle.setAttribute('aria-expanded', String(open));
+         toggle.setAttribute('aria-label', open ? 'Collapse section' : 'Expand section');
+       });
+     });
+   }
+
+   // The shared footer is emitted after the TOC, so initialize immediately.
+   // The ready-state fallback also covers consumers that move this fragment.
+   initializeTocToggles();
+   if (document.readyState === 'loading') {
+     document.addEventListener('DOMContentLoaded', initializeTocToggles, { once: true });
+   }
+ })();
 </script>
-
-
 </body>
 </html>

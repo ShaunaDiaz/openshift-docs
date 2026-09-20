@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="generator" content="Asciidoctor 2.0.26">
 <title>Red Hat Connectivity Link</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -116,7 +116,6 @@ h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title str
 :not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
 pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
 pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
-pre>code{display:block}
 pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
 em em{font-style:normal}
 strong strong{font-weight:400}
@@ -140,7 +139,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +161,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -208,19 +208,17 @@ table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
 .admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
 .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
 .exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
-.exampleblock>.content>:first-child{margin-top:0}
-.exampleblock>.content>:last-child{margin-bottom:0}
 .sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
-.sidebarblock>:first-child{margin-top:0}
-.sidebarblock>:last-child{margin-bottom:0}
 .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
-.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
 .literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
 @media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
 @media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
 .literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
 .literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
 .listingblock>.content{position:relative}
+.listingblock pre>code{display:block}
 .listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
 .listingblock:hover code[data-lang]::before{display:block}
 .listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
@@ -330,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -393,7 +391,7 @@ b.conum *{color:inherit!important}
 dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
 h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
 p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
-p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
 p{margin-bottom:1.25rem}
 .sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
 .exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
@@ -439,28 +437,176 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
                        font-size: 0.9em;} #content{display: flex; flex-direction: column; flex: 1 1 auto;}
              .nav-footer{text-align: center; margin-top: auto;}
              .nav-footer > p > a {white-space: nowrap;}</style>
+<!-- jtbd-right-toc-start -->
+<style>
+  body.jtbd-has-right-toc { padding-right: 18em; }
+  #jtbd-right-toc {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 16em;
+    height: 100%;
+    overflow: auto;
+    padding: 1.25em 1em;
+    background: #f8f8f7;
+    border-left: 1px solid #e7e7e9;
+    z-index: 1000;
+    font-family: "Open Sans", "DejaVu Sans", sans-serif;
+    font-size: .9em;
+  }
+  #jtbd-right-toc h2 { margin-top: 0; font-size: 1.1em; }
+  #jtbd-right-toc ul { list-style: none; margin: 0; padding: 0; }
+  #jtbd-right-toc li { line-height: 1.35; margin: .4em 0; }
+  #jtbd-right-toc li.level-3 { padding-left: 1em; }
+  #jtbd-right-toc li.level-4 { padding-left: 2em; }
+  #jtbd-right-toc li.level-5,
+  #jtbd-right-toc li.level-6 { padding-left: 3em; }
+  #jtbd-right-toc a { text-decoration: none; }
+  @media screen and (max-width: 1023px) {
+    body.jtbd-has-right-toc { padding-right: 0; }
+    #jtbd-right-toc {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 1em;
+      border: 1px solid #e7e7e9;
+      border-radius: 4px;
+    }
+  }
+</style>
+<!-- jtbd-right-toc-end -->
+<!-- jtbd-preview-warning-start -->
+<style>
+  .jtbd-preview-warning {
+    background: #fff1f1;
+    border: 2px solid #c9190b;
+    border-radius: 4px;
+    color: #3b0a0a;
+    font-family: "Open Sans", "DejaVu Sans", sans-serif;
+    margin: 1em auto;
+    max-width: 70em;
+    padding: 1em 1.25em;
+  }
+  .jtbd-preview-warning strong { color: #a30000; }
+  .jtbd-preview-warning details { margin-top: .75em; }
+  .jtbd-preview-warning pre {
+    background: #fff;
+    border: 1px solid #d7d7d7;
+    max-height: 20em;
+    overflow: auto;
+    padding: .75em;
+    white-space: pre-wrap;
+  }
+</style>
+<!-- jtbd-preview-warning-end -->
 </head>
-<body id="use-authorization-with-mcp-gateway-con_use-authorization-with-mcp-gateway" class="book toc2 toc-left">
+<body id="use-authorization-with-mcp-gateway-con_use-authorization-with-mcp-gateway" class="book toc2 toc-left jtbd-has-right-toc">
+<div class="jtbd-preview-warning" role="alert"><strong>Preview warning: this preview is incomplete.</strong><p>One or more AsciiDoc includes are missing. Content may be absent from this page or from related pages.</p><details><summary>Show missing-include report</summary><pre>Include preflight failed for maps/rhcl/navigation.adoc
+
+Missing include targets:
+  maps/rhcl/secure.adoc:8
+    include::jobs/secure-protect-and-connect-apis.adoc[leveloffset=+1]
+    expected: maps/rhcl/jobs/secure-protect-and-connect-apis.adoc
+  maps/rhcl/secure.adoc:14
+    include::jobs/protect-services-from-traffic-spikes.adoc[leveloffset=+1]
+    expected: maps/rhcl/jobs/protect-services-from-traffic-spikes.adoc
+  maps/rhcl/secure.adoc:58
+    include::jobs/create-tls-settings-for-an-external-mcp-server.adoc[leveloffset=+1]
+    expected: maps/rhcl/jobs/create-tls-settings-for-an-external-mcp-server.adoc
+  maps/rhcl/troubleshoot.adoc:8
+    include::jobs/troubleshoot-dnspolicy.adoc[leveloffset=+1]
+    expected: maps/rhcl/jobs/troubleshoot-dnspolicy.adoc
+
+How to fix these errors:
+  1. Restore or create the expected .adoc file, preserving the path relative to the referring map; or
+  2. Change the include directive to the path of the existing source file if the topic was renamed or moved.
+  Then rerun this audit and the preview. Do not ignore the error: Asciidoctor can otherwise generate incomplete HTML.
+</pre></details><details><summary>How to remediate missing content</summary><ol><li>Restore or create the expected <code>.adoc</code> file at the reported path, including its required content and attributes.</li><li>If the topic was renamed or moved, update the reported <code>include::</code> directive to point to the existing file. The path is relative to the file containing the directive.</li><li>If the topic is intentionally not ready, remove the include from the map and track the content gap separately. Do not use an empty placeholder as a substitute for content.</li></ol><p>After making the change, run <code>python3 scripts/audit-map-includes.py maps/rhcl/navigation.adoc</code>. Once the audit passes, run <code>bash scripts/preview-jtbd-maps.sh -d rhcl -o /tmp/rhcl-jtbd-preview</code> to rebuild the preview.</p></details></div>
 <div id="header">
 <h1>Red Hat Connectivity Link</h1>
 <div id="toc" class="toc2">
 <div id="toctitle"></div>
 <p><span class="toc-root"><a href="navigation.html">Red Hat Connectivity Link</a></span></p><ul class="sectlevel1">
-<li><a href="_whats_new.html">What&#8217;s new</a>
+<li><button class="toc-toggle" type="button" data-toc-key="_whats_new.html">▶</button><a href="_whats_new.html">What&#8217;s new</a>
+
+<ul class="sectlevel2">
+<li><a href="rhcl-release-notes_rhcl-release-notes.html">Red&#160;Hat Connectivity Link 1.5 release notes</a>
 </li>
-<li><a href="_discover.html">Discover</a>
+</ul>
 </li>
-<li><a href="_plan.html">Plan</a>
+<li><button class="toc-toggle" type="button" data-toc-key="_discover.html">▶</button><a href="_discover.html">Discover</a>
+
+<ul class="sectlevel2">
+<li><a href="about-connectivity-link_connectivity-link-architecture.html">About Red Hat Connectivity Link</a>
 </li>
-<li><a href="_install.html">Install</a>
+<li><a href="con-about-mcp-gateway_mcp-gateway-architecture.html">About the MCP gateway</a>
 </li>
-<li><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
+</ul>
 </li>
-<li><a href="_configure.html">Configure</a>
+<li><button class="toc-toggle" type="button" data-toc-key="_plan.html">▶</button><a href="_plan.html">Plan</a>
+
+<ul class="sectlevel2">
+<li><a href="rhcl-getting-ready-to-install_plan-the-rhcl-installation.html">Get ready to install Connectivity Link</a>
 </li>
-<li><a href="_upgrade.html">Upgrade</a>
+</ul>
 </li>
-<li><a href="_secure.html">Secure</a>
+<li><button class="toc-toggle" type="button" data-toc-key="_install.html">▶</button><a href="_install.html">Install</a>
+
+<ul class="sectlevel2">
+<li><a href="rhcl-install-on-ocp-con_install-connectivity-link.html">Install on OpenShift Container Platform</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="give-connectivity-link-access-con_give-connectivity-link-access.html">▶</button><a href="give-connectivity-link-access-con_give-connectivity-link-access.html">Set up DNS</a>
+
+<ul class="sectlevel3">
+<li><a href="configure-dns-provider-aws_configure-dns-provider-credentials-for-aws.html#configure-dns-provider-aws_configure-dns-provider-credentials-for-aws">Configure DNS provider credentials for AWS</a>
+</li>
+<li><a href="proc-configure-dns-provider-google_configure-google-dns-provider-credentials.html#proc-configure-dns-provider-google_configure-google-dns-provider-credentials">Configure Google DNS provider credentials</a>
+</li>
+<li><a href="proc-configure-dns-provider-azure_configure-azure-dns-provider-credentials.html#proc-configure-dns-provider-azure_configure-azure-dns-provider-credentials">Configure Azure DNS provider credentials</a>
+</li>
+<li><a href="configure-storage-for-rate-limiting-con_configure-storage-for-rate-limiting.html">Configure storage for rate limiting</a>
+</li>
+<li><a href="con-about-using-openshift-web-console_enable-the-connectivity-link-dynamic-plugin-for-openshift-web-console.html">About using the OpenShift web console</a>
+</li>
+<li><a href="con-rhcl-install-disconnected_install-connectivity-link-in-a-disconnected-environment.html">About Connectivity Link in disconnected environments</a>
+</li>
+<li><a href="install-mcp-gateway-con_install-mcp-gateway.html">Install the MCP gateway</a>
+</li>
+<li><a href="con-dns-management-mcp-gateway_configure-dns-for-mcp-gateway.html">DNS management with the MCP gateway</a>
+</li>
+<li><a href="apply-a-customized-httproute-object-con_apply-a-customized-httproute-object.html"><span class="toc-current">Apply a customized HTTPRoute object</span></a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_configure.html">▶</button><a href="_configure.html">Configure</a>
+
+<ul class="sectlevel2">
+<li><a href="rhcl-config-deploy-gateway-policies.html">Configure and deploy gateway policies</a>
+</li>
+<li><a href="con-about-token-based-rate-limiting_control-ai-token-consumption.html">About token-based rate limiting with TokenRateLimitPolicy</a>
+</li>
+<li><a href="con-about-using-onprem-dns-coredns_manage-on-premise-dns-traffic.html">About on-premise DNS with CoreDNS</a>
+</li>
+<li><a href="con-mcp-gateway-register-mcp-server_register-an-mcp-server-for-use-with-the-mcp-gateway.html">Understand MCP server registration</a>
+</li>
+<li><a href="register-external-mcp-servers-con_register-external-mcp-servers.html">Register external MCP servers</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_upgrade.html">▶</button><a href="_upgrade.html">Upgrade</a>
+
+<ul class="sectlevel3">
+<li><a href="rhcl-supported-configs_update-connectivity-link.html#rhcl-supported-configs_update-connectivity-link">Supported configurations with Connectivity Link</a>
+</li>
+<li><a href="con-update-rhcl-with-web-console_update-connectivity-link.html#con-update-rhcl-with-web-console_update-connectivity-link">Update Connectivity Link with the OpenShift Container Platform web console</a>
+</li>
+<li><a href="proc-update-rhcl-with-web-console_update-connectivity-link.html#proc-update-rhcl-with-web-console_update-connectivity-link">Update to Connectivity Link 1.5 in the web console</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_secure.html">▶</button><a href="_secure.html">Secure</a>
 <ul class="sectlevel2">
 <li><a href="configure-per-user-or-per-consumer-rate-limiting-con_configure-per-user-or-per-consumer-rate-limiting.html">Configure per-user or per-consumer rate limiting</a>
 </li>
@@ -514,42 +660,466 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </li>
-<li><a href="_administer.html">Administer</a>
+<li><button class="toc-toggle" type="button" data-toc-key="_administer.html">▶</button><a href="_administer.html">Administer</a>
+
+<ul class="sectlevel2">
+<li><a href="rhcl-app-dev-workflow_connect-apis.html">Application development workflow</a>
 </li>
-<li><a href="_develop.html">Develop</a>
+<li><a href="con-about-grpc-support_connect-grpc-applications.html">About GRPCRoute policy attachment</a>
 </li>
-<li><a href="_observe.html">Observe</a>
+<li><a href="con-about-token-based-rate-limiting_control-ai-token-consumption.html">About token-based rate limiting with TokenRateLimitPolicy</a>
 </li>
-<li><a href="_troubleshoot.html">Troubleshoot</a>
+<li><a href="apply-a-customized-httproute-object-con_apply-a-customized-httproute-object.html">Apply a customized HTTPRoute object</a>
 </li>
-<li><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
+<li><a href="con-create-virt-mcp-server_virtual-mcp-servers.html">Virtual MCP servers for curating tools and prompts</a>
 </li>
-<li><a href="_reference.html">Reference</a>
+<li><a href="create-virtual-mcp-servers-con_create-virtual-mcp-servers.html">Create virtual MCP servers</a>
+</li>
+<li><a href="con-virt-mcp-server-auth-tool-filtering_virtual-mcp-servers-authorization-and-filtering.html">Virtual MCP server authorization and filtering</a>
+</li>
+<li><a href="verify-virtual-mcp-servers-con_verify-virtual-mcp-servers.html">Verify virtual MCP servers</a>
+</li>
+<li><a href="revoke-mcp-server-tool-access-con_revoke-mcp-server-tool-access.html">Revoke MCP server tool access</a>
+</li>
+<li><a href="con-mcp-gateway-understand-tool-access-revocation_understand-tool-access-revocation.html">Understand tool access revocation</a>
+</li>
+<li><a href="revoke-tool-and-prompt-call-requests-con_revoke-tool-and-prompt-call-requests.html">Revoke tool and prompt call requests</a>
+</li>
+<li><a href="filter-revoked-tools-and-prompts-from-display-con_filter-revoked-tools-and-prompts-from-display.html">Filter revoked tools and prompts from display</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_develop.html">▶</button><a href="_develop.html">Develop</a>
+
+<ul class="sectlevel2">
+<li><a href="api-management-role-based-access-reference-con_api-management-role-based-access-reference.html">API management role-based-access reference</a>
+</li>
+<li><a href="con-rhcl-api-management-console-pages_create-share-and-consume-apis-across-teams.html">API management pages in the web console</a>
+</li>
+<li><a href="control-who-can-access-your-published-api-con_control-who-can-access-your-published-api.html">Control who can access your published API</a>
+</li>
+<li><a href="publishing-an-api-for-other-teams-to-discover-and-consume-con_publishing-an-api-for-other-teams-to-discover-and-consume.html">Publishing an API for other teams to discover and consume</a>
+</li>
+<li><a href="integrate-with-an-api-published-by-another-team-con_integrate-with-an-api-published-by-another-team.html">Integrate with an API published by another team</a>
+</li>
+<li><a href="rhdh-plugin-on-ocp_configure-multi-tenant-rbac-for-the-connectivity-link-console-plugin.html">API catalog integration in Red Hat Developer Hub</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_observe.html">▶</button><a href="_observe.html">Observe</a>
+
+<ul class="sectlevel2">
+<li><a href="rhcl-observability-features_connectivity-link-observability.html">Connectivity Link observability</a>
+</li>
+<li><a href="configure-your-observability-monitoring-stack-con_configure-your-observability-monitoring-stack.html">Configure your observability monitoring stack</a>
+</li>
+<li><a href="enable-observability-monitoring-in-connectivity-link-con_enable-observability-monitoring-in-connectivity-link.html">Enable observability monitoring in Connectivity Link</a>
+</li>
+<li><a href="rhcl-about-configuring-observability-dashboards_configure-observability-dashboards-and-alerts.html">Observability dashboards and alerts configuration</a>
+</li>
+<li><a href="import-dashboards-in-grafana-con_import-dashboards-in-grafana.html">Import dashboards in Grafana</a>
+</li>
+<li><a href="rhcl-about-import-dashboard-auto-ocp_import-dashboards-automatically-in-openshift.html">About importing dashboards automatically in OpenShift Container Platform</a>
+</li>
+<li><a href="configure-prometheus-alerts-con_configure-prometheus-alerts.html">Configure Prometheus alerts</a>
+</li>
+<li><a href="rhcl-obs-about-tracing_tracing-in-connectivity-link.html">Connectivity Link tracing</a>
+</li>
+<li><a href="control-plane-tracing-environment-variables-con_control-plane-tracing-environment-variables.html">Control-plane tracing environment variables</a>
+</li>
+<li><a href="ref-obs-data-plane-tracing-config-fields_configure-data-plane-tracing-in-connectivity-link.html">Data-plane tracing configuration fields</a>
+</li>
+<li><a href="view-rate-limit-logging-with-trace-ids-con_view-rate-limit-logging-with-trace-ids.html">View rate-limit logging with trace IDs</a>
+</li>
+<li><a href="filter-access-logs-con_filter-access-logs.html">Filter access logs</a>
+</li>
+<li><a href="con-obs-access-logs-correlation_use-access-logs-for-request-correlation.html">About using access logs for request correlation</a>
+</li>
+<li><a href="con-obs-access-logs-correlation_set-up-access-log-and-tracing-correlation.html">About using access logs for request correlation</a>
+</li>
+<li><a href="observe-mcp-gateway-connections-con_observe-mcp-gateway-connections.html">Observe MCP gateway connections</a>
+</li>
+<li><a href="enable-red-hat-build-of-opentelemetry-for-the-mcp-gateway-con_enable-red-hat-build-of-opentelemetry-for-the-mcp-gateway.html">Enable Red Hat build of OpenTelemetry for the MCP gateway</a>
+</li>
+<li><a href="con-mcp-gateway-audit-trail_understand-an-mcp-gateway-audit-trail.html">The MCP gateway audit trail</a>
+</li>
+<li><a href="add-a-custom-audit-log-provider-con_add-a-custom-audit-log-provider.html">Add a custom audit log provider</a>
+</li>
+<li><a href="create-a-telemetry-custom-resource-for-audit-logs-con_create-a-telemetry-custom-resource-for-audit-logs.html">Create a Telemetry custom resource for audit logs</a>
+</li>
+<li><a href="con-mcp-gateway-audit-trail-no-auth_use-an-audit-trail-without-authentication.html">Use an audit trail without authentication</a>
+</li>
+<li><a href="configure-access-logs-con_configure-access-logs.html">Configure access logs</a>
+</li>
+<li><a href="configure-an-authpolicy-with-identity-injection-con_configure-an-authpolicy-with-identity-injection.html">Configure an AuthPolicy with identity injection</a>
+</li>
+<li><a href="verify-authpolicy-identity-injection-con_verify-authpolicy-identity-injection.html">Verify AuthPolicy identity injection</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_troubleshoot.html">▶</button><a href="_troubleshoot.html">Troubleshoot</a>
+
+<ul class="sectlevel2">
+<li><a href="troubleshoot-authpolicy-con_troubleshoot-authpolicy.html">Troubleshoot AuthPolicy</a>
+</li>
+<li><a href="troubleshoot-ratelimitpolicy-con_troubleshoot-ratelimitpolicy.html">Troubleshoot RateLimitPolicy</a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">▶</button><a href="troubleshoot-tlspolicy-con_troubleshoot-tlspolicy.html">Troubleshoot TLSPolicy</a>
+
+<ul class="sectlevel2">
+<li><a href="proc-set-tls-policy_troubleshoot-tlspolicy.html">Set a TLS policy</a>
+</li>
+<li><a href="con-mcp-gateway-ts-gateway-routing_troubleshoot-and-support-for-mcp-gateway.html"><span class="toc-current">Gateway and routing troubleshooting</span></a>
+</li>
+</ul>
+</li>
+<li><button class="toc-toggle" type="button" data-toc-key="_reference.html">▶</button><a href="_reference.html">Reference</a>
+
+<ul class="sectlevel2">
+<li><a href="mcpgatewayextension-custom-resource-api-reference-con_the-mcpgatewayextension-custom-resource-api-reference.html">The MCPGatewayExtension custom resource API reference</a>
+</li>
+<li><a href="automatically-created-httproute-example-con_automatically-created-httproute-example.html">Automatically created HTTPRoute example</a>
+</li>
+<li><a href="common-access-log-format-variables-con_common-access-log-format-variables.html">Common access log format variables</a>
+</li>
+<li><a href="custom-audit-log-provider-fields-con_custom-audit-log-provider-fields.html">Custom audit log provider fields</a>
+</li>
+<li><a href="parameter-values-for-a-single-server-scoped-authpolicy-cr-con_parameter-values-for-a-single-server-scoped-authpolicy-cr.html">Parameter values for a single-server-scoped AuthPolicy CR</a>
+</li>
+<li><a href="mcp-gateway-router-spans-for-observability-con_mcp-gateway-router-spans-for-observability.html">MCP gateway router spans for observability</a>
+</li>
+</ul>
 </li>
 </ul>
 </div>
 </div>
+<aside id="jtbd-right-toc" aria-label="On this page"><h2>On this page</h2><ul><li class="level-4"><a href="#proc-mcp-gateway-authorization_use-authorization-with-mcp-gateway">Configure MCP gateway authorization with an AuthPolicy</a></li></ul></aside>
 <div id="content">
 <div class="sect2">
 <h3 id="use-authorization-with-mcp-gateway-con_use-authorization-with-mcp-gateway">Use authorization with MCP gateway</h3>
 <div class="paragraph _abstract">
 <p>To configure tool-level authorization so you can control which users access specific MCP tools and prompts.</p>
 </div>
+<div class="sect3">
+<h4 id="proc-mcp-gateway-authorization_use-authorization-with-mcp-gateway">Configure MCP gateway authorization with an AuthPolicy</h4>
+<div class="paragraph _abstract">
+<p>The following example demonstrates using a Connectivity Link <code>AuthPolicy</code> custom resource (CR) with Common Expression Language (CEL) to implement role-based access control. You can use the following general pattern for applying the authorization specific to your use case.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The MCP gateway supports Istio or Gateway API compatible authorization and authenticatio mechanisms. Use the best solution for your OpenShift Container Platform clusters.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="ulist">
+<div class="title">Prerequisites</div>
 <ul>
 <li>
-<p><a href="proc-mcp-gateway-authorization_use-authorization-with-mcp-gateway.html">Configure MCP gateway authorization with an AuthPolicy</a></p>
+<p>You installed MCP gateway.</p>
+</li>
+<li>
+<p>You installed Connectivity Link.</p>
+</li>
+<li>
+<p>You configured a <code>Gateway</code> object with an <code>mcp</code> listener and an <code>mcps</code> listener. The <code>mcps</code> listener is required for internal <code>tools/call</code> routing and authorization.</p>
+</li>
+<li>
+<p>You completed authentication procedures, including creating an <code>AuthPolicy</code> CR on the <code>mcp</code> listener.</p>
+</li>
+<li>
+<p>You configured your identity provider to include <code>group</code> and <code>role</code> claims in JSON Web Tokens (JWT).</p>
+</li>
+<li>
+<p>The identity provider client IDs match the namespaced <code>MCPServerRegistration</code> CR name in the format <code><em>&lt;namespace&gt;</em>/<em>&lt;mcpserverregistration_name&gt;</em></code>.</p>
 </li>
 </ul>
 </div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Ensure that your identity provider includes the required <code>group</code> and <code>role</code> claims in the issued JWTs. In the following example, Red Hat build of Keycloak is used:</p>
+<div class="listingblock">
+<div class="title">Example issued OAuth token claims:</div>
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "resource_access": {
+    "mcp-ns/arithmetic-mcp-server": {
+      "roles": ["add", "sum", "multiply", "divide", "prompt:math_tutor"]
+    },
+    "mcp-ns/geometry-mcp-server": {
+      "roles": ["area", "distance", "volume", "prompt:calculate_area"]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <code>"mcp-ns/arithmetic-mcp-server"</code> specification must match the namespaced name of the <code>MCPServerRegistration</code> CR in the format <code>{namespace}/{name}</code>. For example, if your <code>MCPServerRegistration</code> CR is named <code>arithmetic-mcp-server</code> and is applied in the <code>mcp-ns</code> namespace, the Red Hat build of Keycloak client ID must be <code>mcp-ns/arithmetic-mcp-server</code>.</p>
+</li>
+<li>
+<p>The <code>"roles": ["add", "sum", "multiply", "divide", "prompt:&lt;value&gt;"]</code> parameter and values specify the roles representing the allowed tools and prompts.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Configure authorization by creating an <code>AuthPolicy</code> CR that enforces access control on the <code>mcps</code> listener, as shown in the following example:</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The authorization <code>AuthPolicy</code> CR must target the <code>mcps</code> listener, not the <code>mcp</code> listener. The <code>mcp</code> listener only handles public traffic and has an authentication-only <code>AuthPolicy</code> CR.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Example tool and prompt access control <code>AuthPolicy</code> CR</div>
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: kuadrant.io/v1
+kind: AuthPolicy
+metadata:
+  name: <em>&lt;mcp_tool_auth_policy&gt;</em>
+  namespace: <em>&lt;gateway_system&gt;</em>
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: <em>&lt;mcp_gateway&gt;</em>
+    sectionName: <em>&lt;mcps&gt;</em>
+  rules:
+    authentication:
+      'sso-server':
+        jwt:
+          issuerUrl: https://<em>&lt;keycloak.example.com&gt;</em>/realms/mcp
+    authorization:
+      'tool-access-check':
+        when:
+          - predicate: "request.headers.exists(h, h == 'x-mcp-toolname')"
+        patternMatching:
+          patterns:
+            - predicate: |
+                ('tool:' + request.headers['x-mcp-toolname']) in (has(auth.identity.resource_access) &amp;&amp; auth.identity.resource_access.exists(p, p == request.headers['x-mcp-servername']) ? auth.identity.resource_access[request.headers['x-mcp-servername']].roles : [])
+      'prompt-access-check':
+        when:
+          - predicate: "request.headers.exists(h, h == 'x-mcp-promptname')"
+        patternMatching:
+          patterns:
+            - predicate: |
+                ('prompt:' + request.headers['x-mcp-promptname']) in (has(auth.identity.resource_access) &amp;&amp; auth.identity.resource_access.exists(p, p == request.headers['x-mcp-servername']) ? auth.identity.resource_access[request.headers['x-mcp-servername']].roles : [])
+    response:
+      unauthenticated:
+        headers:
+          'WWW-Authenticate':
+            value: Bearer resource_metadata=http://<em>&lt;mcp.example.com:8001&gt;</em>/.well-known/oauth-protected-resource
+        body:
+          value: |
+            {
+              "error": "Unauthorized",
+              "message": "MCP Access denied: Authentication required."
+            }
+      unauthorized:
+        body:
+          value: |
+            {
+              "error": "Forbidden",
+              "message": "MCP Access denied: Insufficient permissions."
+            }</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace <code>metadata.name:</code> with the name of the <code>AuthPolicy</code>.</p>
+</li>
+<li>
+<p>Replace <code>metadata.namespace:</code> with the namespace where the <code>AuthPolicy</code> CR is applied.</p>
+</li>
+<li>
+<p>Replace <code>spec.targetRef.name:</code> with the name of the <code>Gateway</code> CR.</p>
+</li>
+<li>
+<p>The <code>spec.targetRef.sectionName:</code> value must be <code>mcps</code>, which is the internal listener for <code>tool/call</code> authorization. This listener must exist on your <code>Gateway</code> object.</p>
+</li>
+<li>
+<p>Authentication: Validates the JWT token using the configured issuer URL. Replace <code><em>&lt;keycloak.example.com&gt;</em></code> with your identity provider hostname.</p>
+</li>
+<li>
+<p>Authorization Logic: CEL expressions check if the user role allows access to the requested tool or prompt. The appropriate check is triggered based on the presence of the <code>x-mcp-toolname</code> or <code>x-mcp-promptname</code> header.</p>
+</li>
+<li>
+<p>CEL Breakdown:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>request.headers['x-mcp-toolname']</code>: The name of the requested Model Context Protocol (MCP) tool.</p>
+</li>
+<li>
+<p><code>request.headers['x-mcp-servername']</code>: The namespaced name of the MCP server matching the <code>MCPServerRegistration</code> CR.</p>
+</li>
+<li>
+<p><code>request.headers['x-mcp-promptname']</code>: The name of the requested MCP prompt.</p>
+</li>
+<li>
+<p><code>auth.identity.resource_access</code>: The JWT claim containing all roles representing each allowed capability, tool or prompt, that the user can access, grouped by MCP server.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Response handling: Custom <code>401</code> and <code>403</code> responses for unauthenticated and unauthorized access attempts.</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Ensure that there is not a mismatch between your Envoy proxy layer and upstream application layers in performing URL normalization.</p>
+</div>
+<div class="paragraph">
+<p>Envoy serves raw request paths to the <code>wasm-shim</code> component unless <code>normalize_path</code> and <code>merge_slashes</code> are explicitly enabled in the Envoy HTTP Connection Manager (HCM) settings. This means that you can treat <code>/admin</code> and <code>//admin</code> as distinct paths in your CEL predicates, and so on.</p>
+</div>
+<div class="paragraph">
+<p>However, your application receives the requests. That upstream service can strip redundant slashes or decode URL-encoded values. This means it bypasses your configuration, serving the protected route.</p>
+</div>
+<div class="paragraph">
+<p>Make sure that you configure your upstream service so that you do not unintentionally bypass your own security. For more information, see <a href="https://istio.io/latest/docs/ops/best-practices/security/#customize-your-system-on-path-normalization">Customize your system on path normalization</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Apply the <code>AuthPolicy</code> CR by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc apply -f <em>&lt;mcp_tool_auth_policy.yaml&gt;</em></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;mcp_tool_auth_policy.yaml&gt;</em></code> with the name of the <code>AuthPolicy</code> YAML filename.</p>
+</div>
+</li>
+<li>
+<p>Optional. Configure authorization by creating an <code>AuthPolicy</code> CR using an Open Policy Agent (OPA) rule, as shown in the following example:</p>
+<div class="listingblock">
+<div class="title">Example <code>AuthPolicy</code> CR with an OPA rule</div>
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: kuadrant.io/v1
+kind: AuthPolicy
+metadata:
+  name: <em>&lt;mcp_tool_auth_policy&gt;</em>
+  namespace: <em>&lt;gateway_system&gt;</em>
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: <em>&lt;mcp_gateway&gt;</em>
+    sectionName: <em>&lt;mcps&gt;</em>
+  rules:
+    authentication:
+      'sso-server':
+        jwt:
+          issuerUrl: https://<em>&lt;keycloak.example.com&gt;</em>/realms/mcp
+    authorization:
+      'authorized-capabilities':
+        opa:
+          rego: |
+            allow = true
+            capabilities = {
+              "tools": { server: tools |
+                server := object.keys(input.auth.identity.resource_access)[<em>]
+                tools := [substring(r, count("tool:"), -1) |
+                  r := input.auth.identity.resource_access[server].roles[</em>]
+                  startswith(r, "tool:")
+                ]
+              },
+              "prompts": { server: prompts |
+                server := object.keys(input.auth.identity.resource_access)[<em>]
+                prompts := [substring(r, count("prompt:"), -1) |
+                  r := input.auth.identity.resource_access[server].roles[</em>]
+                  startswith(r, "prompt:")
+                ]
+              }
+            }
+          allValues: true
+#...</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Apply the OPA <code>AuthPolicy</code> CR by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc apply -f <em>&lt;mcp_tool_auth_policy.yaml&gt;</em></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace <code><em>&lt;mcp_tool_auth_policy.yaml&gt;</em></code> with the name of the <code>AuthPolicy</code> YAML filename.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="olist arabic">
+<div class="title">Verification</div>
+<ol class="arabic">
+<li>
+<p>Monitor authorization decisions by checking the <code>AuthPolicy</code> CR <code>status</code> with the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc get authpolicy <em>&lt;mcp_tool_auth_policy&gt;</em> -n <em>&lt;gateway_system&gt;</em> -o jsonpath='{.status.conditions[?(@.type=="Enforced")].status}'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example output</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">True</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check the authorization logs by running the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terminal" data-lang="terminal">$ oc logs -n mcp-system -l app.kubernetes.io/name=mcp-gateway</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
 </div>
 <div class="paragraph nav-footer">
-<p>← Previous: <a href="proc-configure-mcp-gateway-authentication_configure-mcp-gateway-authentication-with-an-authpolicy.html">Configure MCP gateway authentication with an AuthPolicy</a> | ↑ Up: <a href="_secure.html">Secure</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="proc-mcp-gateway-authorization_use-authorization-with-mcp-gateway.html">Configure MCP gateway authorization with an AuthPolicy</a> →</p>
+<p>← Previous: <a href="configure-mcp-gateway-authentication-with-an-authpolicy-con_configure-mcp-gateway-authentication-with-an-authpolicy.html">Configure MCP gateway authentication with an AuthPolicy</a> | ↑ Up: <a href="_secure.html">Secure</a> | ⌂ Home: <a href="navigation.html">Red Hat Connectivity Link</a> | Next: <a href="con-understanding-mcp-gateway-authorization_understand-authorization-in-mcp-gateway.html">Understand authorization in MCP gateway</a> →</p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-09-17 12:54:53 -0400
+Last updated 2026-09-20 09:16:16 +0100
 </div>
 </div>
 <style>
@@ -560,31 +1130,122 @@ Last updated 2026-09-17 12:54:53 -0400
    display: block;
  }
  .toc-toggle {
+   appearance: none;
+   background: transparent;
+   border: 0;
+   color: inherit;
    cursor: pointer;
-   margin-right: 4px;
-   font-size: 0.75em;
+   display: inline-block;
+   font: inherit;
+   line-height: 1;
+   margin: 0 4px 0 0;
+   padding: 2px 4px;
    user-select: none;
+   vertical-align: middle;
+ }
+ .toc-toggle:focus-visible {
+   outline: 2px solid currentColor;
+   outline-offset: 2px;
+ }
+ #toc li:has(> ul)::before {
+   content: '▶';
+   display: inline-block;
+   font-size: 0.75em;
+   margin-right: 4px;
+   vertical-align: middle;
+ }
+ #toc li.has-children::before {
+   content: none;
  }
 </style>
 <script>
- document.addEventListener('DOMContentLoaded', function() {
-   document.querySelectorAll('#toc li').forEach(function(li) {
-     var sublist = li.querySelector(':scope > ul');
-     if (sublist) {
-       li.classList.add('has-children');
-       var toggle = document.createElement('span');
-       toggle.className = 'toc-toggle';
-       toggle.textContent = '▶';
-       li.insertBefore(toggle, li.firstChild);
-       toggle.addEventListener('click', function() {
-         li.classList.toggle('open');
-         toggle.textContent = li.classList.contains('open') ? '▼' : '▶';
-       });
+ (function() {
+   var storageKey = 'rhcl-jtbd-preview-open-toc-sections';
+
+   function loadOpenSections() {
+     try {
+       return JSON.parse(window.localStorage.getItem(storageKey) || '{}');
+     } catch (error) {
+       return {};
      }
-   });
- });
+   }
+
+   function saveOpenSections(openSections) {
+     try {
+       window.localStorage.setItem(storageKey, JSON.stringify(openSections));
+     } catch (error) {
+       // Continue to support browsers that disable local storage.
+     }
+   }
+
+   function sectionKey(li, index) {
+     var link = Array.prototype.find.call(li.children, function(child) {
+       return child.tagName === 'A';
+     });
+     if (link && link.getAttribute('href')) {
+       return link.getAttribute('href').split('#')[0];
+     }
+     return 'section-' + index;
+   }
+
+   function initializeTocToggles() {
+     var openSections = loadOpenSections();
+     document.querySelectorAll('#toc li').forEach(function(li, index) {
+       var sublist = Array.prototype.find.call(li.children, function(child) {
+         return child.tagName === 'UL';
+       });
+       if (!sublist) {
+         return;
+       }
+
+       li.classList.add('has-children');
+       sublist.id = sublist.id || 'toc-sublist-' + index;
+       var key = sectionKey(li, index);
+
+       var toggle = li.querySelector('.toc-toggle');
+       if (!toggle) {
+         toggle = document.createElement('button');
+         toggle.className = 'toc-toggle';
+         toggle.type = 'button';
+         toggle.textContent = '▶';
+         li.insertBefore(toggle, li.firstChild);
+       }
+       toggle.setAttribute('aria-controls', sublist.id);
+       toggle.setAttribute('data-toc-key', key);
+       var initiallyOpen = Boolean(openSections[key]);
+       if (initiallyOpen) {
+         li.classList.add('open');
+       }
+       toggle.setAttribute('aria-expanded', String(initiallyOpen));
+       toggle.setAttribute('aria-label', initiallyOpen ? 'Collapse section' : 'Expand section');
+       toggle.textContent = initiallyOpen ? '▼' : '▶';
+
+       if (toggle.dataset.tocBound === 'true') {
+         return;
+       }
+       toggle.dataset.tocBound = 'true';
+       toggle.addEventListener('click', function() {
+         var open = li.classList.toggle('open');
+         if (open) {
+           openSections[key] = true;
+         } else {
+           delete openSections[key];
+         }
+         saveOpenSections(openSections);
+         toggle.textContent = open ? '▼' : '▶';
+         toggle.setAttribute('aria-expanded', String(open));
+         toggle.setAttribute('aria-label', open ? 'Collapse section' : 'Expand section');
+       });
+     });
+   }
+
+   // The shared footer is emitted after the TOC, so initialize immediately.
+   // The ready-state fallback also covers consumers that move this fragment.
+   initializeTocToggles();
+   if (document.readyState === 'loading') {
+     document.addEventListener('DOMContentLoaded', initializeTocToggles, { once: true });
+   }
+ })();
 </script>
-
-
 </body>
 </html>
