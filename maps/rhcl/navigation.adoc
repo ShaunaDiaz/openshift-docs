@@ -1,5 +1,7 @@
 :_mod-docs-content-type: MAP
 
+// Preview-only marker: this branch mirrors rhcl-docs-main for review.
+
 include::_attributes/attributes.adoc[]
 
 :toc:
