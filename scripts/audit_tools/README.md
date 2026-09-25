@@ -24,17 +24,17 @@ release_source=$(mktemp -d /tmp/rhcl-source-1.4.XXXXXX)
 git clone --depth 1 --branch rhcl-docs-1.4 \
   https://github.com/ShaunaDiaz/openshift-docs.git "$release_source"
 
-/tmp/rhcl-audit-venv/bin/python maps/tools/audit_map_migration.py \
+/tmp/rhcl-audit-venv/bin/python scripts/audit_tools/audit_map_migration.py \
   --source-root "$release_source" \
   --published-url https://docs.redhat.com/en/documentation/red_hat_connectivity_link/1.4 \
   --output /tmp/rhcl-map-audit
 ```
 
 If Python and PyYAML are already installed, use `python3` directly.
-From inside `maps/`, use `python3 tools/audit_map_migration.py` with the same
-arguments. The target repository defaults to the repository containing the
-script; `--repo-root PATH` can select another checkout. `--entry` selects a
-different navigation file inside its `maps/` directory.
+From inside `maps/`, use `python3 ../scripts/audit_tools/audit_map_migration.py`
+with the same arguments. The target repository defaults to the repository
+containing the script; `--repo-root PATH` can select another checkout. `--entry`
+selects a different navigation file inside its `maps/` directory.
 
 This repository calls its assembly inventory `_topic_maps/_topic_map.yml`.
 If your inventory is named `topicmaps.yaml`, use `--topic-map topicmaps.yaml`.
@@ -53,7 +53,7 @@ The live check saves an index of guide URLs, section IDs, fetch time, and page
 hashes. Reuse it with the same release checkout:
 
 ```bash
-python3 maps/tools/audit_map_migration.py \
+python3 scripts/audit_tools/audit_map_migration.py \
   --source-root "$release_source" \
   --published-snapshot /tmp/rhcl-map-audit/reports/published-index.json \
   --output /tmp/rhcl-map-audit-repeat
@@ -195,5 +195,5 @@ editorial checks and conversion tests are necessary for that conclusion.
 ## Tests
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s maps/tools/tests -v
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s scripts/audit_tools/tests -v
 ```
