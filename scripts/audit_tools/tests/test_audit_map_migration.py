@@ -9,6 +9,8 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from audit_map_migration import (
     Graph,
+    cross_distro_entries,
+    cross_distro_inventory,
     duplicate_job_include_rows,
     duplicate_module_inclusion_rows,
     job_paths,
@@ -234,6 +236,79 @@ endif::[]
             rows[0]["jobs"], ["maps/jobs/first.adoc", "maps/jobs/second.adoc"]
         )
 
+    def test_cross_distro_inventory_tracks_shared_jobs_and_modules(self):
+        for distro, category in (("rosa", "Install"), ("virt", "Configure")):
+            category_file = category.casefold() + ".adoc"
+            self.put(
+                f"maps/{distro}/navigation.adoc",
+                ":_mod-docs-content-type: MAP\n"
+                f"= {distro.upper()}\ninclude::{category_file}[]",
+            )
+            self.put(
+                f"maps/{distro}/{category_file}",
+                ":_mod-docs-content-type: MAP\n"
+                f"= {category}\ninclude::../jobs/shared.adoc[]",
+            )
+        self.put(
+            "maps/jobs/shared.adoc",
+            ":_mod-docs-content-type: MAP\n"
+            '[id="shared-job"]\n'
+            "= Manage a shared service\n"
+            "include::../../modules/shared.adoc[]",
+        )
+        self.put(
+            "modules/shared.adoc",
+            ":_mod-docs-content-type: CONCEPT\n"
+            '[id="shared-module"]\n'
+            "= Shared service",
+        )
+        entries = cross_distro_entries(self.root)
+        report, findings = cross_distro_inventory(
+            self.root, entries, {"nbsp": " "}
+        )
+        self.assertEqual(findings, [])
+        self.assertEqual(report["summary"]["cross_distro_shared_jobs"], 1)
+        self.assertEqual(report["summary"]["cross_distro_shared_modules"], 1)
+        self.assertEqual(report["jobs"][0]["distros"], ["rosa", "virt"])
+        self.assertEqual(
+            report["jobs"][0]["contexts"], ["rosa:Install", "virt:Configure"]
+        )
+        self.assertEqual(report["modules"][0]["job_count"], 1)
+        self.assertEqual(report["identity_conflicts"], [])
+
+    def test_cross_distro_inventory_blocks_same_id_with_different_content(self):
+        for distro, job in (("rosa", "first"), ("virt", "second")):
+            self.put(
+                f"maps/{distro}/navigation.adoc",
+                ":_mod-docs-content-type: MAP\n"
+                f"= {distro.upper()}\ninclude::category.adoc[]",
+            )
+            self.put(
+                f"maps/{distro}/category.adoc",
+                ":_mod-docs-content-type: MAP\n"
+                f"= Configure\ninclude::../jobs/{job}.adoc[]",
+            )
+            self.put(
+                f"maps/jobs/{job}.adoc",
+                ":_mod-docs-content-type: MAP\n"
+                '[id="conflicting-job"]\n'
+                f"= {job.title()} outcome\n{distro} content",
+            )
+        report, findings = cross_distro_inventory(
+            self.root, cross_distro_entries(self.root), {"nbsp": " "}
+        )
+        conflicts = report["identity_conflicts"]
+        self.assertTrue(
+            any(row["conflict"] == "same-id-different-content" for row in conflicts)
+        )
+        self.assertTrue(
+            any(
+                row["code"] == "cross-distro-same-id-different-content"
+                and row["severity"] == "error"
+                for row in findings
+            )
+        )
+
     def test_publication_match_includes_missing_inventory_and_unmatched_sections(self):
         self.put("modules/published.adoc", '[id="published_{context}"]\n= Published')
         self.put("modules/absent.adoc", '[id="absent_{context}"]\n= Absent')
@@ -358,6 +433,29 @@ endif::[]
             (self.root / "report/reports/duplicate-module-inclusions.csv").is_file()
         )
         self.assertTrue((self.root / "report/reports/README.md").is_file())
+        self.assertNotIn("cross_distro", report)
+        self.assertFalse(
+            (self.root / "report/reports/cross-distro-jobs.csv").exists()
+        )
+
+        cross_args = args[:-1] + [
+            str(self.root / "cross-report"),
+            "--cross-distro-audit",
+        ]
+        with contextlib.redirect_stdout(io.StringIO()):
+            cross_result = main(cross_args)
+        cross_report = json.loads(
+            (self.root / "cross-report/reports/audit.json").read_text()
+        )
+        self.assertEqual(cross_result, 1)
+        self.assertEqual(cross_report["summary"]["cross_distro_entries"], 1)
+        self.assertIn("cross_distro", cross_report)
+        self.assertTrue(
+            (self.root / "cross-report/reports/cross-distro-jobs.csv").is_file()
+        )
+        self.assertTrue(
+            (self.root / "cross-report/reports/cross-distro-modules.csv").is_file()
+        )
 
 
 if __name__ == "__main__":

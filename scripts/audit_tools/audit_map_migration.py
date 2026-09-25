@@ -483,6 +483,286 @@ def duplicate_module_inclusion_rows(graph_paths):
     ]
 
 
+def cross_distro_entries(root, configured=None):
+    """Resolve explicit DISTRO=PATH entries or discover maps/*/navigation.adoc."""
+    entries = []
+    if configured:
+        for value in configured:
+            distro, separator, entry = value.partition("=")
+            if not separator or not distro or not entry:
+                raise ValueError(
+                    "--cross-distro-entry must use DISTRO=maps/PATH/navigation.adoc"
+                )
+            entries.append({"distro": distro, "entry": entry})
+    else:
+        entries = [
+            {
+                "distro": navigation.parent.name,
+                "entry": navigation.relative_to(root).as_posix(),
+            }
+            for navigation in sorted((root / "maps").glob("*/navigation.adoc"))
+        ]
+    unique = []
+    seen = set()
+    for item in entries:
+        distro, entry = item["distro"], Path(item["entry"])
+        if not re.fullmatch(r"[\w.-]+", distro):
+            raise ValueError(f"Invalid cross-distro name: {distro}")
+        if (
+            entry.is_absolute()
+            or not entry.parts
+            or entry.parts[0] != "maps"
+            or ".." in entry.parts
+        ):
+            raise ValueError(
+                "Cross-distro entries must be paths inside maps/, relative to --repo-root"
+            )
+        if not (root / entry).is_file():
+            raise ValueError(f"Cross-distro entry does not exist: {entry}")
+        key = (distro, entry.as_posix())
+        if key not in seen:
+            seen.add(key)
+            unique.append({"distro": distro, "entry": entry.as_posix()})
+    if not unique:
+        raise ValueError("No maps/*/navigation.adoc entries found for cross-distro audit")
+    return unique
+
+
+def _inventory_record(records, path, data):
+    return records.setdefault(
+        path,
+        {
+            "path": path,
+            "primary_id": data["primary_id"],
+            "sha256": data["sha256"],
+            "titles": set(),
+            "distros": set(),
+            "categories": set(),
+            "contexts": set(),
+            "entries": set(),
+            "include_sites": set(),
+            "usage_count": 0,
+        },
+    )
+
+
+def _identity_conflicts(records, entity_type, check_titles=False):
+    conflicts = []
+
+    def add_groups(field, conflict_same, conflict_different=None):
+        groups = defaultdict(set)
+        for path, record in records.items():
+            value = record[field]
+            if value:
+                groups[value].add(path)
+        for identity, paths in sorted(groups.items()):
+            if len(paths) < 2:
+                continue
+            hashes = {records[path]["sha256"] for path in paths}
+            conflict = (
+                conflict_different
+                if conflict_different and len(hashes) > 1
+                else conflict_same
+            )
+            severity = "error" if conflict == "same-id-different-content" else "review"
+            conflicts.append(
+                {
+                    "entity_type": entity_type,
+                    "conflict": conflict,
+                    "identity": identity,
+                    "paths": sorted(paths),
+                    "distros": sorted(
+                        set().union(*(records[path]["distros"] for path in paths))
+                    ),
+                    "severity": severity,
+                    "remediation": (
+                        "Assign unique IDs or consolidate the conflicting sources."
+                        if severity == "error"
+                        else "Choose one canonical source path or document why separate aliases are required."
+                    ),
+                }
+            )
+
+    add_groups("primary_id", "same-id-same-content", "same-id-different-content")
+    add_groups("sha256", "same-content-different-path")
+    if check_titles:
+        title_groups = defaultdict(set)
+        title_labels = {}
+        for path, record in records.items():
+            for title in record["titles"]:
+                key = title.casefold()
+                if key:
+                    title_groups[key].add(path)
+                    title_labels.setdefault(key, title)
+        for key, paths in sorted(title_groups.items()):
+            if len(paths) < 2 or len({records[p]["sha256"] for p in paths}) < 2:
+                continue
+            conflicts.append(
+                {
+                    "entity_type": entity_type,
+                    "conflict": "same-title-different-content",
+                    "identity": title_labels[key],
+                    "paths": sorted(paths),
+                    "distros": sorted(
+                        set().union(*(records[path]["distros"] for path in paths))
+                    ),
+                    "severity": "review",
+                    "remediation": "Confirm that these are distinct outcomes; do not merge them from title similarity alone.",
+                }
+            )
+    return conflicts
+
+
+def cross_distro_inventory(root, entries, base_attributes):
+    """Build one deterministic job/module registry across navigation entries."""
+    jobs, modules = {}, {}
+    issues = []
+    include_graph = {}
+    for spec in entries:
+        distro, entry = spec["distro"], spec["entry"]
+        attributes = dict(base_attributes)
+        attributes[distro] = ""
+        graph = Graph(root, f"cross-distro:{distro}", attributes)
+        navigation = graph.walk(entry)
+        issues.extend(graph.issues)
+        include_graph[f"{distro}:{entry}"] = [
+            {
+                "source": node.source,
+                "line": node.line,
+                "target": node.path,
+                "options": node.options,
+                "offset": node.offset,
+            }
+            for node in graph.occurrences
+            if node.source
+        ]
+        if not navigation:
+            continue
+        for category in content_children(navigation, graph):
+            category_title = title_for(category, graph)
+            context = f"{distro}:{category_title}"
+            for job in content_children(category, graph):
+                job_data = graph.files[job.path]
+                record = _inventory_record(jobs, job.path, job_data)
+                record["titles"].add(title_for(job, graph))
+                record["distros"].add(distro)
+                record["categories"].add(category_title)
+                record["contexts"].add(context)
+                record["entries"].add(entry)
+                record["include_sites"].add(f"{distro}:{job.source}:{job.line}")
+                record["usage_count"] += 1
+                record.setdefault("modules", set())
+                for node in descendants(job):
+                    if not (
+                        node.path.startswith("modules/")
+                        and node.path.endswith(".adoc")
+                    ):
+                        continue
+                    record["modules"].add(node.path)
+                    module_data = graph.files[node.path]
+                    module = _inventory_record(modules, node.path, module_data)
+                    module["titles"].add(
+                        expand(module_data["title"], node.attributes)
+                    )
+                    module["distros"].add(distro)
+                    module["categories"].add(category_title)
+                    module["contexts"].add(context)
+                    module["entries"].add(entry)
+                    module["include_sites"].add(
+                        f"{distro}:{node.source}:{node.line}"
+                    )
+                    module["usage_count"] += 1
+                    module.setdefault("jobs", set()).add(job.path)
+
+    job_rows = [
+        {
+            "job": path,
+            "primary_id": record["primary_id"],
+            "titles": sorted(record["titles"]),
+            "sha256": record["sha256"],
+            "distros": sorted(record["distros"]),
+            "distro_count": len(record["distros"]),
+            "categories": sorted(record["categories"]),
+            "contexts": sorted(record["contexts"]),
+            "entries": sorted(record["entries"]),
+            "include_sites": sorted(record["include_sites"]),
+            "usage_count": record["usage_count"],
+            "modules": sorted(record.get("modules", set())),
+            "module_count": len(record.get("modules", set())),
+        }
+        for path, record in sorted(jobs.items())
+    ]
+    module_rows = [
+        {
+            "module": path,
+            "primary_id": record["primary_id"],
+            "titles": sorted(record["titles"]),
+            "sha256": record["sha256"],
+            "distros": sorted(record["distros"]),
+            "distro_count": len(record["distros"]),
+            "categories": sorted(record["categories"]),
+            "contexts": sorted(record["contexts"]),
+            "entries": sorted(record["entries"]),
+            "include_sites": sorted(record["include_sites"]),
+            "usage_count": record["usage_count"],
+            "jobs": sorted(record.get("jobs", set())),
+            "job_count": len(record.get("jobs", set())),
+        }
+        for path, record in sorted(modules.items())
+    ]
+    overlaps = [
+        {
+            "entity_type": entity_type,
+            "path": row[entity_type],
+            "distro_count": row["distro_count"],
+            "distros": row["distros"],
+            "contexts": row["contexts"],
+            "related_jobs": row.get("jobs", []),
+        }
+        for entity_type, rows in (("job", job_rows), ("module", module_rows))
+        for row in rows
+        if row["distro_count"] > 1
+    ]
+    conflicts = _identity_conflicts(jobs, "job", check_titles=True)
+    conflicts.extend(_identity_conflicts(modules, "module"))
+    conflict_findings = [
+        {
+            "scope": "cross-distro",
+            "severity": row["severity"],
+            "code": f"cross-distro-{row['conflict']}",
+            "file": row["paths"][0],
+            "line": 1,
+            "message": (
+                f"{row['entity_type'].title()} identity {row['identity']!r} "
+                f"matches: {', '.join(row['paths'])}."
+            ),
+            "remediation": row["remediation"],
+        }
+        for row in conflicts
+    ]
+    return {
+        "entries": entries,
+        "summary": {
+            "cross_distro_entries": len(entries),
+            "cross_distro_jobs": len(job_rows),
+            "cross_distro_modules": len(module_rows),
+            "cross_distro_shared_jobs": sum(
+                row["distro_count"] > 1 for row in job_rows
+            ),
+            "cross_distro_shared_modules": sum(
+                row["distro_count"] > 1 for row in module_rows
+            ),
+            "cross_distro_identity_conflicts": len(conflicts),
+        },
+        "jobs": job_rows,
+        "modules": module_rows,
+        "overlap": overlaps,
+        "identity_conflicts": conflicts,
+        "issues": issues,
+        "include_graph": include_graph,
+    }, issues + conflict_findings
+
+
 def title_for(node, graph):
     title = graph.files[node.path]["title"]
     owner = node
@@ -756,14 +1036,28 @@ def main(argv=None):
         action="store_true",
         help="Also exit 1 when editorial/reconciliation review remains",
     )
+    parser.add_argument(
+        "--cross-distro-audit",
+        action="store_true",
+        help="Also build a deterministic job/module inventory across navigation maps",
+    )
+    parser.add_argument(
+        "--cross-distro-entry",
+        action="append",
+        default=[],
+        metavar="DISTRO=PATH",
+        help="Navigation entry for cross-distro audit; repeat as needed. Defaults to maps/*/navigation.adoc",
+    )
     args = parser.parse_args(argv)
     if args.published_url and args.published_snapshot:
         parser.error("Choose --published-url or --published-snapshot")
     target, source = args.repo_root.resolve(), args.source_root.resolve()
-    attrs = {args.distro: "", "nbsp": " "}
+    base_attrs = {"nbsp": " "}
     for item in args.attribute:
         name, _, value = item.partition("=")
-        attrs[name] = value
+        base_attrs[name] = value
+    attrs = dict(base_attrs)
+    attrs[args.distro] = ""
     try:
         entries = topic_entries(source / args.topic_map, args.distro)
         if (
@@ -843,6 +1137,31 @@ def main(argv=None):
                     "rule_source": RULE_BASE + "pitfalls.md",
                 }
             )
+        cross_report = None
+        if args.cross_distro_audit:
+            cross_entries = cross_distro_entries(target, args.cross_distro_entry)
+            cross_report, cross_findings = cross_distro_inventory(
+                target, cross_entries, base_attrs
+            )
+            finding_keys = {
+                (
+                    finding.get("code"),
+                    finding.get("file"),
+                    finding.get("line"),
+                    finding.get("message"),
+                )
+                for finding in findings
+            }
+            for finding in cross_findings:
+                key = (
+                    finding.get("code"),
+                    finding.get("file"),
+                    finding.get("line"),
+                    finding.get("message"),
+                )
+                if key not in finding_keys:
+                    findings.append(finding)
+                    finding_keys.add(key)
         publication = None
         published_rows = []
         if args.published_url or args.published_snapshot:
@@ -968,6 +1287,8 @@ def main(argv=None):
             if review
             else "pass",
         }
+        if cross_report:
+            summary.update(cross_report["summary"])
         report = {
             "schema_version": 1,
             "created_at": datetime.now(timezone.utc).isoformat(),
@@ -1008,6 +1329,8 @@ def main(argv=None):
                 "maps": {p: d["sha256"] for p, d in sorted(maps.files.items())},
             },
         }
+        if cross_report:
+            report["cross_distro"] = cross_report
         args.output.mkdir(parents=True, exist_ok=True)
         report_dir = args.output / "reports"
         report_dir.mkdir(parents=True, exist_ok=True)
@@ -1081,6 +1404,73 @@ def main(argv=None):
             ("published-sections", published_rows, ["id", "url", "modules", "status"]),
         ]:
             write_csv(report_dir / (name + ".csv"), rows, fields)
+        if cross_report:
+            for name, rows, fields in [
+                (
+                    "cross-distro-jobs",
+                    cross_report["jobs"],
+                    [
+                        "job",
+                        "primary_id",
+                        "titles",
+                        "sha256",
+                        "distros",
+                        "distro_count",
+                        "categories",
+                        "contexts",
+                        "entries",
+                        "include_sites",
+                        "usage_count",
+                        "modules",
+                        "module_count",
+                    ],
+                ),
+                (
+                    "cross-distro-modules",
+                    cross_report["modules"],
+                    [
+                        "module",
+                        "primary_id",
+                        "titles",
+                        "sha256",
+                        "distros",
+                        "distro_count",
+                        "categories",
+                        "contexts",
+                        "entries",
+                        "include_sites",
+                        "usage_count",
+                        "jobs",
+                        "job_count",
+                    ],
+                ),
+                (
+                    "cross-distro-overlap",
+                    cross_report["overlap"],
+                    [
+                        "entity_type",
+                        "path",
+                        "distro_count",
+                        "distros",
+                        "contexts",
+                        "related_jobs",
+                    ],
+                ),
+                (
+                    "cross-distro-identity-conflicts",
+                    cross_report["identity_conflicts"],
+                    [
+                        "entity_type",
+                        "conflict",
+                        "identity",
+                        "paths",
+                        "distros",
+                        "severity",
+                        "remediation",
+                    ],
+                ),
+            ]:
+                write_csv(report_dir / (name + ".csv"), rows, fields)
         lines = [
             "# Map migration audit",
             "",
@@ -1103,6 +1493,20 @@ def main(argv=None):
             for r in coverage
             if r["status"] == "missing"
         ] or ["None detected."]
+        if cross_report:
+            lines += [
+                "",
+                "## Cross-distro inventory",
+                "",
+                f"Entries scanned: {cross_report['summary']['cross_distro_entries']}.",
+                f"Canonical jobs: {cross_report['summary']['cross_distro_jobs']}.",
+                f"Canonical modules: {cross_report['summary']['cross_distro_modules']}.",
+                f"Jobs shared across distros: {cross_report['summary']['cross_distro_shared_jobs']}.",
+                f"Modules shared across distros: {cross_report['summary']['cross_distro_shared_modules']}.",
+                f"Identity conflicts for review: {cross_report['summary']['cross_distro_identity_conflicts']}.",
+                "",
+                "Use `cross-distro-jobs.csv` and `cross-distro-modules.csv` to trace category/distro usage. Review exact identity conflicts in `cross-distro-identity-conflicts.csv`; the audit does not merge or generate jobs.",
+            ]
         lines += [
             "",
             "## How to use the report",

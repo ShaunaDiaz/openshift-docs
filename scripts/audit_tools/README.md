@@ -43,6 +43,41 @@ map/source audit is reusable; the optional published-site check might need
 adjustment if another product's documentation portal has a substantially
 different structure.
 
+### Cross-distro inventory
+
+The standard audit remains scoped to one `--entry` and `--distro`. Add
+`--cross-distro-audit` to also build one deterministic inventory across every
+discovered `maps/*/navigation.adoc` file:
+
+```bash
+python3 scripts/audit_tools/audit_map_migration.py \
+  --source-root "$release_source" \
+  --output /tmp/rhcl-map-audit \
+  --cross-distro-audit
+```
+
+For navigation files that do not follow the discovery convention, repeat
+`--cross-distro-entry DISTRO=PATH` explicitly:
+
+```bash
+--cross-distro-entry rosa=maps/rosa/navigation.adoc \
+--cross-distro-entry osd=maps/osd/navigation.adoc \
+--cross-distro-entry virt=maps/virt/navigation.adoc
+```
+
+The inventory treats a category's direct content children as jobs, regardless
+of whether they live in `maps/jobs`, `ocp-jobs`, `hcm-jobs`, or another shared
+directory. Canonical source paths identify existing jobs and modules. Explicit
+IDs and exact SHA-256 hashes detect identity conflicts and exact copies. Exact
+title matches with different content are review items only. The audit does not
+generate job IDs, merge files, or use cosine, Jaccard, or other fuzzy similarity
+scoring.
+
+The additional reports show every distro/category context for a job, every job
+and distro using a module, cross-distro overlap, and deterministic identity
+conflicts. Without `--cross-distro-audit`, these reports are not generated and
+the existing single-distro behavior is unchanged.
+
 ## Run from the repository root
 
 Use a separate checkout of `rhcl-docs-1.4` as release evidence. The maps to be
@@ -197,6 +232,10 @@ Open `reports/README.md` in the output directory for the results and next steps.
 - `reports/unreachable-jobs.csv`: shared job files outside the selected navigation graph.
 - `reports/duplicate-job-includes.csv`: job files included more than once, with include locations.
 - `reports/duplicate-module-inclusions.csv`: modules included by more than one reachable job for review.
+- `reports/cross-distro-jobs.csv`: canonical job paths and every distro/category usage context.
+- `reports/cross-distro-modules.csv`: canonical modules and the jobs, distros, and categories using them.
+- `reports/cross-distro-overlap.csv`: jobs and modules shared by multiple distros.
+- `reports/cross-distro-identity-conflicts.csv`: exact ID, content-hash, and title conflicts for review.
 - `reports/audit.json`: complete report and provenance for automation/preview integration.
 - `reports/published-index.json`: reusable publication snapshot when requested.
 
