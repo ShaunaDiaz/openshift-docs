@@ -995,60 +995,231 @@ def write_csv(path, rows, fields):
             )
 
 
-def main(argv=None):
+CONFIG_KEYS = {
+    "schema_version",
+    "repo_root",
+    "source_root",
+    "topic_map",
+    "entry",
+    "distro",
+    "attributes",
+    "published_url",
+    "published_snapshot",
+    "output",
+    "strict_review",
+    "cross_distro_audit",
+    "cross_distro_entries",
+}
+CONFIG_PATH_KEYS = {"repo_root", "source_root", "published_snapshot", "output"}
+CONFIG_TEXT_KEYS = {"topic_map", "entry", "distro", "published_url"}
+CONFIG_BOOL_KEYS = {"strict_review", "cross_distro_audit"}
+
+
+def load_config(path):
+    """Load command defaults from a validated YAML configuration file."""
+    resolved = path.expanduser().resolve()
+    raw = yaml.safe_load(resolved.read_text())
+    if raw is None:
+        raw = {}
+    if not isinstance(raw, dict):
+        raise ValueError("Audit configuration must be a YAML mapping")
+    unknown = sorted(set(raw) - CONFIG_KEYS)
+    if unknown:
+        raise ValueError(f"Unknown audit configuration keys: {', '.join(unknown)}")
+    if raw.get("schema_version", 1) != 1:
+        raise ValueError("Only audit configuration schema_version 1 is supported")
+
+    defaults = {}
+    for key in CONFIG_PATH_KEYS:
+        value = raw.get(key)
+        if value is None:
+            continue
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"Configuration value {key!r} must be a path string")
+        value = Path(value).expanduser()
+        defaults[key] = (
+            (resolved.parent / value).resolve()
+            if not value.is_absolute()
+            else value.resolve()
+        )
+    for key in CONFIG_TEXT_KEYS:
+        value = raw.get(key)
+        if value is None:
+            continue
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"Configuration value {key!r} must be a non-empty string")
+        defaults[key] = value
+    for key in CONFIG_BOOL_KEYS:
+        if key not in raw:
+            continue
+        if not isinstance(raw[key], bool):
+            raise ValueError(f"Configuration value {key!r} must be true or false")
+        defaults[key] = raw[key]
+
+    configured_attributes = raw.get("attributes", [])
+    if isinstance(configured_attributes, dict):
+        attributes = []
+        for name, value in configured_attributes.items():
+            if not isinstance(name, str) or not name:
+                raise ValueError(
+                    "Configuration attribute names must be non-empty strings"
+                )
+            if isinstance(value, (dict, list)):
+                raise ValueError(
+                    f"Configuration attribute {name!r} must have a scalar value"
+                )
+            attributes.append(name if value is None else f"{name}={value}")
+    elif isinstance(configured_attributes, list) and all(
+        isinstance(item, str) and item for item in configured_attributes
+    ):
+        attributes = configured_attributes
+    else:
+        raise ValueError(
+            "Configuration attributes must be a mapping or list of strings"
+        )
+    defaults["attribute"] = attributes
+
+    configured_entries = raw.get("cross_distro_entries", [])
+    if isinstance(configured_entries, dict):
+        cross_entries = []
+        for distro, entry in configured_entries.items():
+            if not isinstance(distro, str) or not distro:
+                raise ValueError("Cross-distro names must be non-empty strings")
+            if not isinstance(entry, str) or not entry:
+                raise ValueError(
+                    f"Cross-distro entry for {distro!r} must be a non-empty string"
+                )
+            cross_entries.append(f"{distro}={entry}")
+    elif isinstance(configured_entries, list) and all(
+        isinstance(item, str) and item for item in configured_entries
+    ):
+        cross_entries = configured_entries
+    else:
+        raise ValueError(
+            "Configuration cross_distro_entries must be a mapping or list of DISTRO=PATH strings"
+        )
+    defaults["cross_distro_entry"] = cross_entries
+    return defaults, resolved
+
+
+def has_option(argv, option):
+    return any(value == option or value.startswith(option + "=") for value in argv)
+
+
+def parse_arguments(argv=None):
+    raw_argv = list(sys.argv[1:] if argv is None else argv)
+    bootstrap = argparse.ArgumentParser(add_help=False)
+    bootstrap.add_argument("--config", type=Path)
+    initial, _ = bootstrap.parse_known_args(raw_argv)
+    configured = {}
+    config_path = None
+    if initial.config:
+        try:
+            configured, config_path = load_config(initial.config)
+        except (OSError, ValueError, yaml.YAMLError) as error:
+            bootstrap.error(f"cannot load --config: {error}")
+
+    defaults = {
+        "repo_root": Path(__file__).resolve().parents[2],
+        "source_root": None,
+        "topic_map": "_topic_maps/_topic_map.yml",
+        "entry": "maps/rhcl/navigation.adoc",
+        "distro": "rhcl",
+        "attribute": [],
+        "published_url": None,
+        "published_snapshot": None,
+        "output": None,
+        "strict_review": False,
+        "cross_distro_audit": False,
+        "cross_distro_entry": [],
+    }
+    defaults.update(configured)
+    if has_option(raw_argv, "--attribute"):
+        defaults["attribute"] = []
+    if has_option(raw_argv, "--cross-distro-entry"):
+        defaults["cross_distro_entry"] = []
+    if has_option(raw_argv, "--published-url"):
+        defaults["published_snapshot"] = None
+    if has_option(raw_argv, "--published-snapshot"):
+        defaults["published_url"] = None
+
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--config",
+        type=Path,
+        default=config_path,
+        help="YAML configuration file; explicit CLI options override its values",
+    )
     parser.add_argument(
         "--repo-root",
         type=Path,
-        default=Path(__file__).resolve().parents[2],
+        default=defaults["repo_root"],
         help="Repository containing the maps being migrated",
     )
     parser.add_argument(
         "--source-root",
         type=Path,
-        required=True,
+        default=defaults["source_root"],
         help="Separate checkout of the published release source (1.4)",
     )
     parser.add_argument(
         "--topic-map",
-        default="_topic_maps/_topic_map.yml",
+        default=defaults["topic_map"],
         help="YAML inventory relative to source root; accepts any filename with OpenShift Dir/Topics/File schema",
     )
     parser.add_argument(
         "--entry",
-        default="maps/rhcl/navigation.adoc",
+        default=defaults["entry"],
         help="Migration entry relative to repo root",
     )
-    parser.add_argument("--distro", default="rhcl")
+    parser.add_argument("--distro", default=defaults["distro"])
     parser.add_argument(
-        "--attribute", action="append", default=[], metavar="NAME[=VALUE]"
+        "--attribute",
+        action="append",
+        default=defaults["attribute"],
+        metavar="NAME[=VALUE]",
     )
     parser.add_argument(
         "--published-url",
+        default=defaults["published_url"],
         help="Fetch guide/topic IDs from this published product/version page",
     )
     parser.add_argument(
-        "--published-snapshot", type=Path, help="Reuse published-index.json offline"
+        "--published-snapshot",
+        type=Path,
+        default=defaults["published_snapshot"],
+        help="Reuse published-index.json offline",
     )
-    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--output", type=Path, default=defaults["output"])
     parser.add_argument(
         "--strict-review",
-        action="store_true",
+        action=argparse.BooleanOptionalAction,
+        default=defaults["strict_review"],
         help="Also exit 1 when editorial/reconciliation review remains",
     )
     parser.add_argument(
         "--cross-distro-audit",
-        action="store_true",
+        action=argparse.BooleanOptionalAction,
+        default=defaults["cross_distro_audit"],
         help="Also build a deterministic job/module inventory across navigation maps",
     )
     parser.add_argument(
         "--cross-distro-entry",
         action="append",
-        default=[],
+        default=defaults["cross_distro_entry"],
         metavar="DISTRO=PATH",
         help="Navigation entry for cross-distro audit; repeat as needed. Defaults to maps/*/navigation.adoc",
     )
-    args = parser.parse_args(argv)
+    args = parser.parse_args(raw_argv)
+    if args.source_root is None:
+        parser.error("--source-root is required unless source_root is set in --config")
+    if args.output is None:
+        parser.error("--output is required unless output is set in --config")
+    return parser, args
+
+
+def main(argv=None):
+    parser, args = parse_arguments(argv)
     if args.published_url and args.published_snapshot:
         parser.error("Choose --published-url or --published-snapshot")
     target, source = args.repo_root.resolve(), args.source_root.resolve()
@@ -1292,6 +1463,12 @@ def main(argv=None):
         report = {
             "schema_version": 1,
             "created_at": datetime.now(timezone.utc).isoformat(),
+            "configuration": {
+                "path": str(args.config.resolve()),
+                "sha256": sha(args.config.read_text()),
+            }
+            if args.config
+            else None,
             "target": git_info(target),
             "release_source": git_info(source),
             "entry": args.entry,

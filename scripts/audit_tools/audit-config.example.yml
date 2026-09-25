@@ -1,0 +1,21 @@
+schema_version: 1
+
+# Paths in this file are resolved relative to this configuration file.
+source_root: /path/to/rhcl-docs-1.4
+output: /tmp/rhcl-map-audit
+
+# These values show the RHCL defaults and can be omitted.
+entry: maps/rhcl/navigation.adoc
+distro: rhcl
+topic_map: _topic_maps/_topic_map.yml
+
+published_url: https://docs.redhat.com/en/documentation/red_hat_connectivity_link/1.4
+strict_review: false
+cross_distro_audit: true
+
+# Standard maps/*/navigation.adoc entries are discovered automatically.
+# Use this mapping only for entries in nonstandard locations.
+cross_distro_entries: {}
+
+# AsciiDoc attributes can be expressed as a YAML mapping.
+attributes: {}

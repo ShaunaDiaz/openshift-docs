@@ -43,6 +43,54 @@ map/source audit is reusable; the optional published-site check might need
 adjustment if another product's documentation portal has a substantially
 different structure.
 
+### Use a configuration file
+
+Use `--config` to keep reusable audit settings in YAML instead of repeating a
+long command. Copy
+[`audit-config.example.yml`](audit-config.example.yml), update at least
+`source_root` and `output`, and run. The suggested local filename,
+`audit-config.yml`, is ignored by Git so that machine-specific paths are not
+committed accidentally.
+
+```bash
+python3 scripts/audit_tools/audit_map_migration.py \
+  --config scripts/audit_tools/audit-config.yml
+```
+
+The supported keys are:
+
+```yaml
+schema_version: 1
+repo_root: ../..
+source_root: /path/to/published-release-checkout
+topic_map: _topic_maps/_topic_map.yml
+entry: maps/rhcl/navigation.adoc
+distro: rhcl
+output: /tmp/rhcl-map-audit
+published_url: https://docs.redhat.com/en/documentation/red_hat_connectivity_link/1.4
+# published_snapshot: /path/to/published-index.json
+strict_review: false
+cross_distro_audit: true
+attributes:
+  product-name: Red Hat Connectivity Link
+cross_distro_entries:
+  rosa: maps/rosa/navigation.adoc
+  osd: maps/osd/navigation.adoc
+```
+
+`repo_root`, `source_root`, `output`, and `published_snapshot` paths in the
+configuration file are resolved relative to that file. `entry` remains
+relative to `repo_root`, and `topic_map` remains relative to `source_root`.
+Standard `maps/*/navigation.adoc` files are discovered without listing
+`cross_distro_entries`.
+
+Explicit command-line options override configured values. An explicit
+`--attribute` or `--cross-distro-entry` replaces the corresponding configured
+collection. Use `--no-strict-review` or `--no-cross-distro-audit` to override a
+configured `true` value. Unknown keys and invalid value types are rejected so
+that configuration mistakes are not silently ignored. The generated
+`audit.json` records the configuration path and SHA-256 hash.
+
 ### Cross-distro inventory
 
 The standard audit remains scoped to one `--entry` and `--distro`. Add

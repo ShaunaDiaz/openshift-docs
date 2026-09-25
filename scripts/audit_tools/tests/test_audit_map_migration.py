@@ -15,6 +15,7 @@ from audit_map_migration import (
     duplicate_module_inclusion_rows,
     job_paths,
     jtbd_audit,
+    load_config,
     main,
     topic_entries,
 )
@@ -456,6 +457,53 @@ endif::[]
         self.assertTrue(
             (self.root / "cross-report/reports/cross-distro-modules.csv").is_file()
         )
+
+    def test_cli_uses_yaml_config_and_explicit_arguments_override_it(self):
+        self.put(
+            "release/_topic_maps/_topic_map.yml",
+            "Dir: book\nDistros: rhcl\nTopics:\n- File: start\n",
+        )
+        self.put("release/book/start.adoc", "include::modules/shared.adoc[]")
+        self.put("release/modules/shared.adoc", "= Shared")
+        self.put(
+            "target/maps/rhcl/navigation.adoc",
+            ":_mod-docs-content-type: MAP\n= Product\ninclude::modules/shared.adoc[]",
+        )
+        self.put("target/modules/shared.adoc", "= Shared")
+        config = self.put(
+            "settings/audit.yml",
+            """schema_version: 1
+repo_root: ../target
+source_root: ../release
+output: ../configured-report
+attributes:
+  product: connectivity-link
+cross_distro_audit: true
+cross_distro_entries:
+  rhcl: maps/rhcl/navigation.adoc
+""",
+        )
+        override_output = self.root / "override-report"
+        with contextlib.redirect_stdout(io.StringIO()):
+            result = main(
+                [
+                    "--config",
+                    str(config),
+                    "--output",
+                    str(override_output),
+                ]
+            )
+        report = json.loads((override_output / "reports/audit.json").read_text())
+        self.assertEqual(result, 1)
+        self.assertEqual(report["attributes"]["product"], "connectivity-link")
+        self.assertEqual(report["summary"]["cross_distro_entries"], 1)
+        self.assertEqual(report["configuration"]["path"], str(config.resolve()))
+        self.assertFalse((self.root / "configured-report").exists())
+
+    def test_config_rejects_unknown_keys(self):
+        config = self.put("audit.yml", "source_root: release\noutpt: report\n")
+        with self.assertRaisesRegex(ValueError, "Unknown.*outpt"):
+            load_config(config)
 
 
 if __name__ == "__main__":
