@@ -4,21 +4,32 @@ on:
   push:
     branches:
       - OSDOCS-21105
+      - OSDOCS-*
+      - rhcl-docs-main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   publish:
-    if: github.repository == 'ShaunaDiaz/openshift-docs'
+    # A pull request from another fork receives a read-only token. Publish
+    # automatically only for branches that are already in this repository.
+    if: >-
+      github.repository == 'ShaunaDiaz/openshift-docs' &&
+      (github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Check out the source branch
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -36,7 +47,47 @@ jobs:
       - name: Build and publish the RHCL JTBD preview
         env:
           GIT_TERMINAL_PROMPT: '0'
+          PREVIEW_BRANCH: ${{ github.event_name == 'pull_request' && format('PR-{0}', github.event.pull_request.number) || github.ref_name }}
         run: |
           bash scripts/publish-jtbd-maps.sh \
-            --branch "$GITHUB_REF_NAME" \
+            --branch "$PREVIEW_BRANCH" \
             --distro rhcl
+
+  check-fork-pr:
+    # Fork PRs cannot write to the target repository's gh-pages branch. Build
+    # the same preview and retain it as a PR artifact instead.
+    if: >-
+      github.repository == 'ShaunaDiaz/openshift-docs' &&
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out the pull request source
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+
+      - name: Install Asciidoctor tools
+        run: gem install asciidoctor asciidoctor-multipage --no-document
+
+      - name: Build the RHCL JTBD preview
+        run: |
+          bash scripts/preview-jtbd-maps.sh \
+            --distro rhcl \
+            --output build/jtbd-preview
+
+      - name: Upload the preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jtbd-preview-pr-${{ github.event.pull_request.number }}
+          path: build/jtbd-preview
+          retention-days: 14
