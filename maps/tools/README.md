@@ -9,7 +9,7 @@ as information, not as a coverage failure.
 The script reads source files without changing them. It does not fetch Git
 branches, alter maps, generate missing content, or invoke map-tools. It needs
 Python 3.10+, PyYAML, and (for the optional live-site check) curl. Reports are
-written only to the output directory you select.
+written under the `reports/` folder inside the output directory you select.
 
 ## Run from the repository root
 
@@ -55,7 +55,7 @@ hashes. Reuse it with the same release checkout:
 ```bash
 python3 maps/tools/audit_map_migration.py \
   --source-root "$release_source" \
-  --published-snapshot /tmp/rhcl-map-audit/published-index.json \
+  --published-snapshot /tmp/rhcl-map-audit/reports/published-index.json \
   --output /tmp/rhcl-map-audit-repeat
 ```
 
@@ -127,6 +127,8 @@ dependency on that repository or map-tools.
 | At most three levels below category | Check projected source heading level, using include offsets | `toc-guidelines.md` |
 | Discover is present | Automatic check | `consistency-guidelines.md` |
 | Job titles are unique | Automatic check across direct category children | `consistency-guidelines.md` |
+| A job file is included only once | Automatic reachable-graph check; repeated inclusion is blocking | This audit |
+| Modules are not unintentionally shared across jobs | Automatic check; shared modules require review, not an automatic failure | This audit |
 | Procedure/job titles use imperatives; concepts/references use noun phrases | Common gerunds flagged; grammatical correctness remains editorial | `consistency-guidelines.md` |
 | Avoid redundant prefixes and persona-gated headings | Common patterns flagged | `consistency-guidelines.md` |
 | Verification belongs within its execution job | Standalone verification titles flagged for review | `toc-guidelines.md` |
@@ -137,6 +139,9 @@ not require adopting another product's folder convention. It does not impose
 the per-book analysis artifact's sequential job numbering or 10–15-job target
 on the entire product. Title uniqueness below the main-job level, appropriate
 grouping, natural language, and semantic completeness need editorial review.
+The audit does not use cosine similarity, Jaccard similarity, or another
+semantic-similarity heuristic to identify duplicate jobs. It reports only
+deterministic duplicate includes and module reuse across reachable jobs.
 
 This is a source audit, not an AsciiDoc or DITA renderer. `leveloffset` supports
 relative and absolute numeric values; projected navigation depths do not model
@@ -146,20 +151,22 @@ converter and preview as separate gates.
 
 ## Reports and remediation
 
-Open `README.md` in the output directory for the results and next steps.
+Open `reports/README.md` in the output directory for the results and next steps.
 
-- `coverage.csv`: required module/snippet, status, source assemblies, target
+- `reports/coverage.csv`: required module/snippet, status, source assemblies, target
   jobs, published links, hashes, and remediation.
-- `findings.csv`: broken includes, unsupported preprocessing, JTBD rules, and
+- `reports/findings.csv`: broken includes, unsupported preprocessing, JTBD rules, and
   publication reconciliation issues, with source locations and fixes.
-- `jobs-review.csv`: reachable top jobs, parent concepts, and editorial checks.
-- `assembly-review.csv`: check content written directly in assemblies, such as
+- `reports/jobs-review.csv`: reachable top jobs, parent concepts, and editorial checks.
+- `reports/assembly-review.csv`: check content written directly in assemblies, such as
   introductions, prerequisites, and additional resources.
-- `published-sections.csv`: all published section IDs and matching source files.
-- `additional-map-content.csv`: extra target modules, including possible 1.5 work.
-- `unreachable-jobs.csv`: shared job files outside the selected navigation graph.
-- `audit.json`: complete report and provenance for automation/preview integration.
-- `published-index.json`: reusable publication snapshot when requested.
+- `reports/published-sections.csv`: all published section IDs and matching source files.
+- `reports/additional-map-content.csv`: extra target modules, including possible 1.5 work.
+- `reports/unreachable-jobs.csv`: shared job files outside the selected navigation graph.
+- `reports/duplicate-job-includes.csv`: job files included more than once, with include locations.
+- `reports/duplicate-module-inclusions.csv`: modules included by more than one reachable job for review.
+- `reports/audit.json`: complete report and provenance for automation/preview integration.
+- `reports/published-index.json`: reusable publication snapshot when requested.
 
 Fix missing includes first, then missing published content and structural
 findings. Review changed sources and assembly-only prose before deciding that

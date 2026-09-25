@@ -437,6 +437,52 @@ def content_children(node, graph):
     ]
 
 
+def duplicate_job_include_rows(graph):
+    """Return job files that occur more than once in the reachable map graph."""
+    occurrences = defaultdict(list)
+    for occurrence in graph.occurrences:
+        if occurrence.path.startswith("maps/jobs/") and occurrence.path.endswith(
+            ".adoc"
+        ):
+            occurrences[occurrence.path].append(occurrence)
+    return [
+        {
+            "job": path,
+            "occurrences": len(nodes),
+            "include_sites": [
+                f"{node.source or '<entry>'}:{node.line}" for node in nodes
+            ],
+            "status": "duplicate-job-include",
+        }
+        for path, nodes in sorted(occurrences.items())
+        if len(nodes) > 1
+    ]
+
+
+def job_paths(navigation, graph):
+    """Map each reachable file to the JTBD jobs that contain it."""
+    paths = defaultdict(set)
+    for category in content_children(navigation, graph) if navigation else []:
+        for job in content_children(category, graph):
+            for node in descendants(job):
+                paths[node.path].add(job.path)
+    return paths
+
+
+def duplicate_module_inclusion_rows(graph_paths):
+    """Return modules included by more than one reachable JTBD job."""
+    return [
+        {
+            "module": module,
+            "job_count": len(jobs),
+            "jobs": sorted(jobs),
+            "status": "duplicate-module-across-jobs",
+        }
+        for module, jobs in sorted(graph_paths.items())
+        if module.startswith("modules/") and len(jobs) > 1
+    ]
+
+
 def title_for(node, graph):
     title = graph.files[node.path]["title"]
     owner = node
@@ -763,6 +809,40 @@ def main(argv=None):
             )
         jtbd_findings, jobs, categories = jtbd_audit(maps, navigation)
         findings.extend(jtbd_findings)
+        duplicate_job_includes = duplicate_job_include_rows(maps)
+        for row in duplicate_job_includes:
+            findings.append(
+                {
+                    "scope": "maps",
+                    "severity": "error",
+                    "code": "duplicate-job-include",
+                    "file": row["job"],
+                    "line": 0,
+                    "message": (
+                        f"Job file is included {row['occurrences']} times at "
+                        f"{', '.join(row['include_sites'])}."
+                    ),
+                    "remediation": "Keep each job in one reachable navigation location, or verify and document why repeated inclusion is required.",
+                }
+            )
+        graph_paths = job_paths(navigation, maps)
+        duplicate_module_inclusions = duplicate_module_inclusion_rows(graph_paths)
+        for row in duplicate_module_inclusions:
+            findings.append(
+                {
+                    "scope": "maps",
+                    "severity": "review",
+                    "code": "duplicate-module-across-jobs",
+                    "file": row["module"],
+                    "line": maps.files[row["module"]]["heading_line"] or 1,
+                    "message": (
+                        f"Module is included by {row['job_count']} jobs: "
+                        f"{', '.join(row['jobs'])}."
+                    ),
+                    "remediation": "Confirm that the module is intentionally shared. Otherwise keep it under one job and link to it from the other job.",
+                    "rule_source": RULE_BASE + "pitfalls.md",
+                }
+            )
         publication = None
         published_rows = []
         if args.published_url or args.published_snapshot:
@@ -778,11 +858,6 @@ def main(argv=None):
             )
             findings.extend(pub_findings)
             findings.extend(issue for issue in baseline.issues if issue not in findings)
-        graph_paths = defaultdict(set)
-        for category in content_children(navigation, maps) if navigation else []:
-            for job in content_children(category, maps):
-                for node in descendants(job):
-                    graph_paths[node.path].add(job.path)
         by_module = defaultdict(list)
         for row in published_rows:
             for module in row["modules"]:
@@ -854,6 +929,7 @@ def main(argv=None):
             len(jobs)
             + len(assembly_reviews)
             + counts["covered-changed"]
+            + len(duplicate_job_includes)
             + sum(f["severity"] == "review" for f in findings)
         )
         summary = {
@@ -868,6 +944,8 @@ def main(argv=None):
             "additional_map_modules": len(extras),
             "reachable_jobs": len(jobs),
             "unreachable_jobs": len(unreachable),
+            "duplicate_job_includes": len(duplicate_job_includes),
+            "duplicate_modules_across_jobs": len(duplicate_module_inclusions),
             "errors": errors,
             "review_items": review,
             "published_guides_checked": len(publication["guides"])
@@ -907,6 +985,8 @@ def main(argv=None):
             "categories": categories,
             "additional_map_content": extras,
             "unreachable_jobs": unreachable,
+            "duplicate_job_includes": duplicate_job_includes,
+            "duplicate_module_inclusions": duplicate_module_inclusions,
             "assembly_review": assembly_reviews,
             "published_sections": published_rows,
             "include_graph": {
@@ -929,9 +1009,11 @@ def main(argv=None):
             },
         }
         args.output.mkdir(parents=True, exist_ok=True)
-        (args.output / "audit.json").write_text(json.dumps(report, indent=2) + "\n")
+        report_dir = args.output / "reports"
+        report_dir.mkdir(parents=True, exist_ok=True)
+        (report_dir / "audit.json").write_text(json.dumps(report, indent=2) + "\n")
         if publication:
-            (args.output / "published-index.json").write_text(
+            (report_dir / "published-index.json").write_text(
                 json.dumps(publication, indent=2) + "\n"
             )
         for name, rows, fields in [
@@ -986,9 +1068,19 @@ def main(argv=None):
             ),
             ("additional-map-content", extras, ["module", "map_jobs", "status"]),
             ("unreachable-jobs", unreachable, ["file", "status"]),
+            (
+                "duplicate-job-includes",
+                duplicate_job_includes,
+                ["job", "occurrences", "include_sites", "status"],
+            ),
+            (
+                "duplicate-module-inclusions",
+                duplicate_module_inclusions,
+                ["module", "job_count", "jobs", "status"],
+            ),
             ("published-sections", published_rows, ["id", "url", "modules", "status"]),
         ]:
-            write_csv(args.output / (name + ".csv"), rows, fields)
+            write_csv(report_dir / (name + ".csv"), rows, fields)
         lines = [
             "# Map migration audit",
             "",
@@ -1019,16 +1111,17 @@ def main(argv=None):
             "2. Restore missing published modules through reachable job includes. Check replacement candidates before deciding whether content was renamed or split.",
             "3. Review `covered-changed` rows in `coverage.csv` against the release source; a newer file can omit older sections.",
             "4. Reconcile `published-sections.csv` and publication findings. Unmatched sections are review items, not automatically missing modules.",
-            "5. Fix structural JTBD findings and complete `jobs-review.csv` and `assembly-review.csv` editorial checks.",
-            "6. Rerun the audit, then run the preview and the AsciiDocDITA conversion checks separately.",
+            "5. Fix duplicate job includes in `duplicate-job-includes.csv`; review shared modules in `duplicate-module-inclusions.csv`.",
+            "6. Fix structural JTBD findings and complete `jobs-review.csv` and `assembly-review.csv` editorial checks.",
+            "7. Rerun the audit, then run the preview and the AsciiDocDITA conversion checks separately.",
             "",
             "Additional map content is informational: the target can include 1.5 work in progress. Unreachable job files do not count as covered.",
             "",
             "This audit checks source reachability and topic-ID evidence. It does not certify rendered content equivalence, editorial quality, or successful DITA conversion.",
         ]
-        (args.output / "README.md").write_text("\n".join(lines) + "\n")
+        (report_dir / "README.md").write_text("\n".join(lines) + "\n")
         print(json.dumps(summary, indent=2))
-        print(f"Report: {args.output.resolve() / 'README.md'}")
+        print(f"Report: {report_dir.resolve() / 'README.md'}")
         return (
             1 if errors or counts["missing"] or (args.strict_review and review) else 0
         )

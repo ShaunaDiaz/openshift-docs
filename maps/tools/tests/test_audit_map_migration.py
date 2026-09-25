@@ -7,7 +7,15 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from audit_map_migration import Graph, jtbd_audit, main, topic_entries
+from audit_map_migration import (
+    Graph,
+    duplicate_job_include_rows,
+    duplicate_module_inclusion_rows,
+    job_paths,
+    jtbd_audit,
+    main,
+    topic_entries,
+)
 from published_map_index import PageIndex, reconcile, source_id_patterns
 
 
@@ -179,6 +187,53 @@ endif::[]
         self.assertEqual(findings, [])
         self.assertEqual(jobs[0]["parent"], "modules/parent.adoc")
 
+    def test_duplicate_job_file_inclusion_is_reported(self):
+        self.put(
+            "maps/navigation.adoc",
+            ":_mod-docs-content-type: MAP\n= Product\ninclude::discover.adoc[]",
+        )
+        self.put(
+            "maps/discover.adoc",
+            ":_mod-docs-content-type: MAP\n= Discover\n"
+            "include::jobs/repeated.adoc[]\n"
+            "include::jobs/repeated.adoc[]",
+        )
+        self.put("maps/jobs/repeated.adoc", ":_mod-docs-content-type: MAP\n= Repeat")
+        graph = self.graph()
+        graph.walk("maps/navigation.adoc")
+        rows = duplicate_job_include_rows(graph)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["job"], "maps/jobs/repeated.adoc")
+        self.assertEqual(rows[0]["occurrences"], 2)
+
+    def test_duplicate_module_inclusion_across_jobs_is_reported(self):
+        self.put(
+            "maps/navigation.adoc",
+            ":_mod-docs-content-type: MAP\n= Product\ninclude::discover.adoc[]",
+        )
+        self.put(
+            "maps/discover.adoc",
+            ":_mod-docs-content-type: MAP\n= Discover\n"
+            "include::jobs/first.adoc[]\n"
+            "include::jobs/second.adoc[]",
+        )
+        for job in ("first", "second"):
+            self.put(
+                f"maps/jobs/{job}.adoc",
+                ":_mod-docs-content-type: MAP\n"
+                f"= {job.title()}\ninclude::../../modules/shared.adoc[]",
+            )
+        self.put("modules/shared.adoc", ":_mod-docs-content-type: CONCEPT\n= Shared")
+        graph = self.graph()
+        navigation = graph.walk("maps/navigation.adoc")
+        rows = duplicate_module_inclusion_rows(job_paths(navigation, graph))
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["module"], "modules/shared.adoc")
+        self.assertEqual(rows[0]["job_count"], 2)
+        self.assertEqual(
+            rows[0]["jobs"], ["maps/jobs/first.adoc", "maps/jobs/second.adoc"]
+        )
+
     def test_publication_match_includes_missing_inventory_and_unmatched_sections(self):
         self.put("modules/published.adoc", '[id="published_{context}"]\n= Published')
         self.put("modules/absent.adoc", '[id="absent_{context}"]\n= Absent')
@@ -290,12 +345,19 @@ endif::[]
         ]
         with contextlib.redirect_stdout(io.StringIO()):
             result = main(args)
-        report = json.loads((self.root / "report/audit.json").read_text())
+        report = json.loads((self.root / "report/reports/audit.json").read_text())
         self.assertEqual(result, 1)
         self.assertEqual(report["summary"]["missing"], 1)
         self.assertEqual(report["summary"]["covered_changed"], 1)
         self.assertEqual(report["summary"]["unreachable_jobs"], 1)
-        self.assertTrue((self.root / "report/coverage.csv").is_file())
+        self.assertTrue((self.root / "report/reports/coverage.csv").is_file())
+        self.assertTrue(
+            (self.root / "report/reports/duplicate-job-includes.csv").is_file()
+        )
+        self.assertTrue(
+            (self.root / "report/reports/duplicate-module-inclusions.csv").is_file()
+        )
+        self.assertTrue((self.root / "report/reports/README.md").is_file())
 
 
 if __name__ == "__main__":
