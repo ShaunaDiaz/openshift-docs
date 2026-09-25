@@ -11,6 +11,38 @@ branches, alter maps, generate missing content, or invoke map-tools. It needs
 Python 3.10+, PyYAML, and (for the optional live-site check) curl. Reports are
 written under the `reports/` folder inside the output directory you select.
 
+## Reuse with other OpenShift content
+
+The audit can be used with other OpenShift products or distros that use the
+same map and include conventions. The main inputs are configurable:
+
+- `--repo-root`: target repository.
+- `--source-root`: published-release checkout used as the comparison baseline.
+- `--entry`: navigation map, such as `maps/microshift/navigation.adoc`.
+- `--distro`: distro name, such as `microshift`.
+- `--topic-map`: topic-map YAML path.
+- `--attribute`: additional AsciiDoc attributes.
+- `--published-url` or `--published-snapshot`: optional published-site reconciliation.
+
+For example:
+
+```bash
+python3 scripts/audit_tools/audit_map_migration.py \
+  --repo-root /path/to/openshift-docs \
+  --source-root /path/to/microshift-release \
+  --entry maps/microshift/navigation.adoc \
+  --distro microshift \
+  --output /tmp/microshift-audit
+```
+
+The target repository should use the general OpenShift conventions of
+`maps/<distro>/navigation.adoc`, shared `maps/jobs/`, and `modules/`,
+`snippets/`, and `assemblies/` content. The topic-map inventory should use the
+OpenShift `Dir`, `Topics`, `File`, and optional `Distros` schema. The core
+map/source audit is reusable; the optional published-site check might need
+adjustment if another product's documentation portal has a substantially
+different structure.
+
 ## Run from the repository root
 
 Use a separate checkout of `rhcl-docs-1.4` as release evidence. The maps to be
