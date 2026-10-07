@@ -105,7 +105,7 @@ Topics:
   - Name: Route traffic through an egress gateway
     File: rhcl-egress-dns-routing
 ---
-Name: Secure your traffic
+Name: Secure
 Dir: secure
 Distros: rhcl
 Topics:
@@ -133,7 +133,7 @@ Topics:
 - Name: Multi-protocol support for the MCP gateway
   File: mcp-gateway-multi-protocol-support
 ---
-Name: Develop APIs with the web console
+Name: Develop
 Dir: develop
 Distros: rhcl
 Topics:
