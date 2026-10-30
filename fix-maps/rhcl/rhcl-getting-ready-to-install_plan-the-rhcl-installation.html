@@ -765,6 +765,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph _abstract">
 <p>Connectivity Link must run on a supported version of OpenShift Container Platform. If you want to use TLS policies, cert-manager Operator for Red Hat OpenShift must be also be installed. Connectivity Link is supported on x86_64a and AArch64 (ARM) architectures.</p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Use the latest version</strong>: Install or upgrade to Red Hat Connectivity Link 1.4.1 or later.</p>
+</div>
+<div class="paragraph">
+<p><strong>Deprecation notice</strong>: Red Hat Connectivity Link 1.4.0 is deprecated. OpenShift Container Platform clusters running Connectivity Link 1.4.0 might experience authentication failures, API key management errors, gateway instability, or gateway pod memory pressure because of integration changes that are not fully compatible on all supported OpenShift Container Platform and OpenShift Service Mesh combinations.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>To configure observability, use Red Hat OpenShift Service Mesh.</p>
 </div>

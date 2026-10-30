@@ -647,10 +647,58 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph _abstract">
 <p>You can get started with the MCP gateway by using Operator Lifecycle Manager (OLM). After you install the Operator, set up connections by applying the custom resources that you require.</p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Technology Preview features are not supported with Red&#160;Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features offer early access to upcoming product features, enabling customers to test functionality and give feedback during the development process.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="sect3">
 <h4 id="proc-mcp-gateway-install-olm_install-mcp-gateway">Install the MCP gateway with OLM</h4>
 <div class="paragraph _abstract">
 <p>You can install the MCP gateway deployment Operator by using Operator Lifecycle Manager (OLM) with the CLI. When choosing this path, you must create a <code>MCPGatewayExtension</code> custom resources (CR) manually and apply it to complete your initial setup.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Use the latest version</strong>: Install or upgrade to Red Hat Connectivity Link 1.4.1 or later.</p>
+</div>
+<div class="paragraph">
+<p><strong>Deprecation notice</strong>: Red Hat Connectivity Link 1.4.0 is deprecated. OpenShift Container Platform clusters running Connectivity Link 1.4.0 might experience authentication failures, API key management errors, gateway instability, or gateway pod memory pressure because of integration changes that are not fully compatible on all supported OpenShift Container Platform and OpenShift Service Mesh combinations.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>MCP gateway is a Technology Preview feature</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Technology Preview features are not supported with Red&#160;Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features offer early access to upcoming product features, enabling customers to test functionality and give feedback during the development process.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="ulist">
 <div class="title">Prerequisites</div>
@@ -1782,6 +1830,23 @@ spec:
 <h4 id="con-mcp-gateway-isolated-deployment_understand-mcp-gateway-isolated-deployment">How isolated MCP gateway deployment works</h4>
 <div class="paragraph _abstract">
 <p>By using isolated MCP gateway deployments, different teams can manage their own Model Context Protocol (MCP) servers independently. Each isolated MCP gateway deployment uses a single <code>MCPGatewayExtension</code> custom resource (CR).</p>
+</div>
+<div class="paragraph">
+<p>MCP gateway isolated deployment is a Technology Preview feature</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Technology Preview features are not supported with Red&#160;Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features offer early access to upcoming product features, enabling customers to test functionality and give feedback during the development process.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>You can deploy more than one MCP gateway instance within a single cluster by using more than one <code>Gateway</code> CR. You must use one <code>MCPGatewayExtension</code> CR for each <code>Gateway</code> CR.</p>
