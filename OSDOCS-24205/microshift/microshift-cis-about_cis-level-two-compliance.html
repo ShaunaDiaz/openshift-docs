@@ -589,8 +589,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="microshift-cert-manager-tasks_manage-certificates.html">MicroShift certificate manager functions</a>
 </li>
-<li><a href="microshift-observability-overview_monitor-applications.html">MicroShift Observability overview</a>
-</li>
 <li><a href="microshift-embed-apps-edge-overview_embed-apps-for-edge.html">Embed applications in a RHEL for Edge image</a>
 </li>
 <li><a href="microshift-greenboot-how-workload-health-checks-work_ensure-application-reliability.html">How workload health checks work</a>
@@ -599,7 +597,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="microshift-security-context-constraints_secure-pod-workloads.html">Security context constraint synchronization with pod security standards</a>
 </li>
-<li><a href="microshift-about-using-operators_extend-capabilities-with-operators.html">About using Operators with a MicroShift node</a>
+<li><a href="microshift-about-using-operators_extend-capabilities-with-operators.html">Operators with a MicroShift node</a>
+</li>
+<li><a href="microshift-olm-deploy-operators_deploy-operators-olm-nw-node.html">How to deploy Operators using OLM</a>
+</li>
+<li><a href="microshift-olm-rh-ops-mirror_deploy-operators-disconnected-oc-mirror.html">Use Red Hat-provided Operator catalogs and mirror registries</a>
 </li>
 </ul>
 </li>
@@ -661,7 +663,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </li>
-<li><a href="_security.html">Security</a>
+<li><a href="_secure.html">Secure</a>
 <ul class="sectlevel2">
 <li><a href="microshift-cis-about_cis-level-two-compliance.html"><span class="toc-current">Understanding MicroShift on CIS Level 2 hardened systems</span></a>
 </li>
@@ -689,6 +691,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="_observe.html">Observe</a>
 
 <ul class="sectlevel2">
+<li><a href="microshift-observability-overview_monitor-applications.html">MicroShift Observability overview</a>
+</li>
 <li><a href="microshift-monitor-ephemeral-storage_monitor-ephemeral-storage.html">Monitor ephemeral storage usage to prevent pod eviction</a>
 </li>
 <li><a href="microshift-exposed-audit-ports_audit-exposed-network-ports.html">Auditing exposed network ports</a>
@@ -1107,7 +1111,7 @@ $ sudo augenrules --load</code></pre>
 <p>CIS hardening enables <code>firewalld</code> and denies traffic by default. Configure the following access for MicroShift:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 22. Required trusted sources</caption>
+<caption class="title">Table 24. Required trusted sources</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 16.6666%;">
@@ -1134,7 +1138,7 @@ $ sudo augenrules --load</code></pre>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 23. Common optional ports</caption>
+<caption class="title">Table 25. Common optional ports</caption>
 <colgroup>
 <col style="width: 20%;">
 <col style="width: 20%;">
@@ -1251,7 +1255,7 @@ $ sudo augenrules --load</code></pre>
 <div class="sect4">
 <h5 id="microshift-cis-config-ref-expected-failures_cis-level-two-compliance">Expected CIS rule failures with MicroShift</h5>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 24. IP forwarding</caption>
+<caption class="title">Table 26. IP forwarding</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 25%;">
@@ -1293,7 +1297,7 @@ $ sudo augenrules --load</code></pre>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 25. Container file ownership</caption>
+<caption class="title">Table 27. Container file ownership</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 25%;">
@@ -1330,7 +1334,7 @@ $ sudo augenrules --load</code></pre>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 26. kubelet volume permissions</caption>
+<caption class="title">Table 28. kubelet volume permissions</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 25%;">
@@ -1357,7 +1361,7 @@ $ sudo augenrules --load</code></pre>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 27. Audit rules for privileged commands</caption>
+<caption class="title">Table 29. Audit rules for privileged commands</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 25%;">
@@ -1409,12 +1413,12 @@ $ sudo augenrules --load</code></pre>
 </div>
 </div>
 <div class="paragraph nav-footer">
-<p>↑ Up: <a href="_security.html">Security</a> | ⌂ Home: <a href="navigation.html">Red Hat build of MicroShift</a> | Next: <a href="microshift-trust-manager-operand_manage-trust-bundles.html">The trust manager operand</a> →</p>
+<p>↑ Up: <a href="_secure.html">Secure</a> | ⌂ Home: <a href="navigation.html">Red Hat build of MicroShift</a> | Next: <a href="microshift-trust-manager-operand_manage-trust-bundles.html">The trust manager operand</a> →</p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-11-05 12:37:50 -0500
+Last updated 2026-11-05 13:03:51 -0500
 </div>
 </div>
 <style>
